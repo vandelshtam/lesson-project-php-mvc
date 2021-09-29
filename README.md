@@ -1,1 +1,1 @@
-# lesson-project-php-mvc
+# lesson-project-php-oop-mvc

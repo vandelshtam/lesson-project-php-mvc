@@ -1,5 +1,5 @@
 <?php
-include __DIR__ .'/../function.php';
+include '/Applications/MAMP/htdocs/lesson-project-php-mvc/app/lib/function.php';
 echo 123;
 $routes = [
     "/lesson-project-php-mvc/public/home" => 'functions/homepage.php',
