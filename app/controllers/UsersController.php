@@ -1,14 +1,21 @@
 <?php
 namespace App\Controllers;
 
-class UsersController{
+use App\Core\Controller;
+use App\Core\View;
+
+class UsersController extends Controller {
 
 
-    public function home(){
-        echo 'lists all users';
+    public function homeAction(){
+        $this->view->render('home page');
     }
 
-    public function user(){
-        echo 'list profile user';
+    public function userAction(){
+        echo 'list profile user number 1';
+       // var_dump($this->route);
+    }
+    public function indexAction(){
+        require '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/home/home_page.php';
     }
 }

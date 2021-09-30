@@ -5,12 +5,20 @@ return [
         'action' => 'home',   
     ],
     '/' => [
-        'controller' => 'main',
+        'controller' => 'users',
         'action' => 'index',   
     ],
-    '/user' => [
+    '/user/1' => [
         'controller' => 'users',
         'action' => 'user',   
+    ],
+    '/posts' => [
+        'controller' => 'posts',
+        'action' => 'posts',   
+    ],
+    '/post/1' => [
+        'controller' => 'posts',
+        'action' => 'post',   
     ],
 ];
 

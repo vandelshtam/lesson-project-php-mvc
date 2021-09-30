@@ -47,10 +47,10 @@ class Router
        if($this->match()){
            $pach = 'App\Controllers\\'.ucfirst($this->params['controller']).'Controller';
            if(class_exists($pach)){
-               $action = $this->params['action'];
+               $action = $this->params['action'].'Action';
                //dd($action);
                if(method_exists($pach, $action)){
-                   $controller = new $pach;
+                   $controller = new $pach($this->params);
                    //dd($controller);
                    $controller->$action();
                }
