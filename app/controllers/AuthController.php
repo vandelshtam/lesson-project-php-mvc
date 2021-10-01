@@ -15,7 +15,7 @@ class AuthController extends Controller {
     }
 
     public function page_loginAction(){
-        $this->view->redirect('/register');
+        //$this->view->redirect('/register');
         $this->view->render('Login page');
     }
     public function securityAction(){
