@@ -1,17 +1,43 @@
 <?php
 return [
-    '/home' => [
-        'controller' => 'users',
-        'action' => 'home',   
-    ],
     '/' => [
         'controller' => 'users',
-        'action' => 'index',   
+        'action' => 'users',   
     ],
-    '/user/1' => [
+    '/user' => [
         'controller' => 'users',
-        'action' => 'user',   
+        'action' => 'user_profile',   
     ],
+    '/edit' => [
+        'controller' => 'users',
+        'action' => 'edit',   
+    ],
+    '/media' => [
+        'controller' => 'users',
+        'action' => 'media',   
+    ],
+    '/status' => [
+        'controller' => 'users',
+        'action' => 'status',   
+    ],
+    '/create_user' => [
+        'controller' => 'users',
+        'action' => 'create_user',   
+    ],
+
+    '/register' => [
+        'controller' => 'auth',
+        'action' => 'page_register',   
+    ],
+    '/login' => [
+        'controller' => 'auth',
+        'action' => 'page_login',   
+    ],
+    '/security' => [
+        'controller' => 'auth',
+        'action' => 'security',   
+    ],
+
     '/posts' => [
         'controller' => 'posts',
         'action' => 'posts',   

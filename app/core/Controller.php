@@ -3,6 +3,7 @@ namespace App\Core;
 
 
 use App\Core\View;
+use App\Controllers\AuthController;
 
 abstract class Controller{
 
@@ -13,6 +14,7 @@ abstract class Controller{
     {
         $this->route = $route;
         $this->view = new View($route);
+        $this->view->layout = 'custom_auth';
     }
 
 }

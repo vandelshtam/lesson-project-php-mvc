@@ -11,16 +11,36 @@ class View{
     {
         $this->route = $route;
         $this->pach = $route['controller'].'/'.$route['action'];
-        //dd($this->pach);
     }
 
     public function render($title, $vars = []){
-        
-        ob_start();
-        require '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/'.$this->pach.'.php';
-        $content = ob_get_clean();
-        
-        require '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/layouts/'.$this->layout.'.php';
+        extract($vars);
+        $pach = '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/'.$this->pach.'.php';
+        if(file_exists($pach)){
+            ob_start();
+            require $pach;
+            $content = ob_get_clean();
+            require '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/layouts/'.$this->layout.'.php';
+        }
+        else{
+            dd($this->pach.' - not found');
+        }
     }
+
+    public function redirect($url){
+        header ('location:'.$url);
+        exit;
+    }
+
+    static function errorCode($code){
+        http_response_code($code);
+        $pach = '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/errors/'.$code.'.php'; 
+        if(file_exists($pach)){
+            require $pach;    
+        }
+        exit;
+    }
+
+    
 
 }

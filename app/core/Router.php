@@ -3,6 +3,7 @@
 namespace App\Core;
 
 use App\Controllers;
+use App\Core\View;
 
 class Router
 {
@@ -13,7 +14,6 @@ class Router
     public function __construct()
     {
         $arr = require '/Applications/MAMP/htdocs/lesson-project-php-mvc/app/config/routes.php';
-        //dd($arr);
         foreach($arr as $key => $val){
             $this->add($key, $val);
         }
@@ -22,25 +22,17 @@ class Router
     public function add($route, $params){
         $route = '#^'.$route.'$#';
         $this -> routes[$route] = $params;
-        //dd($this->routes[$route]);
     }
 
     public function match(){
         $url = $_SERVER['REQUEST_URI'];
-        //dd($url);
-
-        foreach($this->routes as $route => $params){
-            //var_dump($route);
-            
+        foreach($this->routes as $route => $params){    
             if(preg_match($route, $url, $matches)){
                 $this -> params = $params;
                 return true;
-                //dd($matches);
-            }
-            
+            }    
         }
         return false;
-
     }
 
     public function run(){
@@ -48,23 +40,23 @@ class Router
            $pach = 'App\Controllers\\'.ucfirst($this->params['controller']).'Controller';
            if(class_exists($pach)){
                $action = $this->params['action'].'Action';
-               //dd($action);
                if(method_exists($pach, $action)){
                    $controller = new $pach($this->params);
-                   //dd($controller);
                    $controller->$action();
                }
                else{
+                View::errorCode(404);
                 dd($action.' - not found');
                }
            }
            else{
+               View::errorCode(404);
                dd($pach.' - not found');
            }
        }
        else{
+           View::errorCode(404);
            dd(404);
        };
-        //echo 'start';
     }
 }

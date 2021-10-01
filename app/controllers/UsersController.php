@@ -7,15 +7,24 @@ use App\Core\View;
 class UsersController extends Controller {
 
 
-    public function homeAction(){
-        $this->view->render('home page');
+    public function usersAction(){
+        $vars = ['name' => 'Otto',
+                  'occupation' => 'menager'];
+        $this->view->render('Users list page', $vars);
     }
-
-    public function userAction(){
-        echo 'list profile user number 1';
-       // var_dump($this->route);
+    public function user_profileAction(){
+        $this->view->render('User profile page');
     }
-    public function indexAction(){
-        require '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/home/home_page.php';
+    public function editAction(){
+        $this->view->render('Edit user profile page');
+    }
+    public function mediaAction(){
+        $this->view->render('Media user page');
+    }
+    public function statusAction(){
+        $this->view->render('Status user page');
+    }
+    public function create_userAction(){
+        $this->view->render('Create user page');
     }
 }
