@@ -3,7 +3,7 @@
 namespace Database;
 
 
-use App\Models\QueryBuilder;
+use Database\QueryBuilder;
 use Database\Connection;
 
 class MakePdo{
@@ -11,7 +11,8 @@ class MakePdo{
     public static function query()
     {
         $config = include '/Applications/MAMP/htdocs/lesson-project-php-mvc/database/config.php';
-        return  new QueryBuilder(Connection::make($config['database']));   
+        return  new QueryBuilder(Connection::make($config['database']));
+   
     }
 
 }

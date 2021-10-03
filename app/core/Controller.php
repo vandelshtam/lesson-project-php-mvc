@@ -15,6 +15,16 @@ abstract class Controller{
         $this->route = $route;
         $this->view = new View($route);
         $this->view->layout = 'custom_auth';
+        $this->model = $this->loadModel($route['controller']);
+
     }
 
+    public function loadModel($name){
+        //$pach = 'App/Models/'.ucfirst($name);
+        $pach = 'App\Models\\'.ucfirst($name);
+        if(class_exists($pach)){
+            return new $pach();
+        }
+        //dd($pach);
+    }
 }

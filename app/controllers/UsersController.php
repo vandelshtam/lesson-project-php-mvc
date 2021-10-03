@@ -4,22 +4,25 @@ namespace App\Controllers;
 
 use Database\MakePdo;
 use App\Core\Controller;
+use App\Core\Model;
+use Models\Users;
 
 
 class UsersController extends Controller {
 
     public function usersAction(){
-           
-        $db = MakePdo::query();
-        $users = $db->getAll('users');
+        
+        $users = $this->model->getUsersAll();
         $vars = $users;
-        
         //dd($vars);
-        
         $this->view->render('Users list page', $vars);
     }
     public function user_profileAction(){
-        $this->view->render('User profile page');
+
+        $user = $this->model->getUsersOne();
+        $vars = $user;
+        //dd($vars);
+        $this->view->render('User profile page', $vars);
     }
     public function editAction(){
         $this->view->render('Edit user profile page');

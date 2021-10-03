@@ -8,7 +8,7 @@ return [
         'controller' => 'users',
         'action' => 'user_profile',   
     ],
-    '/edit' => [
+    '/edit/1' => [
         'controller' => 'users',
         'action' => 'edit',   
     ],
@@ -37,6 +37,11 @@ return [
         'controller' => 'auth',
         'action' => 'security',   
     ],
+    '/logout' => [
+        'controller' => 'auth',
+        'action' => 'logot',   
+    ],
+
 
     '/posts' => [
         'controller' => 'posts',
