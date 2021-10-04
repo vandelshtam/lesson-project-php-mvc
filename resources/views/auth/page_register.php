@@ -50,7 +50,11 @@
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
                                     <div class="alert alert-danger text-dark" role="alert">
-                                        <strong>Уведомление!</strong><?=$vars['name'];?> <?=$vars['password'];?>Это флеш сообщения.
+                                        <strong>Уведомление!</strong>
+                                        <?php if(isset($errors)): foreach($errors as $error):?>
+                                            <p><?=$error; ?></p>
+                                            <?php endforeach; endif;?>
+                                        Это флеш сообщения.
                                     </div>
                                     <form id="js-login" novalidate="" action="" method="POST">
                                     <div class="form-group">

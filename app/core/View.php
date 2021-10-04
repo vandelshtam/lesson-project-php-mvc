@@ -13,8 +13,9 @@ class View{
         $this->pach = $route['controller'].'/'.$route['action'];
     }
 
-    public function render($title, $vars = []){
+    public function render($title, $vars = [], $errors = []){
         extract($vars);
+        extract($errors);
         $pach = '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/'.$this->pach.'.php';
         if(file_exists($pach)){
             ob_start();

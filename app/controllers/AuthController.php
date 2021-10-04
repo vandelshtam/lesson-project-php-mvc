@@ -14,16 +14,13 @@ class AuthController extends Controller {
     }
 
     public function page_registerAction(){
+        $vars = [];
+        $errors = [];
         if(isset($_POST['email']) && isset($_POST['password']) &&  isset($_POST['name'])){
-            $vars = [];
-            $errors = [];
             $validation = new Validator($_POST);
-            $errors = $validation->validateForm();
             
-  //dd($errors);
-            if($errors == null){
+            if( $validation->validateForm() == null){
                 if($this->model->registerUser() == true){
-                    
                     header('Location:/login');
                 }
                 else{
@@ -31,10 +28,10 @@ class AuthController extends Controller {
                 }
             }
             else{
-                $vars = $errors;
-            }
+                $errors = $validation->validateForm();
+            }    
         }
-        $this->view->render('Register page', $vars);
+        $this->view->render('Register page',$vars, $errors);
     }
 
     public function page_loginAction(){
