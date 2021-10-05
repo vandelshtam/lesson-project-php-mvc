@@ -15,7 +15,7 @@ abstract class Controller{
     public function __construct($route)
     {
         $this->route = $route;
-        $_SESSION['admin'] = 1;
+        
         if(!$this->checkAcl()){
             View::errorCode(403);
         }
@@ -35,17 +35,17 @@ abstract class Controller{
 
     public function checkAcl(){
         $this->acl = require '/Applications/MAMP/htdocs/lesson-project-php-mvc/app/acl/'.$this->route['controller'].'.php';
-        //dd($_SESSION);
+        //dd($_SESSION['auth']);
         if($this->isAcl('all')){
             return true;
         }
-        if(isset($_SESSION['id']) && $this->isAcl('authoris')){
+        if($_SESSION['auth'] == true && $this->isAcl('authoris')){
             return true;
         }
-        if(isset($_SESSION['authoris']) && $this->isAcl('guest')){
+        if(isset($_SESSION['auth']) && $this->isAcl('guest')){
             return true;
         }
-        if(isset($_SESSION['admin']) && $this->isAcl('admin')){
+        if($_SESSION['admin'] == 1 && $this->isAcl('admin')){
             return true;
         }
         

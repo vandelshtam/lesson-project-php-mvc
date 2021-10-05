@@ -1,8 +1,9 @@
 <?php
 namespace App\Models;
-
+session_start();
 
 use App\Core\Model;
+use App\Models\flashMessage;
 
 class Auth extends Model{
     
@@ -17,7 +18,7 @@ class Auth extends Model{
         $hash = $user['password'];
             if(password_verify($password, $hash))
             {        
-                return true;
+                return $user;
             }
             else
             {       
@@ -26,7 +27,11 @@ class Auth extends Model{
         }
         else
         {   
-            return false;
+            $flash = new flashMessage();
+            $key = 'info';
+            $value = 'Такого пользователя нет! пожалуйста попробуйте еще раз';
+            $flashMessage = $flash->addFlash($key, $value);
+            return $flashMessage;
         }
     }
 
@@ -42,7 +47,11 @@ class Auth extends Model{
         $password = $_POST['password'];
         if(!empty($user))
         {
-            return 'этот логин занят';
+            $flash = new flashMessage();
+            $key = 'info';
+            $value = 'Не удалось зарегистрироваться, этот логин занят';
+            $flashMessage = $flash->addFlash($key, $value);
+            return $flashMessage;
         }
         else
         {   
@@ -59,13 +68,26 @@ class Auth extends Model{
             else{
                 return false;
             }
-            //set_session_auth($user_id, $email);
-            //set_flash_message('success','You have successfully registered!');
         }
     }
 
-    public function LogoutUser(){
-        
-        echo 'Модель работает';
+    public function set_session_auth($user_id,$email,$name,$admin)
+    {    
+        $_SESSION['user_id']=$user_id; 
+        $_SESSION['login']=$email;
+        $_SESSION['name']=$name;
+        $_SESSION['admin']=$admin;
+        $_SESSION['auth']=true;
     }
+
+    public function logoutUser()
+{
+     //session_destroy();
+    //$_SESSION['user_id']= distroi 
+    //$_SESSION['login']=$email;
+    //$_SESSION['name']=$name;
+    //$_SESSION['admin']=$admin;
+    //$_SESSION['auth']=true;
+         $this->set_session_auth('NULL','NULL','NULL','NULL');    
+}
 }

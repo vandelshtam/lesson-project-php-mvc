@@ -1,3 +1,4 @@
+<?php use App\Models\flashMessage;?>
     <!-- Call App Mode on ios devices -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <!-- Remove Tap Highlight on Windows Phone IE -->
@@ -28,7 +29,7 @@
                         <span class="text-white opacity-50 ml-auto mr-2 hidden-sm-down">
                             Уже зарегистрированы?
                         </span>
-                        <a href="page_login.html" class="btn-link text-white ml-auto ml-sm-0">
+                        <a href="/login" class="btn-link text-white ml-auto ml-sm-0">
                             Войти
                         </a>
                     </div>
@@ -51,11 +52,27 @@
                                 <div class="card p-4 rounded-plus bg-faded">
                                     <div class="alert alert-danger text-dark" role="alert">
                                         <strong>Уведомление!</strong>
-                                        <?php if(isset($errors)): foreach($errors as $error):?>
+                                            <?php if(isset($errors)): foreach($errors as $error):?>
                                             <p><?=$error; ?></p>
-                                            <?php endforeach; endif;?>
-                                        Это флеш сообщения.
+                                            <?php endforeach; endif;?>        
                                     </div>
+                                    <?php if(isset($_SESSION['success'])):;?>
+                                            <div class="alert alert-success" ">
+                                            <?php flashMessage::display_flash('success') ;?>
+                                            </div>
+                                            <?php endif;?>
+
+                                            <?php if(isset($_SESSION['danger'])):;?>
+                                            <div class="alert alert-danger" ">
+                                            <?php flashMessage::display_flash('danger') ;?>
+                                            </div>
+                                            <?php endif;?> 
+                                            
+                                            <?php if(isset($_SESSION['info'])):;?>
+                                            <div class="alert alert-info" ">
+                                            <?php flashMessage::display_flash('info') ;?>
+                                            </div>
+                                            <?php endif;?>
                                     <form id="js-login" novalidate="" action="" method="POST">
                                     <div class="form-group">
                                             <label class="form-label" for="emailverify">Name</label>

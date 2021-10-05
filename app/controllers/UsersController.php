@@ -1,6 +1,6 @@
 <?php
 namespace App\Controllers;
-
+session_start();
 
 use Database\MakePdo;
 use App\Core\Controller;
@@ -14,7 +14,7 @@ class UsersController extends Controller {
         
         $users = $this->model->getUsersAll();
         $vars = $users;
-        //dd($vars);
+        echo $_SESSION['admin'];
         $this->view->render('Users list page', $vars);
     }
     public function user_profileAction(){

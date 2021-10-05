@@ -5,7 +5,7 @@ return [
     ],
     
     'authoris' => [
-        //
+        'users', 'user_profile'
     ],
 
     'guest' => [

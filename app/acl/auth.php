@@ -5,7 +5,7 @@ return [
     ],
     
     'authoris' => [
-        //
+        'logout'
     ],
 
     'guest' => [
@@ -13,6 +13,6 @@ return [
     ],
 
     'admin' => [
-        'security'
+        'security', 'logout'
     ],
     ];

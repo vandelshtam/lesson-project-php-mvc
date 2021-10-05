@@ -39,7 +39,7 @@ return [
     ],
     '/logout' => [
         'controller' => 'auth',
-        'action' => 'logot',   
+        'action' => 'logout',   
     ],
 
 

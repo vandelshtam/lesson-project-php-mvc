@@ -24,6 +24,7 @@ class View{
             require '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/layouts/'.$this->layout.'.php';
         }
         else{
+            $this->errorCode(404);
             dd($this->pach.' - not found');
         }
     }
