@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-session_start();
+//session_start();
 use App\Core\View;
 use App\Controllers\AuthController;
 
@@ -20,7 +20,7 @@ abstract class Controller{
             View::errorCode(403);
         }
         $this->view = new View($route);
-        $this->view->layout = 'custom_auth';
+        $this->view->layout = 'default';
         $this->model = $this->loadModel($route['controller']);
 
     }

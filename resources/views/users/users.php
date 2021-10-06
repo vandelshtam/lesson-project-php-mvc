@@ -1,57 +1,5 @@
 <?php use App\Models\flashMessage;?>    
-    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/vendors.bundle.css">
-    <link id="appbundle" rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/app.bundle.css">
-    <link id="myskin" rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/skins/skin-master.css">
-    <link rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/fa-solid.css">
-    <link rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/fa-brands.css">
-    <link rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/fa-regular.css">
-</head>
-    <body class="mod-bg-1 mod-nav-link">
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary bg-primary-gradient">
-            <a class="navbar-brand d-flex align-items-center fw-500" href="users.html"><img alt="logo" class="d-inline-block align-top mr-2" src="/lesson-project-php-mvc/public/img/logo.png"> Учебный проект</a> <button aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarColor02" data-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarColor02">
-            <ul class="navbar-nav md-3">
-            <li class="nav-item active">
-                <a class="nav-link" href="/">Главная <span class="sr-only">(current)</span></a>
-            </li>
-            </ul>
-            <ul class="navbar-nav md-3">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/posts">Посты <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/chats">Чаты <span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav md-3">
-                <?php if($_SESSION['admin'] == 1):?>
-                <li class="nav-item">
-                    <a class="nav-link">Вы администратор</a>
-                </li>
-                <?php endif;?>
-            </ul>
-            <ul class="navbar-nav md-3">
-                <?php if($_SESSION['auth'] == true):?>
-                <li class="nav-item">
-                    <a class="nav-link">Вы вошли как <?=$_SESSION['name'];?></a>
-                </li>
-                <?php endif;?>
-            </ul>
-            <ul class="navbar-nav md-3">
-                <?php if($_SESSION['auth'] == true):?>
-                <li class="nav-item">
-                    <a class="nav-link" href="/logout">Выйти</a>
-                </li>
-                <?php else:?>
-                <li class="nav-item">
-                    <a class="nav-link" href="/login">Войти</a>
-                </li>
-                <?php endif;?>
-            </div>
-        </nav>
-
+   
         <main id="js-page-content" role="main" class="page-content mt-3">
         <?php if(isset($_SESSION['success'])):;?>
             <div class="alert alert-success" ">
@@ -77,7 +25,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-12">
-                    <a class="btn btn-success" href="create_user.html">Добавить</a>
+                    <a class="btn btn-success" href="/create_user">Добавить</a>
 
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                         <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
@@ -100,8 +48,17 @@
                 <div class="col-xl-4">
                     <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="oliver kopyov">
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
-                            <div class="d-flex flex-row align-items-center">
-                                <span class="status status-success mr-3">
+                        <div class="d-flex flex-row align-items-center">
+                                <!-- статус пользователя -->
+                                <?php if ($var['status'] == 0):?>
+                                    <span class="status status-success mr-3">
+                                <?php endif;?>
+                                <?php if ($var['status'] == 1):?>
+                                    <span class="status status-danger mr-3">
+                                <?php endif;?>
+                                <?php if ($var['status'] == 2):?>
+                                    <span class="status status-warning mr-3">
+                                <?php endif;?>
                                     <span class="rounded-circle profile-image d-block " style="background-image:url('<?=$var['avatar'];?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
@@ -111,22 +68,22 @@
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                     </a>
                                     <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/user">
+                                    <a class="dropdown-item" href="/user/<?=$var['user_id'];?>">
                                         <?php if($_SESSION['auth']):?>
                                             <i class="fa fa-edit"></i>
                                         Открыть профиль</a>
                                         <?php endif;?>
                                         <?php if($_SESSION['user_id'] == $var['id'] || $_SESSION['admin'] == 1):?>
-                                        <a class="dropdown-item" href="/lesson-project-php-mvc/edit/&?id=<?php echo $var['id'];?>">
+                                        <a class="dropdown-item" href="/edit/<?php echo $var['user_id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
                                         <a class="dropdown-item" href="security.html">
                                             <i class="fa fa-lock"></i>
                                         Безопасность</a>
-                                        <a class="dropdown-item" href="status.html">
+                                        <a class="dropdown-item" href="/statusShow/<?=$var['user_id'];?>">
                                             <i class="fa fa-sun"></i>
                                         Установить статус</a>
-                                        <a class="dropdown-item" href="media.html">
+                                        <a class="dropdown-item" href="/statusShow/<?=$var['user-id'];?>">
                                             <i class="fa fa-camera"></i>
                                             Загрузить аватар
                                         </a>
@@ -170,7 +127,6 @@
                 
 <?php endforeach;?>
 
-use App\Models\flashMessage;
 
             </div>
         </main>

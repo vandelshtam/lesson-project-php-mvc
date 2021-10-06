@@ -4,21 +4,25 @@ return [
         'controller' => 'users',
         'action' => 'users',   
     ],
-    '/user' => [
+    '/user/{id:\d+}' => [
         'controller' => 'users',
         'action' => 'user_profile',   
     ],
-    '/edit/1' => [
+    '/edit/{id:\d+}' => [
         'controller' => 'users',
         'action' => 'edit',   
     ],
-    '/media' => [
+    '/media/{id:\d+}' => [
         'controller' => 'users',
         'action' => 'media',   
     ],
-    '/status' => [
+    '/statusShow/{id:\d+}' => [
         'controller' => 'users',
-        'action' => 'status',   
+        'action' => 'statusShow',   
+    ],
+    '/statusSet/{id:\d+}' => [
+        'controller' => 'users',
+        'action' => 'statusSet',   
     ],
     '/create_user' => [
         'controller' => 'users',

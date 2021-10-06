@@ -18,6 +18,8 @@ class QueryBuilder {
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
     public function getOne($table, $id)
     {
         $sql = "SELECT * FROM {$table} WHERE id=:id";
@@ -28,6 +30,31 @@ class QueryBuilder {
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+
+
+    public function getOneUserId($table, $user_id)
+    {
+        $sql = "SELECT * FROM {$table} WHERE user_id=:user_id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':user_id', $user_id);
+        //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function getOneEmail($table, $email)
+    {
+        
+        $sql = "SELECT * FROM {$table} WHERE email=:email";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':email', $email);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
     public function create($table,$data)
     {
         $keys = implode(', ', array_keys($data));
@@ -40,12 +67,14 @@ class QueryBuilder {
         }
         $result = $statement->execute($data);
         //$statement->execute(['name' => 'NNN', 'email' => 'nnn@nnn', 'password' => 12345]);
-        $newUserId=$this->pdo->lastInsertId();
+        //$newUserId=$this->pdo->lastInsertId();
         return $result;
     }
+
+
+
     public function update($table, $data, $id)
-    {
-        
+    {    
         $keys = array_keys($data);
         $string = '';
         foreach($keys as $key)
@@ -53,14 +82,38 @@ class QueryBuilder {
             $string .= $key .'=:'. $key .',';
         }
         $keys = rtrim($string, ',');
-        $data['id'] = $id;
-        //dd($keys);
+        
         $sql = "UPDATE {$table} SET {$keys} WHERE id=:id";
+        //echo $sql;die;
         $statement = $this->pdo->prepare($sql);
-        //$statement->bindValue(':id', $id);
-        dd($statement->execute($data));
-
+        foreach($data as $key => $value){
+            $statement->bindValue(':'.$keys.'', $value);
+        }
+        $statement->bindValue(':id', $id);
+        $statement->execute($data);
     }
+
+    public function updateOne($table, $data, $id)
+    {    
+        $keys = array_keys($data);
+        $string = '';
+        foreach($keys as $key)
+        {
+            $string .= $key .'=:'. $key .',';
+        }
+        $keys = rtrim($string, ',');
+        
+        $sql = "UPDATE {$table} SET {$data} WHERE id=:id";
+        //echo $sql;die;
+        $statement = $this->pdo->prepare($sql);
+        foreach($data as $key => $value){
+            $statement->bindValue(':'.$keys.'', $value);
+        }
+        $statement->bindValue(':id', $id);
+        $statement->execute($data);
+    }
+
+
     public function delete($table, $id)
     {
         $sql = "DELETE FROM {$table} WHERE id=:id";
@@ -92,7 +145,7 @@ class QueryBuilder {
             
             $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
         }
-        $sql = $str .' WHERE users.id LIKE :id ';
+        $sql = $str .' WHERE infos.user_id LIKE :id ';
         //echo $sql;
         //$sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id WHERE users.id LIKE :id";
         $statement = $this->pdo->prepare($sql);
@@ -112,5 +165,10 @@ class QueryBuilder {
         $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
+    }
+
+    public function userId(){
+        $newUserId=$this->pdo->lastInsertId();
+        return $newUserId;
     }
 }

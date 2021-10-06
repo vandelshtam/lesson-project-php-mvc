@@ -1,4 +1,5 @@
 <?php use App\Models\flashMessage;?>
+
      <!-- Call App Mode on ios devices -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <!-- Remove Tap Highlight on Windows Phone IE -->

@@ -6,7 +6,7 @@ class flashMessage {
 
   public $message = [];
   
-  public function addFlash($key, $val){
+  public static function addFlash($key, $val){
     
     $_SESSION[$key] = $val;
   }

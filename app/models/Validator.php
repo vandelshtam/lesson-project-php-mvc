@@ -7,6 +7,7 @@ class Validator {
   private $data;
   private $errors = [];
   private static $fields = ['name', 'email', 'password'];
+  private static $fieldsEdit;
 
   public function __construct($post_data){
     $this->data = $post_data;
@@ -24,6 +25,23 @@ class Validator {
     $this->validateUsername();
     $this->validateEmail();
     $this->validatePassword();
+    return $this->errors;
+
+  }
+
+  public function validateEditForm(){
+
+    foreach(self::$fieldsEdit as $field){
+      if(!array_key_exists($field, $this->data)){
+        trigger_error("'$field' is not present in the data");
+        return;
+      }
+    }
+
+    $this->validatePhone();
+    $this->validateOccupation();
+    $this->validateLocation();
+    $this->validateUsername();
     return $this->errors;
 
   }
@@ -70,6 +88,47 @@ class Validator {
     }
 
   }
+
+
+  private function validateOccupation(){
+
+    $val = trim($this->data['occupation']);
+
+    if(empty($val)){
+      $this->addError('occupation', 'name cannot be empty');
+    } else {
+      if(!preg_match('/^[a-zA-Z0-9]{3,36}$/', $val)){
+        $this->addError('name','username must be 3-36 chars & alphanumeric');
+      }
+    }
+  }
+
+  private function validateLocation(){
+
+    $val = trim($this->data['location']);
+
+    if(empty($val)){
+      $this->addError('location', 'name cannot be empty');
+    } else {
+      if(!preg_match('/^[a-zA-Z0-9]{3,36}$/', $val)){
+        $this->addError('name','username must be 3-36 chars & alphanumeric');
+      }
+    }
+  }
+
+  private function validatePhone(){
+
+    $val = trim($this->data['phone']);
+
+    if(empty($val)){
+      $this->addError('phone', 'name cannot be empty');
+    } else {
+      if(!preg_match('/^[0-9]{6,12}$/', $val)){
+        $this->addError('name','username must be 3-36 chars & alphanumeric');
+      }
+    }
+  }
+
 
   private function addError($key, $val){
     

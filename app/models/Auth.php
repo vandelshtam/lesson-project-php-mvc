@@ -1,19 +1,26 @@
 <?php
 namespace App\Models;
-session_start();
+//session_start();
 
 use App\Core\Model;
 use App\Models\flashMessage;
 
 class Auth extends Model{
-    
+   
     public function loginUser(){
         $table = 'users';
         $value = $_POST['email'];
         $param = 'email';
         $password = $_POST['password'];
         $user = $this->db->getOneOnParam($table, $param, $value);
-        if(!empty($user))
+        
+        if(empty($user))
+        {   
+            $key = 'info';
+            $value = 'Логин указан не верно!';
+            flashMessage::addFlash($key, $value);
+        }
+        else
         {
         $hash = $user['password'];
             if(password_verify($password, $hash))
@@ -24,15 +31,7 @@ class Auth extends Model{
             {       
                 return false;
             }
-        }
-        else
-        {   
-            $flash = new flashMessage();
-            $key = 'info';
-            $value = 'Такого пользователя нет! пожалуйста попробуйте еще раз';
-            $flashMessage = $flash->addFlash($key, $value);
-            return $flashMessage;
-        }
+        }    
     }
 
 
@@ -47,10 +46,9 @@ class Auth extends Model{
         $password = $_POST['password'];
         if(!empty($user))
         {
-            $flash = new flashMessage();
             $key = 'info';
             $value = 'Не удалось зарегистрироваться, этот логин занят';
-            $flashMessage = $flash->addFlash($key, $value);
+            $flashMessage = flashMessage::addFlash($key, $value);
             return $flashMessage;
         }
         else
@@ -81,13 +79,7 @@ class Auth extends Model{
     }
 
     public function logoutUser()
-{
-     //session_destroy();
-    //$_SESSION['user_id']= distroi 
-    //$_SESSION['login']=$email;
-    //$_SESSION['name']=$name;
-    //$_SESSION['admin']=$admin;
-    //$_SESSION['auth']=true;
-         $this->set_session_auth('NULL','NULL','NULL','NULL');    
-}
+    {    
+        $this->set_session_auth('NULL','NULL','NULL','NULL');    
+    }
 }
