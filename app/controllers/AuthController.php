@@ -23,26 +23,73 @@ class AuthController extends Controller {
 
     public function page_registerAction(){
 
-        if(isset($_POST['email']) && isset($_POST['password']) &&  isset($_POST['name'])){
+$errors = [];
+        if(!empty($_POST['email']) && !empty($_POST['password']) &&  !empty($_POST['name'])){
             
             $validation = new Validator($_POST);
             
             if( $validation->validateForm() == null){
-                if($this->model->registerUser() == true){
-                    $key = 'success';
-                    $value = 'Вы успешно зарегистрировались, пожалуйста авторизуйтесь';
-                    $flashMessage = flashMessage::addFlash($key, $value);
-                    //mail( 'cee71195d6-2d2352@inbox.mailtrap.io', 'Сообщение с сайта - Вы успешно зарегистрированы', 'otto@otto');
-                    //header('Location:/login');die;
-                    $this->view->redirect('/login');
-                }
-                if($this->model->registerUser() == false){
+                 
+                $email=$_POST['email'];
+                $password = $_POST['password'];
+                $table = 'users';
+                $value = $_POST['email'];
+                $param = 'email';
+                $name = $_POST['name'];
+                $user = $this->model->isUser($table, $param, $value);
+                if(!empty($user))
+                {
                     $key = 'info';
-                    $value = 'Не удалось зарегистрироваться, пожалуйста попробуйте еще раз';
-                    $flashMessage = flashMessage::addFlash($key, $value);
+                    $value = 'Не удалось зарегистрироваться, этот логин занят';
+                    flashMessage::addFlash($key, $value);
                 }
-                if($this->model->registerUser() == $flashMessage){
-                    $flashMessage;
+                else{
+                    if($this->model->registerUser($table,$name,$email) == true){
+                        $newUserId = $this->model->newLastuserId();
+                        //dd($newUserId);
+                        
+                        $dataInfos = [ 
+                            'status' => 0,
+                            'location' => '',
+                            'phone' => '',
+                            'occupation' => '',
+                            'user_id' => $newUserId,
+                            'infosable_id' => $newUserId   
+                        ];
+                        $tableInfos = 'infos';
+                        $tableUsers = 'users';
+                        $tableSocials = 'socials';
+                        $this->model->createNewUser($tableInfos, $dataInfos);
+                        $userInfo = $this->model->getTableUser($tableInfos,$newUserId);
+                        $lastInfosId = $userInfo['id'];
+                        $data = ['info_id' => $lastInfosId];
+                        $this->model->updateUsersTable($tableUsers,$data,$newUserId);
+
+                        $dataSocials = [ 
+                            'vk' => '',
+                            'telegram' => '',
+                            'instagram' => '',
+                            'user_id' => $newUserId, 
+                        ];
+                        $this->model->createNewUser($tableSocials, $dataSocials);
+                        $userSocials = $this->model->getTableUser($tableSocials,$newUserId);
+                        $lastSocialsId = $userSocials['id'];
+                        $data = ['social_id' => $lastSocialsId];
+                        $this->model->updateUsersTable($tableUsers,$data,$newUserId);
+
+
+                        $key = 'success';
+                        $value = 'Вы успешно зарегистрировались, пожалуйста авторизуйтесь';
+                        flashMessage::addFlash($key, $value);
+                        //mail( 'cee71195d6-2d2352@inbox.mailtrap.io', 'Сообщение с сайта - Вы успешно зарегистрированы', 'otto@otto');
+                        //header('Location:/login');die;
+                        $this->view->redirect('/login');
+                    }
+                    if($this->model->registerUser() == false){
+                        $key = 'info';
+                        $value = 'Не удалось зарегистрироваться, пожалуйста попробуйте еще раз';
+                        $flashMessage = flashMessage::addFlash($key, $value);
+                    }
                 }
             }
             else{
@@ -53,10 +100,10 @@ class AuthController extends Controller {
             }    
         }
         $vars = [];
-        $errors = [];
-        $key = 'info';
-        $value = 'Пожалуйста зарегистрируйтесь';
-        $flashMessage = flashMessage::addFlash($key, $value);
+        //$errors = [];
+        //$key = 'info';
+        //$value = 'Пожалуйста зарегистрируйтесь';
+        //flashMessage::addFlash($key, $value);
         $this->view->render('Register page',$vars, $errors);
     }
 

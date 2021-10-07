@@ -76,13 +76,13 @@
                                     <form id="js-login" novalidate="" action="" method="POST">
                                     <div class="form-group">
                                             <label class="form-label" for="emailverify">Name</label>
-                                            <input type="text" id="emailverify" class="form-control" placeholder="Имя" required name="name">
+                                            <input type="text" id="emailverify" class="form-control" placeholder="Имя" required name="name" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}?>">
                                             <div class="invalid-feedback">Заполните поле.</div>
                                             <div class="help-block">Это будет вашим ником в сети</div>
                                         </div>
                                         <div class="form-group">
                                             <label class="form-label" for="emailverify">Email</label>
-                                            <input type="email" id="emailverify" class="form-control" placeholder="Эл. адрес" required name="email">
+                                            <input type="email" id="emailverify" class="form-control" placeholder="Эл. адрес" required name="email" value="<?php if(isset($_POST['email'])){echo $_POST['email'];}?>">
                                             <div class="invalid-feedback">Заполните поле.</div>
                                             <div class="help-block">Эл. адрес будет вашим логином при авторизации</div>
                                         </div>

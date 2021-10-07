@@ -10,7 +10,7 @@
                 <?php if(isset($errors)): foreach($errors as $error):?>
                 <p><?=$error; ?></p>
                 <?php endforeach; endif;?>        
-        </div>
+            </div>
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>
@@ -28,7 +28,7 @@
                 <?php flashMessage::display_flash('info') ;?>
                 </div>
                 <?php endif;?>  
-        <form action="/create_user" method="POST" enctype="multipart/form-data>
+        <form action="" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -40,25 +40,25 @@
                                 <!-- username -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Имя</label>
-                                    <input type="text" id="simpleinput" class="form-control" name="name">
+                                    <input type="text" id="simpleinput" class="form-control" name="name" value="<?php if(isset($_POST['name'])){echo $_POST['name'];}?>">
                                 </div>
 
                                 <!-- title -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Место работы</label>
-                                    <input type="text" id="simpleinput" class="form-control" name="occupation">
+                                    <input type="text" id="simpleinput" class="form-control" name="occupation" value="<?php if(isset($_POST['occupation'])){echo $_POST['occupation'];}?>">
                                 </div>
 
                                 <!-- tel -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Номер телефона</label>
-                                    <input type="text" id="simpleinput" class="form-control" name="phone">
+                                    <input type="text" id="simpleinput" class="form-control" name="phone" value="<?php if(isset($_POST['phone'])){echo $_POST['phone'];}?>">
                                 </div>
 
                                 <!-- address -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Адрес</label>
-                                    <input type="text" id="simpleinput" class="form-control" name="location">
+                                    <input type="text" id="simpleinput" class="form-control" name="location" value="<?php if(isset($_POST['location'])){echo $_POST['location'];}?>">
                                 </div>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                                 <!-- email -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Email</label>
-                                    <input type="text" id="simpleinput" class="form-control" name="email">
+                                    <input type="text" id="simpleinput" class="form-control" name="email" value="<?php if(isset($_POST['email'])){echo $_POST['email'];}?>">
                                 </div>
 
                                 <!-- password -->
@@ -89,9 +89,9 @@
                                 <div class="form-group">
                                     <label class="form-label" for="example-select">Выберите статус</label>
                                     <select class="form-control" id="example-select" name="status">
-                                        <option>Онлайн</option>
-                                        <option>Отошел</option>
-                                        <option>Не беспокоить</option>
+                                        <option>онлайн</option>
+                                        <option>отошел</option>
+                                        <option>не беспокоить</option>
                                     </select>
                                 </div>
 
@@ -168,8 +168,8 @@
         </form>
     </main>
 
-    <script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()

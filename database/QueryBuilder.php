@@ -82,7 +82,7 @@ class QueryBuilder {
             $string .= $key .'=:'. $key .',';
         }
         $keys = rtrim($string, ',');
-        
+        $data['id'] = $id;
         $sql = "UPDATE {$table} SET {$keys} WHERE id=:id";
         //echo $sql;die;
         $statement = $this->pdo->prepare($sql);
@@ -93,7 +93,7 @@ class QueryBuilder {
         $statement->execute($data);
     }
 
-    public function updateOne($table, $data, $id)
+    public function updateTableUserId($table, $data, $user_id)
     {    
         $keys = array_keys($data);
         $string = '';
@@ -102,14 +102,14 @@ class QueryBuilder {
             $string .= $key .'=:'. $key .',';
         }
         $keys = rtrim($string, ',');
-        
-        $sql = "UPDATE {$table} SET {$data} WHERE id=:id";
+        $data['user_id'] = $user_id;
+        $sql = "UPDATE {$table} SET {$keys} WHERE user_id=:user_id";
         //echo $sql;die;
         $statement = $this->pdo->prepare($sql);
         foreach($data as $key => $value){
             $statement->bindValue(':'.$keys.'', $value);
         }
-        $statement->bindValue(':id', $id);
+        $statement->bindValue(':user_id', $user_id);
         $statement->execute($data);
     }
 

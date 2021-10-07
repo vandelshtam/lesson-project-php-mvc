@@ -26,11 +26,18 @@ class Users extends Model{
         return $user;
     }
 
-    public function updateUser($table,$data,$user_id){
-        $id = $user_id;
+    public function updateUser($table,$data,$id){
+        
         $user = $this->db->update($table, $data, $id);
         return $user;
     }
+
+    public function updateTableUserId($table,$data,$user_id){
+        
+        $user = $this->db->updateTableUserId($table, $data, $user_id);
+        return $user;
+    }
+
 
     public function getOneData($table,$user_id){
         $id = $user_id;
@@ -52,11 +59,12 @@ class Users extends Model{
         move_uploaded_file($image_name_tmp, $direct.$image_name );
     }
 
-    public function updateAvatar($data, $id, $table){
-        $this->db->update($data,$id,$table);   
+    public function getOneOnUserId($table,$user_id){
+        $user = $this->db->getOneUserId($table, $user_id);
+        return $user;
     }
 
-    public function getOneOnUserId($table,$user_id){
+    public function getOneTableWhereUser_id($table,$user_id){
         $user = $this->db->getOneUserId($table, $user_id);
         return $user;
     }
