@@ -7,10 +7,12 @@ class Validator {
   private $data;
   private $errors = [];
   private static $fields = ['name', 'email', 'password'];
+  private static $fieldsSecurity = ['new_password', 'confirm_password'];
   private static $fieldsEdit = ['name', 'occupation', 'location', 'phone'];
   private static $fieldsInfo = [ 'occupation', 'location', 'phone'];
   private static $fieldsSocial = [ 'vk', 'telegram', 'instagram'];
-  private static $fieldsImage = [ 'avatar'];
+  private static $fieldsAvatar = [ 'avatar'];
+  private static $fieldsEmail = [ 'new_email'];
   private static $fieldsCreate = ['name', 'email', 'password', 'occupation', 'location', 'phone','vk', 'telegram', 'instagram'];
 
   public function __construct($post_data){
@@ -29,6 +31,21 @@ class Validator {
     $this->validateUsername();
     $this->validateEmail();
     $this->validatePassword();
+    return $this->errors;
+
+  }
+
+  public function validateSecurityForm(){
+
+    foreach(self::$fieldsSecurity as $field){
+      if(!array_key_exists($field, $this->data)){
+        trigger_error("'$field' is not present in the data");
+        return;
+      }
+    }
+
+    $this->validateNewPassword();
+    $this->validateConfirmPassword();
     return $this->errors;
 
   }
@@ -81,7 +98,7 @@ class Validator {
 
   public function validateCreateUserForm(){
 
-    foreach(self::$fieldsInfo as $field){
+    foreach(self::$fieldsCreate as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
         return;
@@ -120,6 +137,30 @@ class Validator {
   }
 
 
+  public function validateAvatarForm(){
+
+    foreach(self::$fieldsAvatar as $field){
+      if(!array_key_exists($field, $this->data)){
+        trigger_error("'$field' is not present in the data");
+        return;
+      }
+    }
+      $this->validateImage();
+      return $this->errors;
+  }
+
+  public function validateChangeEmailForm(){
+
+    foreach(self::$fieldsEmail as $field){
+      if(!array_key_exists($field, $this->data)){
+        trigger_error("'$field' is not present in the data");
+        return;
+      }
+    }
+      $this->validateChangeEmail();
+      return $this->errors;
+  }
+
   public function validateInfoLocationForm(){
 
     foreach(self::$fieldsInfo as $field){
@@ -127,9 +168,7 @@ class Validator {
         trigger_error("'$field' is not present in the data");
         return;
       }
-    }
-
-    
+    } 
     $this->validateLocation();
     return $this->errors;
 
@@ -171,7 +210,7 @@ class Validator {
 
   }
 
-  public function validatePassword() 
+  private function validatePassword() 
   {
     $val = trim($this->data['password']);
 
@@ -186,6 +225,35 @@ class Validator {
   
   }
 
+  private function validateNewPassword() 
+  {
+    $val = trim($this->data['new_password']);
+
+    if(empty($val)){
+      $this->addError('new_password', 'You did not enter your password');
+    } 
+    else{
+      if(!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $val)){
+        $this->addError('new_password','new_password must be at least 8 any characters, and have at least 1 capital letter, at least one small letter, and at least 1 digit');
+      }
+    }
+  }
+
+  private function validateConfirmPassword() 
+  {
+    $val = trim($this->data['confirm_password']);
+
+    if(empty($val)){
+      $this->addError('confirm_password', 'You did not enter your password');
+    } 
+    else{
+      if(!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/', $val)){
+        $this->addError('confirm_password','confirm_password must be at least 8 any characters, and have at least 1 capital letter, at least one small letter, and at least 1 digit');
+      }
+    }
+  }
+
+
   private function validateEmail(){
 
     $val = trim($this->data['email']);
@@ -197,7 +265,19 @@ class Validator {
         $this->addError('email', 'email must be a valid email address');
       }
     }
+  }
 
+  private function validateChangeEmail(){
+
+    $val = trim($this->data['new_email']);
+
+    if(empty($val)){
+      $this->addError('new_email', 'email cannot be empty');
+    } else {
+      if(!filter_var($val, FILTER_VALIDATE_EMAIL)){
+        $this->addError('new_email', 'new_email must be a valid email address');
+      }
+    }
   }
 
 
@@ -280,19 +360,16 @@ class Validator {
   }
 
   private function validateImage(){
-
     //$val = trim($this->data['avatar']);
-    $expensions= array("image/jpeg","image/jpg","image/png",);
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");
     $file_type = $_FILES['avatar']['type'];
-
     //if(empty($val)){
       //$this->addError('avatar', 'avatar cannot be empty');
-   // } else {
+    //} else {
       if(in_array($file_type,$expensions)=== false){
         $this->addError('avatar','extension not allowed, please choose a JPEG or PNG file');
       }
     //}
-    
         /*
         if($file_size > 2097152) {
           $errors[]='File size must be excately 2 MB';
@@ -300,6 +377,22 @@ class Validator {
         */
   }
 
+  public function validateImageAvatar(){
+    
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");
+    
+    $file_type = $_FILES['avatar']['type'];
+    if(empty($file_type)){
+        $this->addError('avatar','image cannot be empty');
+    }
+    else{
+      if(in_array($file_type,$expensions)=== false){
+        $this->addError('avatar','extension not allowed, please choose a JPEG or PNG file');
+      }
+    }
+    return $this->errors;
+
+  }
 
 
   private function addError($key, $val){

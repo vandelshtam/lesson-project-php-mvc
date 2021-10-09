@@ -7,6 +7,7 @@ use App\Models\Auth;
 use App\Core\Controller;
 use App\Models\Validator;
 use App\Models\flashMessage;
+use App\Models\MediaBuilder;
 
 class AuthController extends Controller {
 
@@ -110,7 +111,9 @@ $errors = [];
     public function page_loginAction(){
 
         if(isset($_POST['email']) &&  isset($_POST['password'])){
-            if($this->model->loginUser() == true){
+            $value = $_POST['email'];
+            $password = $_POST['password'];
+            if($this->model->loginUser($password,$value) == true){
 
                 $user = $this->model->loginUser();
                 $user_id = $user['id'];
@@ -139,9 +142,7 @@ $errors = [];
         $this->view->render('Login page');
     }
 
-    public function securityAction(){
-        $this->view->render('Security user page');
-    }
+    
 
     public function logoutAction(){
         
@@ -150,5 +151,52 @@ $errors = [];
         $value = 'Вы вышли из системы';
         flashMessage::addFlash($key, $value);
         $this->view->redirect('/login');
+    }
+
+    public function confirm_passwordAction(){
+        
+        if(isset($_POST['password'])){
+            if($this->model->password_verification($this->route['id'],$_POST['password']) == true){
+                $this->view->redirect('/delete/'.$this->route['id']); 
+            }
+            else{
+                $key = 'danger';
+                $value = 'Пароль не верный!';
+                flashMessage::addFlash($key, $value);
+            }
+        }
+
+        $this->view->render('Confirm password');
+    }
+
+    public function deleteAction(){
+
+        $user = $this->model->isUser('users', 'id', $this->route['id']);
+        if(empty($user)){
+            $key = 'info';
+            $value = 'Такого пользователя нет!';
+            flashMessage::addFlash($key, $value);
+            $this->view->redirect('/');
+        }
+
+        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
+            $key = 'danger';
+            $value = 'У вас нет прав доступа!';
+            flashMessage::addFlash($key, $value);
+            $this->view->redirect('/');
+        } 
+        
+        $social_id = $user['social_id'];
+        $info_id = $user['info_id'];
+        $info = $this->model->isUser('infos', 'id', $info_id);
+        unlink($info['avatar']);
+
+        $this->model->deleteTable('users', $this->route['id']);
+        $this->model->deleteTable('infos', $info_id);
+        $this->model->deleteTable('socials', $social_id);
+        $key = 'success';
+        $value = 'Вы успешно удалили аккаунт!';
+        flashMessage::addFlash($key, $value);
+        $this->view->redirect('/');
     }
 }

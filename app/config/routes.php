@@ -16,6 +16,10 @@ return [
         'controller' => 'users',
         'action' => 'media',   
     ],
+    '/mediaSet/{id:\d+}' => [
+        'controller' => 'users',
+        'action' => 'mediaSet',   
+    ],
     '/statusShow/{id:\d+}' => [
         'controller' => 'users',
         'action' => 'statusShow',   
@@ -28,6 +32,20 @@ return [
         'controller' => 'users',
         'action' => 'create_user',   
     ],
+    '/security/{id:\d+}' => [
+            'controller' => 'users',
+            'action' => 'security',   
+        ],
+    '/change_email/{id:\d+}' => [
+        'controller' => 'users',
+        'action' => 'change_email',   
+    ],
+    '/search' => [
+        'controller' => 'users',
+        'action' => 'search',   
+    ],
+
+
 
     '/register' => [
         'controller' => 'auth',
@@ -37,14 +55,20 @@ return [
         'controller' => 'auth',
         'action' => 'page_login',   
     ],
-    '/security' => [
-        'controller' => 'auth',
-        'action' => 'security',   
-    ],
+    
     '/logout' => [
         'controller' => 'auth',
         'action' => 'logout',   
     ],
+    '/confirm_password/{id:\d+}' => [
+        'controller' => 'auth',
+        'action' => 'confirm_password',   
+    ],
+    '/delete/{id:\d+}' => [
+        'controller' => 'auth',
+        'action' => 'delete',   
+    ],    
+
 
 
     '/posts' => [
@@ -56,25 +80,3 @@ return [
         'action' => 'post',   
     ],
 ];
-
-
-
-/*
-$routes = [
-    "/php/lessons_php/module_1/home" => 'functions/homepage.php',
-    "/php/lessons_php/module_1/about" => 'functions/about.php',
-    "/php/lessons_php/module_1/edit.php" => 'functions/about.php'
-];
-
-$route = $_SERVER['REQUEST_URI'];
-
-if(array_key_exists($route, $routes))
-{
-    //dd($routes[$route]);
-    include '/Applications/MAMP/htdocs/php/lessons_php/module_1/'.$routes[$route];exit;
-}
-else
-{
-    dd(404);
-}
-*/

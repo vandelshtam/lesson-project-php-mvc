@@ -1,16 +1,16 @@
-<?php use App\Models\flashMessage;?>      
+<?php use App\Models\flashMessage;?>     
     <main id="js-page-content" role="main" class="page-content mt-3">
         <div class="subheader">
             <h1 class="subheader-title">
-                <i class='subheader-icon fal fa-image'></i> Загрузить аватар
+                <i class='subheader-icon fal fa-lock'></i> Безопасность
             </h1>
         </div>
         <div class="alert alert-danger text-dark" role="alert">
-        <strong>Уведомление!</strong>
+            <strong>Уведомление!</strong>
                 <?php if(isset($errors)): foreach($errors as $error):?>
                 <p><?=$error; ?></p>
                 <?php endforeach; endif;?>        
-        </div>
+            </div>
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>
@@ -27,31 +27,42 @@
                 <div class="alert alert-info" ">
                 <?php flashMessage::display_flash('info') ;?>
                 </div>
-                <?php endif;?>          
-        <form action="" method="POST" enctype="multipart/form-data">
+                <?php endif;?>         
+        <form action="" method="POST">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
                         <div class="panel-container">
                             <div class="panel-hdr">
-                                <h2>Текущий аватар</h2>
+                                <h2>Обновление эл. адреса и пароля</h2>
                             </div>
                             <div class="panel-content">
+                
+                                <!-- password -->
                                 <div class="form-group">
-                                    <img src="/<?=$vars['avatar'];?>" alt="" class="img-responsive" width="200">
+                                    <label class="form-label" for="simpleinput">Текущий пароль</label>
+                                    <input type="password" id="simpleinput" class="form-control" name="password">
                                 </div>
 
+                                <!-- new password -->
                                 <div class="form-group">
-                                    <label class="form-label" for="example-fileinput">Выберите аватар</label>
-                                    <input type="file" id="example-fileinput" class="form-control-file" name="avatar">
+                                    <label class="form-label" for="simpleinput">Новый пароль</label>
+                                    <input type="password" id="simpleinput" class="form-control" name="new_password">
+                                </div>
+
+                                <!-- password confirmation-->
+                                <div class="form-group">
+                                    <label class="form-label" for="simpleinput">Подтверждение нового пароля.</label>
+                                    <input type="password" id="simpleinput" class="form-control" name="confirm_password">
                                 </div>
 
 
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                    <button class="btn btn-warning">Загрузить</button>
+                                    <button class="btn btn-warning" name="submit">Изменить</button>
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>

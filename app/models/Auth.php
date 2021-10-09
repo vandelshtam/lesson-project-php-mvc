@@ -7,12 +7,9 @@ use App\Models\flashMessage;
 
 class Auth extends Model{
    
-    public function loginUser(){
-        $table = 'users';
-        $value = $_POST['email'];
-        $param = 'email';
-        $password = $_POST['password'];
-        $user = $this->db->getOneOnParam($table, $param, $value);
+    public function loginUser($password,$value){
+
+        $user = $this->db->getOneOnParam('users', 'email', $value);
         
         if(empty($user))
         {   
@@ -75,7 +72,7 @@ class Auth extends Model{
         $newUserId = $this->db->userId();
         return $newUserId;
     }
-
+    //получение данных из таблицы по  полю user_id
     public function getTableUser($table,$user_id){
         $user = $this->db->getOneUserId($table, $user_id);
         return $user;
@@ -85,9 +82,50 @@ class Auth extends Model{
         $this->db->create($table,$data);
     }
 
-    public function updateUsersTable($table,$data,$user_id){
-        $id = $user_id;
+    public function updateUsersTable($table,$data,$id){
+        
         $user = $this->db->update($table, $data, $id);
         return $user;
     }
+
+
+    public function password_verification($id,$password){
+        $user = $this->db->getOne('users', $id);
+        $hash = $user['password'];
+            if(password_verify($password, $hash))
+            {        
+                return true;
+            }
+            else
+            {       
+                return false;
+            }
+    } 
+
+    public function setPassword($new_password,$id){
+        
+        $password = password_hash($new_password, PASSWORD_DEFAULT);
+        $data = [
+            'password' => $password   
+        ];
+        $this->db->update('users', $data, $id);
+    }
+
+    public function email_verification($email){
+        $user = $this->db->getOneEmail('users', $email);
+        $user_email = $user['email'];
+            if($user_email == $email)
+            {        
+                return true;
+            }
+            else
+            {       
+                return false;
+            }
+    } 
+    
+    public function deleteTable($table,$id){
+        $this->db->delete($table,$id);
+    }
+
 }

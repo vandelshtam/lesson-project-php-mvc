@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-xl-12">
                     <a class="btn btn-success" href="/create_user">Добавить</a>
-
+                    <form action="" method="POST"> 
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                         <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
                         <div class="btn-group btn-group-lg btn-group-toggle hidden-lg-down ml-3" data-toggle="buttons">
@@ -38,12 +38,11 @@
                             </label>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
             
-            <div class="row" id="js-contacts">
-               
-                    
+            <div class="row" id="js-contacts">        
                  <?php foreach($vars as $var): ?>  
                 <div class="col-xl-4">
                     <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="oliver kopyov">
@@ -77,17 +76,20 @@
                                         <a class="dropdown-item" href="/edit/<?php echo $var['user_id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
-                                        <a class="dropdown-item" href="security.html">
+                                        <a class="dropdown-item" href="/security/<?=$var['user_id'];?>">
                                             <i class="fa fa-lock"></i>
                                         Безопасность</a>
+                                        <a class="dropdown-item" href="/change_email/<?=$var['user_id'];?>">
+                                            <i class="fa fa-lock"></i>
+                                        Изменить почту</a>
                                         <a class="dropdown-item" href="/statusShow/<?=$var['user_id'];?>">
                                             <i class="fa fa-sun"></i>
                                         Установить статус</a>
-                                        <a class="dropdown-item" href="/statusShow/<?=$var['user-id'];?>">
+                                        <a class="dropdown-item" href="/media/<?=$var['user_id'];?>">
                                             <i class="fa fa-camera"></i>
-                                            Загрузить аватар
+                                        Загрузить аватар
                                         </a>
-                                        <a href="#" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                        <a href="/confirm_password/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                             <i class="fa fa-window-close"></i>
                                             Удалить
                                         </a>

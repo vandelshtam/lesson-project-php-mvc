@@ -43,6 +43,7 @@ class QueryBuilder {
         return $result;
     }
 
+    //получение юзера по емайл
     public function getOneEmail($table, $email)
     {
         
@@ -167,6 +168,7 @@ class QueryBuilder {
         return $result;
     }
 
+    // получение данных последней записи в таблицу
     public function userId(){
         $newUserId=$this->pdo->lastInsertId();
         return $newUserId;
