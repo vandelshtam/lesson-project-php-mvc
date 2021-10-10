@@ -16,8 +16,8 @@ class MediaBuilder extends Model{
 
 
 
-public function updateAvatar($data, $id, $table){
-  $this->db->update($data,$id,$table);   
+public function updateAvatar($table, $data, $id){
+  $this->db->update($table, $data, $id);   
 }
 
 
@@ -48,9 +48,10 @@ public function loadingFileAvatar($image_name_tmp,$direct,$image_name){
 
 
 
-function delete_file($table,$id)
+function delete_file($table,$param,$id)
 {    
-    $user = $this->db->getOne($table,$id);   
+  
+    $user = $this->db->getOneParam($table,$param,$id);   
     if($user['avatar']!=null)
     {
         unlink($user['avatar']);

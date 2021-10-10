@@ -20,7 +20,7 @@ class QueryBuilder {
     }
 
 
-    public function getOne($table, $id)
+    public function getOne_tableOne($table, $id)
     {
         $sql = "SELECT * FROM {$table} WHERE id=:id";
         $statement = $this->pdo->prepare($sql);
@@ -141,36 +141,74 @@ class QueryBuilder {
 
     public function getOneAllTable($tables, $id)
     {
+       // dd($id);
         $str = 'SELECT * FROM ' .$tables[0];
         foreach(array_slice($tables, 1) as $table){
             
             $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
         }
-        $sql = $str .' WHERE infos.user_id LIKE :id ';
-        //echo $sql;
+        $sql = $str .' WHERE infos.user_id LIKE :id';
+       // echo $sql;
         //$sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id WHERE users.id LIKE :id";
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':id', $id);
         //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result;
+        return $statement->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function getOneOnParam($table,$param, $value)
+
+    //получение одной записи по любому условию(полю) из любой таблицы
+    public function getOneParam($table,$param,$value)
     {
         $sql = "SELECT * FROM {$table} WHERE {$param}=:{$param}";
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':'.$param.'', $value);
         //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
         $statement->execute();
+        return $statement->fetch(PDO::FETCH_ASSOC);
+    }
+
+    // получение id последней записи в таблицу
+    public function userId(){
+        return $this->pdo->lastInsertId();
+    }
+
+
+    /*  пока не нужна 
+    public function getSearchName($table, $name)
+    {
+        $sql = "SELECT * FROM {$table} WHERE id=:id";
+        $sql = "SELECT * FROM {$table} WHERE name LIKE '%".$name."%'";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':name', $name);
+        //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+        $statement->execute();
         $result = $statement->fetch(PDO::FETCH_ASSOC);
         return $result;
     }
+    */
 
-    // получение данных последней записи в таблицу
-    public function userId(){
-        $newUserId=$this->pdo->lastInsertId();
-        return $newUserId;
+    public function countColumn($table){
+        
+        $sql = "SELECT COUNT(id) FROM {$table}";
+        $statement = $this->pdo->query($sql);
+        return $statement->fetchColumn();
     }
+    
+    //запрос по условиям пагинации
+    public function getUsersListPaginate($tables, $params)
+    { 
+        $str = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){
+            
+            $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
+        }
+        $sql = $str .'  LIMIT ' .$params['start']. ','.$params['max'];
+        $statement=$this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        
+    }
+    
 }

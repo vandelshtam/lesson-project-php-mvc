@@ -14,8 +14,8 @@ class View{
     }
 
     public function render($title, $vars = [], $errors = []){
-        //extract($vars);
-        //extract($errors);
+        extract($vars);
+        extract($errors);
         $pach = '/Applications/MAMP/htdocs/lesson-project-php-mvc/resources/views/'.$this->pach.'.php';
         if(file_exists($pach)){
             ob_start();

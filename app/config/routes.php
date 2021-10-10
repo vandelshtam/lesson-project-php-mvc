@@ -4,6 +4,10 @@ return [
         'controller' => 'users',
         'action' => 'users',   
     ],
+    '/users/users/{page:\d+}' => [
+        'controller' => 'users',
+        'action' => 'users',   
+    ],
     '/user/{id:\d+}' => [
         'controller' => 'users',
         'action' => 'user_profile',   
@@ -43,6 +47,14 @@ return [
     '/search' => [
         'controller' => 'users',
         'action' => 'search',   
+    ],
+    '/users_2' => [
+        'controller' => 'users',
+        'action' => 'users_2',   
+    ],
+    '/users_3' => [
+        'controller' => 'users',
+        'action' => 'users_3',   
     ],
 
 
