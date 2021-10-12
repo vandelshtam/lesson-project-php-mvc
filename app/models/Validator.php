@@ -27,61 +27,45 @@ class Validator {
         return;
       }
     }
-
     $this->validateUsername();
     $this->validateEmail();
     $this->validatePassword();
     return $this->errors;
-
   }
 
   public function validateSecurityForm(){
-
     foreach(self::$fieldsSecurity as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
         return;
       }
     }
-
     $this->validateNewPassword();
     $this->validateConfirmPassword();
     return $this->errors;
-
   }
 
   public function validateEditForm(){
-
     foreach(self::$fieldsEdit as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
         return;
       }
     }
-
     $this->validatePhone();
     $this->validateOccupation();
     $this->validateLocation();
     $this->validateUsername();
     return $this->errors;
-
   }
 
   public function validateInfoUserForm(){
-
     foreach(self::$fieldsInfo as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
         return;
       }
     }
-
-
-    //$this->validatePhone();
-    //$this->validateOccupation();
-    //$this->validateLocation();
-
-    
     if(!empty($_POST['phone'])){
       $this->validatePhone();
     }
@@ -91,21 +75,16 @@ class Validator {
     if(!empty($_POST['location'])){
       $this->validateLocation();
     }
-
     return $this->errors;
-
   }
 
   public function validateCreateUserForm(){
-
     foreach(self::$fieldsCreate as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
         return;
       }
     }
-
-
     $this->validateUsername();
     $this->validateEmail();
     $this->validatePassword();
@@ -131,14 +110,11 @@ class Validator {
     if(!empty($_FILES['avatar']['name'])){
       $this->validateImage();
     }
-
     return $this->errors;
-
   }
 
 
   public function validateAvatarForm(){
-
     foreach(self::$fieldsAvatar as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
@@ -150,7 +126,6 @@ class Validator {
   }
 
   public function validateChangeEmailForm(){
-
     foreach(self::$fieldsEmail as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
@@ -162,7 +137,6 @@ class Validator {
   }
 
   public function validateInfoLocationForm(){
-
     foreach(self::$fieldsInfo as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
@@ -171,18 +145,15 @@ class Validator {
     } 
     $this->validateLocation();
     return $this->errors;
-
   }
 
   public function validateSocialUserForm(){
-
     foreach(self::$fieldsSocial as $field){
       if(!array_key_exists($field, $this->data)){
         trigger_error("'$field' is not present in the data");
         return;
       }
     }
-
     if(isset($_POST['vk'])){
       $this->validateVk();
     }
@@ -193,13 +164,10 @@ class Validator {
       $this->validateInstagram();
     }
     return $this->errors;
-
   }
 
   private function validateUsername(){
-
     $val = trim($this->data['name']);
-
     if(empty($val)){
       $this->addError('name', 'name cannot be empty');
     } else {
@@ -207,13 +175,11 @@ class Validator {
         $this->addError('name','username must be 6-12 chars & alphanumeric');
       }
     }
-
   }
 
   private function validatePassword() 
   {
     $val = trim($this->data['password']);
-
     if(empty($val)){
       $this->addError('password', 'You did not enter your password');
     } 
@@ -222,13 +188,11 @@ class Validator {
         $this->addError('password','password must be at least 8 any characters, and have at least 1 capital letter, at least one small letter, and at least 1 digit');
       }
     }
-  
   }
 
   private function validateNewPassword() 
   {
     $val = trim($this->data['new_password']);
-
     if(empty($val)){
       $this->addError('new_password', 'You did not enter your password');
     } 
@@ -242,7 +206,6 @@ class Validator {
   private function validateConfirmPassword() 
   {
     $val = trim($this->data['confirm_password']);
-
     if(empty($val)){
       $this->addError('confirm_password', 'You did not enter your password');
     } 
@@ -255,9 +218,7 @@ class Validator {
 
 
   private function validateEmail(){
-
     $val = trim($this->data['email']);
-
     if(empty($val)){
       $this->addError('email', 'email cannot be empty');
     } else {
@@ -268,9 +229,7 @@ class Validator {
   }
 
   private function validateChangeEmail(){
-
     $val = trim($this->data['new_email']);
-
     if(empty($val)){
       $this->addError('new_email', 'email cannot be empty');
     } else {
@@ -282,9 +241,7 @@ class Validator {
 
 
   private function validateOccupation(){
-
     $val = trim($this->data['occupation']);
-
     if(empty($val)){
       $this->addError('occupation', 'occupation cannot be empty');
     } else {
@@ -295,9 +252,7 @@ class Validator {
   }
 
   private function validateLocation(){
-
     $val = trim($this->data['location']);
-
     if(empty($val)){
       $this->addError('location', 'location cannot be empty');
     } else {
@@ -308,9 +263,7 @@ class Validator {
   }
 
   private function validatePhone(){
-
     $val = trim($this->data['phone']);
-
     if(empty($val)){
       $this->addError('phone', 'phone cannot be empty');
     } else {
@@ -321,9 +274,7 @@ class Validator {
   }
 
   private function validateVk(){
-
     $val = trim($this->data['vk']);
-
     if(empty($val)){
       $this->addError('vk', 'vk cannot be empty');
     } else {
@@ -334,9 +285,7 @@ class Validator {
   }
 
   private function validateTelegram(){
-
     $val = trim($this->data['telegram']);
-
     if(empty($val)){
       $this->addError('telegram', 'telegram cannot be empty');
     } else {
@@ -347,9 +296,7 @@ class Validator {
   }
 
   private function validateInstagram(){
-
     $val = trim($this->data['instagram']);
-
     if(empty($val)){
       $this->addError('instagram', 'instagram cannot be empty');
     } else {
@@ -360,16 +307,11 @@ class Validator {
   }
 
   private function validateImage(){
-    //$val = trim($this->data['avatar']);
     $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");
     $file_type = $_FILES['avatar']['type'];
-    //if(empty($val)){
-      //$this->addError('avatar', 'avatar cannot be empty');
-    //} else {
       if(in_array($file_type,$expensions)=== false){
         $this->addError('avatar','extension not allowed, please choose a JPEG or PNG file');
       }
-    //}
         /*
         if($file_size > 2097152) {
           $errors[]='File size must be excately 2 MB';
@@ -377,10 +319,8 @@ class Validator {
         */
   }
 
-  public function validateImageAvatar(){
-    
-    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");
-    
+  public function validateImageAvatar(){  
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
     $file_type = $_FILES['avatar']['type'];
     if(empty($file_type)){
         $this->addError('avatar','image cannot be empty');
@@ -391,15 +331,11 @@ class Validator {
       }
     }
     return $this->errors;
-
   }
 
-
-  private function addError($key, $val){
-    
+  private function addError($key, $val){  
     $this->errors[$key] = $val;
   }
-
 }
 
 ?>

@@ -49,11 +49,6 @@ class Users extends Model{
         
     }
 
-    public function loadingFileAvatar($image_name_tmp,$direct,$image_name){
-        is_uploaded_file($image_name_tmp);
-        move_uploaded_file($image_name_tmp, $direct.$image_name );
-    }
-
 
     //получение данных из таблицы по полю user_id
     public function getOneTableWhereUser_id($table,$param,$user_id){

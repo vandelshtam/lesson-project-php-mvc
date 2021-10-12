@@ -16,29 +16,23 @@ use App\Models\MediaBuilder;
 class UsersController extends Controller {
 
     public function usersAction(){
-        
         $pagination = new Pagination($this->route, $this->model->usersCount('users'));
 		$vars = [
 			'pagination' => $pagination->get(),
 			'usersList' => $this->model->usersListAll($this->route['page']),
-		];
-       
+		];   
         $this->view->render('Users list page', $vars);
     }
 
     public function user_profileAction(){
 
         if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
-            $key = 'info';
-            $value = 'Такого пользователя нет!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
 
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
         $tables = ['users', 'infos', 'socials'];
@@ -51,21 +45,17 @@ class UsersController extends Controller {
         $vars =[];
         $errors = [];
         if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
-            $key = 'info';
-            $value = 'Такого пользователя нет!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
 
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
         
         $vars = $this->model->getUsersOne(['users', 'infos', 'socials'],$this->route['id']);
-//dd($vars);
+
         if(!empty($_POST['name']) || !empty($_POST['occupation']) || !empty($_POST['phone']) || isset($_POST['location'])){
 
             $validation = new Validator($_POST);
@@ -83,16 +73,11 @@ class UsersController extends Controller {
                 ];
                 
                 $this->model->updateUser('users',$data_users,$vars['user_id']);
-
-                $key = 'success';
-                $value = 'Вы успешно изменили данные профиля';
-                flashMessage::addFlash($key, $value);
+                flashMessage::addFlash('success', 'Вы успешно изменили данные профиля');
                 $this->view->redirect('/user/'.$vars['user_id']);
             }
             else{
-                $key = 'ganger';
-                $value = 'Вы допустили ошибку при заполнении формы, исправьте данные';
-                flashMessage::addFlash($key, $value);
+                flashMessage::addFlash('ganger', 'Вы допустили ошибку при заполнении формы, исправьте данные');
                 $errors = $validation->validateEditForm();
             }    
         }
@@ -102,19 +87,14 @@ class UsersController extends Controller {
 
     public function mediaAction(){
         if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
-            $key = 'info';
-            $value = 'Такого пользователя нет!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
 
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
-
         $errors =[];
         $vars = $this->model->getOneTableWhereUser_id('infos','user_id',$this->route['id']);
 
@@ -125,27 +105,19 @@ class UsersController extends Controller {
             }
             else{
                 $media = new MediaBuilder;
-                $direct='/Applications/MAMP/htdocs/lesson-project-php-mvc/public/uploads/';
-                $image_name=$_FILES['avatar']['name'];
-                $image_name_tmp=$_FILES['avatar']['tmp_name'];
-                $new_avatar=$media->makeNewAvatar($image_name);
-                if($media->loadingFileAvatar($image_name_tmp,$direct,$image_name) == false){
-                    $key = 'denger';
-                    $value = 'Не удалось загрузить файл';
-                    flashMessage::addFlash($key, $value);
+                $new_avatar=$media->makeNewAvatar();
+                if($media->loadingFileAvatar() == false){
+                    flashMessage::addFlash('denger', 'Не удалось загрузить файл');
                 }
                 else{
                     $dataAvatar = ['avatar' => $new_avatar];
-                    $user = $this->model->getOneTableWhereUser_id('infos','user_id',$this->route['id']);
-                    $media->delete_file('infos','id',$user['id']);
-                    $media->updateAvatar('infos',$dataAvatar,$user['id']); 
-                    $key = 'success';
-                    $value = 'Вы успешно загрузили новый аватар';
-                    flashMessage::addFlash($key, $value);
+                    $imageId = $this->model->getOneTableWhereUser_id('infos','user_id',$this->route['id']);
+                    $media->delete_file('infos','id',$imageId['id']);
+                    $media->updateAvatar('infos',$dataAvatar,$imageId['id']); 
+                    flashMessage::addFlash('success', 'Вы успешно загрузили новый аватар');
                     $this->view->redirect('/user/'.$this->route['id']); 
                 }
             }
-
         }
         $this->view->render('Media user page', $vars, $errors);
     }
@@ -154,16 +126,12 @@ class UsersController extends Controller {
     public function statusShowAction(){
 
         if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
-            $key = 'info';
-            $value = 'Такого пользователя нет!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
 
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
 
@@ -174,7 +142,6 @@ class UsersController extends Controller {
                         2 => 'Отошел'
                     ],
                 'users'  => $users,
-
                 ];            
         $this->view->render('Status user page', $vars);
     }
@@ -182,19 +149,15 @@ class UsersController extends Controller {
     public function statusSetAction(){
         
         if($this->model->getOneUser_oneTable('infos','id',$this->route['id']) == false){
-            $key = 'info';
-            $value = 'Такого пользователя нет!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
 
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
-        //$user = $this->model->getOneUser_oneTable('infos','user_id',$this->route['id']);
+        
         $statuses = [
             'Онлайн' => 0,
             'Не беспокоить' => 1,
@@ -204,11 +167,9 @@ class UsersController extends Controller {
         $data = [
             'status' => $status
         ];
-        //dd($data);
+        
         $this->model->updateUser('infos',$data,$this->route['id']);
-        $key = 'success';
-        $value = 'Вы успешно изменили статус';
-        flashMessage::addFlash($key, $value);
+        flashMessage::addFlash('success', 'Вы успешно изменили статус');
         $this->view->redirect('/');
     }
 
@@ -219,16 +180,12 @@ class UsersController extends Controller {
         $validation = new Validator($_POST);
 
         if($_SESSION['admin'] != 1 ){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
 
         if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password'])){
-            $key = 'info';
-            $value = 'Нужно обязательно заполнить 3 поля: "name", "email", "password"';
-            flashMessage::addFlash($key, $value);    
+            flashMessage::addFlash('info', 'Нужно обязательно заполнить 3 поля: "name", "email", "password"');    
         }
         else{
             if($validation->validateCreateUserForm() != null){
@@ -240,9 +197,7 @@ class UsersController extends Controller {
 
                 if(!empty($user))
                 {
-                    $key = 'info';
-                    $value = 'Не возможно добавить пользователя, этот логин занят';
-                    flashMessage::addFlash($key, $value);    
+                    flashMessage::addFlash('info', 'Не возможно добавить пользователя, этот логин занят');    
                 }
                 else{
                     $passwordNewUser = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -266,7 +221,6 @@ class UsersController extends Controller {
                     
                     $this->model->createUser('infos', $dataInfos);
                     $userInfo = $this->model->getOneUser_oneTable('infos','user_id',$newUserId);
-                    
                     $data = ['info_id' => $userInfo['id']];
                     $this->model->updateUser('users',$data,$newUserId);
 
@@ -317,24 +271,17 @@ class UsersController extends Controller {
                     }
                     
                     if(!empty($_FILES['avatar']['name'])){
-                    
-                        $direct='/Applications/MAMP/htdocs/lesson-project-php-mvc/public/uploads/';
-                        $image_name=$_FILES['avatar']['name'];
-                        $image_name_tmp=$_FILES['avatar']['tmp_name'];
-                        $new_avatar='uploads/'.$image_name;
-                        $this->model->loadingFileAvatar($image_name_tmp,$direct,$image_name);
+                       
                         $media = new MediaBuilder;
-                        if($media->set_file_image($image_name_tmp,$image_name,$direct) == false){
-                            $key = 'denger';
-                            $value = 'Не удалось загрузить файл';
-                            flashMessage::addFlash($key, $value); 
+                        if($media->loadingFileAvatar() == false){
+                            flashMessage::addFlash('denger', 'Не удалось загрузить файл'); 
                         }
-                        $dataAvatar = ['avatar' => $new_avatar];
-                        $media->updateAvatar('infos',$dataAvatar,$userInfo['id']); 
+                        else{
+                            $dataAvatar = ['avatar' => $media->makeNewAvatar()];
+                            $media->updateAvatar('infos',$dataAvatar,$userInfo['id']); 
+                        }    
                     }
-                    $key = 'success';
-                    $value = 'Вы успешно добавили нового пользователя';
-                    flashMessage::addFlash($key, $value); 
+                    flashMessage::addFlash('success', 'Вы успешно добавили нового пользователя'); 
                     $this->view->redirect('/');   
                 } 
             }    
@@ -346,10 +293,13 @@ class UsersController extends Controller {
 
     public function securityAction(){
         $errors = [];
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
+            $this->view->redirect('/');
+        }
+
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
 
@@ -359,40 +309,27 @@ class UsersController extends Controller {
 
                     $auth = new Auth;
                     
-        //dd($_POST['password']);
-        //dd($this->route['id']);
-        //dd($auth->password_verification($this->route['id'],$password));
-                    if($auth->password_verification($this->route['id'],$_POST['password']) == true){
+                    if($auth->password_verification('users','id',$this->route['id'],$_POST['password']) == true){
                         if($_POST['new_password'] == $_POST['confirm_password']){
                             $auth->setPassword($_POST['new_password'], $this->route['id']);
-                            $key = 'success';
-                            $value = 'Вы успешно изменили пароль';
-                            flashMessage::addFlash($key, $value); 
+                            flashMessage::addFlash('success', 'Вы успешно изменили пароль'); 
                             $this->view->redirect('/');
                         }
                         else{
-                            $key = 'info';
-                            $value = 'Новый пароль и его подтверждение не совпадают';
-                            flashMessage::addFlash($key, $value); 
+                            flashMessage::addFlash('info', 'Новый пароль и его подтверждение не совпадают'); 
                         }
                     }
                     else{
-                        $key = 'danger';
-                        $value = 'Не верно введен текущий пароль';
-                        flashMessage::addFlash($key, $value); 
+                        flashMessage::addFlash('danger', 'Не верно введен текущий пароль'); 
                     }
             }
             else{
                 $errors = $validate->validateSecurityForm();
-                //dd($errors);
             }
         }
         else{
-            $key = 'info';
-            $value = 'Необходимо заполнить все поля формы';
-            flashMessage::addFlash($key, $value); 
-        }
-        
+            flashMessage::addFlash('info', 'Необходимо заполнить все поля формы'); 
+        }   
         $vars = null;
         $this->view->render('Security', $vars, $errors);
     }
@@ -400,10 +337,13 @@ class UsersController extends Controller {
 
     public function change_emailAction(){
         $errors = [];
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа к действию!';
-            flashMessage::addFlash($key, $value);
+        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
+            $this->view->redirect('/');
+        }
+
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/');
         } 
 
@@ -415,33 +355,24 @@ class UsersController extends Controller {
 
                 $auth = new Auth;
                 
-                if($auth->email_verification($_POST['email']) == true){
+                if($auth->email_verification('users','id',$this->route['id'],$_POST['email']) == true){
                     if($_POST['new_email'] == $_POST['confirm_email']){
-                        if($auth->password_verification($this->route['id'],$_POST['password']) == true){
+                        if($auth->password_verification('users','id',$this->route['id'],$_POST['password']) == true){
                             $data = ['email' => $_POST['new_email']];
                             $this->model->updateUser('users',$data,$this->route['id']);
-                            $key = 'success';
-                            $value = 'Вы успешно изменили почту';
-                            flashMessage::addFlash($key, $value); 
+                            flashMessage::addFlash('success', 'Вы успешно изменили почту'); 
                             $this->view->redirect('/');
                         }
                         else{
-                            $key = 'danger';
-                            $value = 'Пароль введен неверно';
-                            flashMessage::addFlash($key, $value); 
+                            flashMessage::addFlash('danger', 'Пароль введен неверно'); 
                         }
-
                     }
                     else{
-                        $key = 'danger';
-                        $value = 'Новая почта и ее подтверждение не совпадают';
-                        flashMessage::addFlash($key, $value); 
+                        flashMessage::addFlash('danger', 'Новая почта и ее подтверждение не совпадают'); 
                     }
                 }
                 else{
-                    $key = 'danger';
-                    $value = 'Не верно введена текущая почта';
-                    flashMessage::addFlash($key, $value); 
+                    flashMessage::addFlash('danger', 'Не верно введена текущая почта'); 
                 }       
             }
             else{
@@ -449,11 +380,8 @@ class UsersController extends Controller {
             }
         }
         else{
-            $key = 'info';
-            $value = 'Необходимо заполнить все поля формы';
-            flashMessage::addFlash($key, $value); 
+            flashMessage::addFlash('info', 'Необходимо заполнить все поля формы'); 
         }
-        
         $vars = null;
         $this->view->render('Change email', $vars, $errors);
     }

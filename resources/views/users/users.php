@@ -59,7 +59,7 @@
                                 <?php if ($var['status'] == 2):?>
                                     <span class="status status-warning mr-3">
                                 <?php endif;?>
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('<?=$var['avatar'];?>'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$var['avatar'];?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="/lesson-project-php-mvc/public/js/javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
@@ -73,7 +73,7 @@
                                             <i class="fa fa-edit"></i>
                                         Открыть профиль</a>
                                         <?php endif;?>
-                                        <?php if($_SESSION['user_id'] == $var['id'] || $_SESSION['admin'] == 1):?>
+                                        <?php if($_SESSION['user_id'] == $var['user_id'] || $_SESSION['admin'] == 1):?>
                                         <a class="dropdown-item" href="/edit/<?php echo $var['user_id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
@@ -94,6 +94,19 @@
                                             <i class="fa fa-window-close"></i>
                                             Удалить
                                         </a>
+                                        <?php endif;?>
+                                        <?php if($_SESSION['admin']):?>
+                                        <?php if($var['admin'] == 1):?>
+                                        <a href="/setUser/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                            <i class="fa fa-window-close">Отозвать роль админа? </i>
+                                            текущая роль пользователя: Админ
+                                        </a>
+                                        <?php else:?>
+                                        <a href="/setAdmin/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                            <i class="fa fa-window-close">Назначить роль админа? </i>
+                                            текущая роль пользователя: Юзер
+                                        </a>    
+                                        <?php endif;?>
                                         <?php endif;?>
                                     </div>
                                     <span class="text-truncate text-truncate-xl"><?=$var['occupation'];?></span>

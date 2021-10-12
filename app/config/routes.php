@@ -79,7 +79,15 @@ return [
     '/delete/{id:\d+}' => [
         'controller' => 'auth',
         'action' => 'delete',   
-    ],    
+    ],
+    '/setAdmin/{id:\d+}' => [
+        'controller' => 'auth',
+        'action' => 'setAdmin',   
+    ],
+    '/setUser/{id:\d+}' => [
+        'controller' => 'auth',
+        'action' => 'setUser',   
+    ],            
 
 
 

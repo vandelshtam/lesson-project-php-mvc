@@ -7,34 +7,33 @@ use App\Models\flashMessage;
 
 class Auth extends Model{
    
-    public function loginUser($password,$value){
-
-        $user = $this->db->getOneOnParam('users', 'email', $value);
-        
-        if(empty($user))
-        {   
-            $key = 'info';
-            $value = 'Логин указан не верно!';
-            flashMessage::addFlash($key, $value);
+    //проверка наличия логина
+    public function isLogin($table, $param, $value){
+        if($this->db->getOneParam($table, $param, $value) == true){
+            return true;
         }
-        else
-        {
+        else{
+            return false;
+        }
+    }
+
+    //авторизация 
+    public function loginUser($table,$param,$value,$password){
+        $user = $this->db->getOneParam($table, $param, $value);
         $hash = $user['password'];
             if(password_verify($password, $hash))
             {        
-                return $user;
+                return true;
             }
             else
             {       
                 return false;
             }
-        }    
-    }
-
-
-    public function registerUser($table,$name,$email){
-        
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    }    
+    
+    //регистрация
+    public function registerUser($table,$name,$email,$password_register){   
+        $password = password_hash($password_register, PASSWORD_DEFAULT);
         $data = [
             'name' => $name,
             'email' => $email,
@@ -49,8 +48,11 @@ class Auth extends Model{
             }   
     }
 
-    public function set_session_auth($user_id,$email,$name,$admin)
-    {    
+    //запись в сессию данных авторизованного пользователя
+    public function set_session_auth($user_id,$email,$name,$admin,$time)
+    {
+        ini_set('session.gc_maxlifetime', $time);
+        ini_set('session.cookie_lifetime', $time);
         $_SESSION['user_id']=$user_id; 
         $_SESSION['login']=$email;
         $_SESSION['name']=$name;
@@ -58,39 +60,39 @@ class Auth extends Model{
         $_SESSION['auth']=true;
     }
 
+    //выход из сиситемы
     public function logoutUser()
     {    
-        $this->set_session_auth('NULL','NULL','NULL','NULL');    
+        $this->set_session_auth('NULL','NULL','NULL','NULL',172800);    
     }
 
+    //проверка наличия и получение пользователя
     public function isUser($table, $param, $value){
-        $user = $this->db->getOneOnParam($table, $param, $value);
-        return $user;
+        return $this->db->getOneParam($table, $param, $value);
     }
 
+    //ID последней записи в таблицу БД
     public function newLastUserId(){
-        $newUserId = $this->db->userId();
-        return $newUserId;
+        return $this->db->userId();
     }
     //получение данных из таблицы по  полю user_id
-    public function getTableUser($table,$user_id){
-        $user = $this->db->getOneUserId($table, $user_id);
-        return $user;
+    public function getTableUser($table,$param,$user_id){
+        return $this->db->getOneParam($table,$param,$user_id);
     }
 
+    //запись нового пользователя в таблицу
     public function createNewUser($table, $data){
         $this->db->create($table,$data);
     }
 
-    public function updateUsersTable($table,$data,$id){
-        
-        $user = $this->db->update($table, $data, $id);
-        return $user;
+    //обновление данных пользователя
+    public function updateUsersTable($table,$data,$id){  
+        return $this->db->update($table, $data, $id);
     }
 
-
-    public function password_verification($id,$password){
-        $user = $this->db->getOne('users', $id);
+    //проверка пароля
+    public function password_verification($table,$param,$value,$password){
+        $user = $this->db->getOneParam($table,$param,$value);
         $hash = $user['password'];
             if(password_verify($password, $hash))
             {        
@@ -101,7 +103,8 @@ class Auth extends Model{
                 return false;
             }
     } 
-
+ 
+    //запись пароля в таблицу
     public function setPassword($new_password,$id){
         
         $password = password_hash($new_password, PASSWORD_DEFAULT);
@@ -111,10 +114,10 @@ class Auth extends Model{
         $this->db->update('users', $data, $id);
     }
 
-    public function email_verification($email){
-        $user = $this->db->getOneEmail('users', $email);
-        $user_email = $user['email'];
-            if($user_email == $email)
+    //проверка почты
+    public function email_verification($table,$param,$value,$email){
+        $user = $this->db->getOneParam($table,$param,$value);
+            if($user['email'] == $email)
             {        
                 return true;
             }
@@ -124,6 +127,7 @@ class Auth extends Model{
             }
     } 
     
+    //удаление данных пользователя из таблицы
     public function deleteTable($table,$id){
         $this->db->delete($table,$id);
     }

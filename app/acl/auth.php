@@ -5,7 +5,7 @@ return [
     ],
     
     'authoris' => [
-        'logout', 'confirm_password', 'delete'
+        'logout', 'confirm_password', 'delete', 'setUser', 'setAdmin'
     ],
 
     'guest' => [

@@ -23,32 +23,21 @@ class AuthController extends Controller {
     }
 
     public function page_registerAction(){
-
-$errors = [];
+        $vars = [];
+        $errors = [];
         if(!empty($_POST['email']) && !empty($_POST['password']) &&  !empty($_POST['name'])){
             
             $validation = new Validator($_POST);
             
             if( $validation->validateForm() == null){
                  
-                $email=$_POST['email'];
-                $password = $_POST['password'];
-                $table = 'users';
-                $value = $_POST['email'];
-                $param = 'email';
-                $name = $_POST['name'];
-                $user = $this->model->isUser($table, $param, $value);
-                if(!empty($user))
+                if($this->model->isLogin('users', 'email', $_POST['email']) == true)
                 {
-                    $key = 'info';
-                    $value = 'Не удалось зарегистрироваться, этот логин занят';
-                    flashMessage::addFlash($key, $value);
+                    flashMessage::addFlash('info', 'Не удалось зарегистрироваться, этот логин занят');
                 }
                 else{
-                    if($this->model->registerUser($table,$name,$email) == true){
-                        $newUserId = $this->model->newLastuserId();
-                        //dd($newUserId);
-                        
+                    if($this->model->registerUser('users',$_POST['name'],$_POST['email'],$_POST['password']) == true){
+                        $newUserId = $this->model->newLastuserId();    
                         $dataInfos = [ 
                             'status' => 0,
                             'location' => '',
@@ -57,14 +46,10 @@ $errors = [];
                             'user_id' => $newUserId,
                             'infosable_id' => $newUserId   
                         ];
-                        $tableInfos = 'infos';
-                        $tableUsers = 'users';
-                        $tableSocials = 'socials';
-                        $this->model->createNewUser($tableInfos, $dataInfos);
-                        $userInfo = $this->model->getTableUser($tableInfos,$newUserId);
-                        $lastInfosId = $userInfo['id'];
-                        $data = ['info_id' => $lastInfosId];
-                        $this->model->updateUsersTable($tableUsers,$data,$newUserId);
+                        $this->model->createNewUser('infos', $dataInfos);
+                        $userInfo = $this->model->getTableUser('infos','user_id',$newUserId);
+                        $data = ['info_id' => $userInfo['id']];
+                        $this->model->updateUsersTable('users',$data,$newUserId);
 
                         $dataSocials = [ 
                             'vk' => '',
@@ -72,72 +57,55 @@ $errors = [];
                             'instagram' => '',
                             'user_id' => $newUserId, 
                         ];
-                        $this->model->createNewUser($tableSocials, $dataSocials);
-                        $userSocials = $this->model->getTableUser($tableSocials,$newUserId);
-                        $lastSocialsId = $userSocials['id'];
-                        $data = ['social_id' => $lastSocialsId];
-                        $this->model->updateUsersTable($tableUsers,$data,$newUserId);
-
-
-                        $key = 'success';
-                        $value = 'Вы успешно зарегистрировались, пожалуйста авторизуйтесь';
-                        flashMessage::addFlash($key, $value);
+                        $this->model->createNewUser('socials', $dataSocials);
+                        $userSocials = $this->model->getTableUser('socials', 'user_id', $newUserId);
+                        $data = ['social_id' => $userSocials['id']];
+                        $this->model->updateUsersTable('users',$data,$newUserId);
+                        
+                        flashMessage::addFlash('success', 'Вы успешно зарегистрировались, пожалуйста авторизуйтесь');
                         //mail( 'cee71195d6-2d2352@inbox.mailtrap.io', 'Сообщение с сайта - Вы успешно зарегистрированы', 'otto@otto');
                         //header('Location:/login');die;
                         $this->view->redirect('/login');
                     }
                     if($this->model->registerUser() == false){
-                        $key = 'info';
-                        $value = 'Не удалось зарегистрироваться, пожалуйста попробуйте еще раз';
-                        $flashMessage = flashMessage::addFlash($key, $value);
+                        flashMessage::addFlash('info', 'Не удалось зарегистрироваться, пожалуйста попробуйте еще раз');
                     }
                 }
             }
             else{
-                $key = 'ganger';
-                $value = 'Вы допустили ошибку при вводе в форму, пожалуйста попробуйте еще раз';
-                $flashMessage = flashMessage::addFlash($key, $value);
+                flashMessage::addFlash('ganger', 'Вы допустили ошибку при вводе в форму, пожалуйста попробуйте еще раз');
                 $errors = $validation->validateForm();
             }    
         }
-        $vars = [];
-        //$errors = [];
-        //$key = 'info';
-        //$value = 'Пожалуйста зарегистрируйтесь';
-        //flashMessage::addFlash($key, $value);
         $this->view->render('Register page',$vars, $errors);
     }
 
     public function page_loginAction(){
 
         if(isset($_POST['email']) &&  isset($_POST['password'])){
-            $value = $_POST['email'];
-            $password = $_POST['password'];
-            if($this->model->loginUser($password,$value) == true){
+            
+            if($this->model->isLogin('users','email',$_POST['email']) == false){
+                flashMessage::addFlash('info', 'Такого пользователя нет! пожалуйста попробуйте еще раз');
+            }
+            else{
+                if($this->model->loginUser('users','email',$_POST['email'],$_POST['password']) == true){
 
-                $user = $this->model->loginUser();
-                $user_id = $user['id'];
-                $email = $user['email'];
-                $name = $user['name'];
-                $admin = $user['admin'];
-                $this->model->set_session_auth($user_id,$email,$name,$admin);
-                $key = 'success';
-                $value = 'Вы успешно авторизовались!';
-                flashMessage::addFlash($key, $value);
-                $this->view->redirect('/');
+                    $user = $this->model->isUser('users','email',$_POST['email']);
+                    //dd($user);
+                    if($_POST['rememberme']){
+                        $time = 86400;
+                    }
+                    else{
+                        $time = 10800;
+                    }
+                    $this->model->set_session_auth($user['id'],$user['email'],$user['name'],$user['admin'],$time);
+                    flashMessage::addFlash('success', 'Вы успешно авторизовались!');
+                    $this->view->redirect('/');
+                }
+                else{    
+                    flashMessage::addFlash('danger', 'Не удалось  авторизоваться,  пароль указан не верно, пожалуйста попробуйте еще раз');
+                }
             }
-            if($this->model->loginUser() == false){    
-                $key = 'danger';
-                $value = 'Не удалось  авторизоваться,  пароль указан не верно, пожалуйста попробуйте еще раз';
-                flashMessage::addFlash($key, $value);
-            }
-            /*
-            if($this->model->loginUser() == null){    
-                $key = 'info';
-                $value = 'Такого пользователя нет! пожалуйста попробуйте еще раз';
-                flashMessage::addFlash($key, $value);
-                
-            } */       
         }    
         $this->view->render('Login page');
     }
@@ -147,25 +115,24 @@ $errors = [];
     public function logoutAction(){
         
         $this->model->logoutUser();
-        $key = 'info';
-        $value = 'Вы вышли из системы';
-        flashMessage::addFlash($key, $value);
+        flashMessage::addFlash('info', 'Вы вышли из системы');
         $this->view->redirect('/login');
     }
 
     public function confirm_passwordAction(){
-        
-        if(isset($_POST['password'])){
-            if($this->model->password_verification($this->route['id'],$_POST['password']) == true){
-                $this->view->redirect('/delete/'.$this->route['id']); 
-            }
-            else{
-                $key = 'danger';
-                $value = 'Пароль не верный!';
-                flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 ){
+            if(isset($_POST['password'])){
+                if($this->model->password_verification('users','id',$this->route['id'],$_POST['password']) == true){
+                    $this->view->redirect('/delete/'.$this->route['id']); 
+                }
+                else{
+                    flashMessage::addFlash('danger', 'Пароль не верный!');
+                }
             }
         }
-
+        else{
+            $this->view->redirect('/delete/'.$this->route['id']); 
+        }
         $this->view->render('Confirm password');
     }
 
@@ -173,30 +140,44 @@ $errors = [];
 
         $user = $this->model->isUser('users', 'id', $this->route['id']);
         if(empty($user)){
-            $key = 'info';
-            $value = 'Такого пользователя нет!';
-            flashMessage::addFlash($key, $value);
+            flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
 
-        if($_SESSION['admin'] != 1 && $_SESSION['id'] != $this->route['id']){
-            $key = 'danger';
-            $value = 'У вас нет прав доступа!';
-            flashMessage::addFlash($key, $value);
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
             $this->view->redirect('/');
         } 
         
-        $social_id = $user['social_id'];
-        $info_id = $user['info_id'];
-        $info = $this->model->isUser('infos', 'id', $info_id);
+        $info = $this->model->isUser('infos', 'id', $user['info_id']);
         unlink($info['avatar']);
 
         $this->model->deleteTable('users', $this->route['id']);
-        $this->model->deleteTable('infos', $info_id);
-        $this->model->deleteTable('socials', $social_id);
-        $key = 'success';
-        $value = 'Вы успешно удалили аккаунт!';
-        flashMessage::addFlash($key, $value);
+        $this->model->deleteTable('infos', $user['info_id']);
+        $this->model->deleteTable('socials', $user['social_id']);
+        flashMessage::addFlash('success', 'Вы успешно удалили аккаунт!');
+        $this->view->redirect('/');
+    }
+
+    public function setAdminAction(){
+        if($_SESSION['admin'] != 1 ){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/');
+        } 
+        $data = ['admin' => 1];
+        $this->model->updateUsersTable('users',$data,$this->route['id']);
+        flashMessage::addFlash('success', 'Вы успешно  изменили роль пользователя!');
+        $this->view->redirect('/');
+    }
+
+    public function setUserAction(){
+        if($_SESSION['admin'] != 1 ){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/');
+        } 
+        $data = ['admin' => 0];
+        $this->model->updateUsersTable('users',$data,$this->route['id']);
+        flashMessage::addFlash('success', 'Вы успешно  изменили роль пользователя!');
         $this->view->redirect('/');
     }
 }
