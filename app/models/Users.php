@@ -6,16 +6,16 @@ use App\Core\Model;
 class Users extends Model{
 
     //вызывается метод получения данных всех пользователей, из нескольких таблиц,  из любого количества таблиц
-    public function getUsersAll(){
+    public function getUsersAll($tables){
         //для получения юзеров заполняем массив с названиями теблиц, первой в массив записываем основную таблицу
         //к которой будут джойнится другие
-        $tables = ['users', 'infos', 'socials'];
+        
         return $this->db->getUserAllTable($tables);
     }
     //получение одного пользователя из нескольких связанных таблиц
-    public function getUsersOne($tables,$user_id){
-        $tables = ['users', 'infos', 'socials'];
-        return $this->db->getOneAllTable($tables, $user_id);
+    public function getUsersOne($tables,$user_id,$where_param){
+        
+        return $this->db->getOneAllTable($tables, $user_id, $where_param);
     }
 
     //получение одного пользователя из одной таблицы по email

@@ -47,7 +47,7 @@
                 
                 <div class="form-group">
                     <label class="form-label" for="password">Пароль</label>
-                    <input type="password" id="password" class="form-control" placeholder="" name="password">
+                    <input type="password" id="password" class="form-control" placeholder="" name="confirm_password">
                 </div>
                 
                 <button type="submit" class="btn btn-default float-right">Подтвердить</button>

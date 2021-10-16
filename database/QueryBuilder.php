@@ -94,6 +94,27 @@ class QueryBuilder {
         $statement->execute($data);
     }
 
+    //обновление в любой таблице
+    public function updateAny($table, $data, $param, $param2)
+    {    
+        $keys = array_keys($data);
+        $string = '';
+        foreach($keys as $key)
+        {
+            $string .= $key .'=:'. $key .',';
+        }
+        $keys = rtrim($string, ',');
+        $data['param2'] = $param2;
+        $sql = "UPDATE {$table} SET {$keys} WHERE {$param}=:param2";
+        //echo $sql;die;
+        $statement = $this->pdo->prepare($sql);
+        foreach($data as $key => $value){
+            $statement->bindValue(':'.$keys.'', $value);
+        }
+        $statement->bindValue(':param2', $param2);
+        $statement->execute($data);
+    }
+
     public function updateTableUserId($table, $data, $user_id)
     {    
         $keys = array_keys($data);
@@ -122,8 +143,8 @@ class QueryBuilder {
         $statement->bindValue(':id', $id);
         //$statement->bindParam(':id', $id);//принимает только переменную ввкести строку или цифру нельзя
         $statement->execute();
-        $result = $statement->fetch(PDO::FETCH_ASSOC);
-        return $result; 
+        
+        
     }
 
     public function getUserAllTable($tables){
@@ -131,7 +152,7 @@ class QueryBuilder {
         $sql = 'SELECT * FROM ' .$tables[0];
         foreach(array_slice($tables, 1) as $table){
             
-            $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
+            $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id';
         }
         $statement=$this->pdo->prepare($sql);
         $statement->execute();
@@ -139,22 +160,22 @@ class QueryBuilder {
 
     }
 
-    public function getOneAllTable($tables, $id)
+    public function getOneAllTable($tables, $id, $where_param )
     {
-       // dd($id);
+       
         $str = 'SELECT * FROM ' .$tables[0];
         foreach(array_slice($tables, 1) as $table){
             
             $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
         }
-        $sql = $str .' WHERE infos.user_id LIKE :id';
+        $sql = $str .' WHERE '.array_pop($tables).'.'.$where_param.'_id LIKE :id';
        // echo $sql;
         //$sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id WHERE users.id LIKE :id";
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':id', $id);
         //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
         $statement->execute();
-        return $statement->fetch(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
 
@@ -210,5 +231,67 @@ class QueryBuilder {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
         
     }
+
+
+    //для постов 
+    
+/*
+    public function getPostsAllTable(){
+        
+        $sql = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){
+            
+            $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
+        }
+        
+        $sql = "SELECT * FROM posts  INNER JOIN infos ON infos.id = posts.info_id INNER JOIN users ON users.id = posts.user_id";
+        $statement=$this->pdo->prepare($sql);
+        $statement->execute();
+        //dd($statement->fetchAll(PDO::FETCH_ASSOC));
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+*/
+
+
+    public function getPostAllTable(){
+        /*
+        $sql = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){
+            
+            $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id ';
+        }
+        */
+        $sql = "SELECT * FROM posts  INNER JOIN infos ON infos.id = posts.info_id  INNER JOIN socials ON socials.id = posts.social_id INNER JOIN users ON users.id = posts.user_id WHERE posts.favorites LIKE 1";
+        $statement=$this->pdo->prepare($sql);
+        //$statement->bindValue(':id', $id);
+        $statement->execute();
+        //dd($statement->fetch(PDO::FETCH_ASSOC));
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function getTableParams($table,$id,$param_where,$param_order,$param_sort){   
+        $sql = "SELECT * FROM {$table} WHERE {$param_where}=:id ORDER BY {$param_order} {$param_sort}";
+        $statement=$this->pdo->prepare($sql);
+        $statement->bindValue(':id', $id);
+        $statement->execute();
+        //dd($statement->fetchAll(PDO::FETCH_ASSOC));
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getAllTableWhereParam($tables,$where, $value){
+        
+        $sql = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){
+            
+            $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id';
+        }
+        $sql = $sql.' WHERE ' .array_pop($tables).'.'.$where. ' LIKE ' .$value;
+        $statement=$this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    }
+
     
 }

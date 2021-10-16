@@ -48,7 +48,8 @@ class AuthController extends Controller {
                         ];
                         $this->model->createNewUser('infos', $dataInfos);
                         $userInfo = $this->model->getTableUser('infos','user_id',$newUserId);
-                        $data = ['info_id' => $userInfo['id']];
+                        $c = 'c_'.$newUserId;
+                        $data = ['info_id' => $userInfo['id'], 'c' => $c];
                         $this->model->updateUsersTable('users',$data,$newUserId);
 
                         $dataSocials = [ 
@@ -121,8 +122,8 @@ class AuthController extends Controller {
 
     public function confirm_passwordAction(){
         if($_SESSION['admin'] != 1 ){
-            if(isset($_POST['password'])){
-                if($this->model->password_verification('users','id',$this->route['id'],$_POST['password']) == true){
+            if(isset($_POST['confirm_password'])){
+                if($this->model->password_verification('users','id',$this->route['id'],$_POST['confirm_password']) == true){
                     $this->view->redirect('/delete/'.$this->route['id']); 
                 }
                 else{

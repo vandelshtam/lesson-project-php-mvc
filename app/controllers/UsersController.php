@@ -17,6 +17,7 @@ class UsersController extends Controller {
 
     public function usersAction(){
         $pagination = new Pagination($this->route, $this->model->usersCount('users'));
+        
 		$vars = [
 			'pagination' => $pagination->get(),
 			'usersList' => $this->model->usersListAll($this->route['page']),
@@ -36,7 +37,8 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         $tables = ['users', 'infos', 'socials'];
-        $vars = $this->model->getUsersOne($tables,$this->route['id']);
+        $vars = $this->model->getUsersOne($tables,$this->route['id'],'user');
+        //dd($vars);
         $this->view->render('User profile page', $vars);
     }
 
@@ -54,7 +56,7 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         
-        $vars = $this->model->getUsersOne(['users', 'infos', 'socials'],$this->route['id']);
+        $vars = $this->model->getUsersOne(['users', 'infos', 'socials'],$this->route['id'],'user');
 
         if(!empty($_POST['name']) || !empty($_POST['occupation']) || !empty($_POST['phone']) || isset($_POST['location'])){
 
@@ -188,8 +190,9 @@ class UsersController extends Controller {
             flashMessage::addFlash('info', 'Нужно обязательно заполнить 3 поля: "name", "email", "password"');    
         }
         else{
-            if($validation->validateCreateUserForm() != null){
-                $errors = $validation->validateCreateUserForm();
+            
+            if($validation->validateEditForm() != null){
+                $errors = $validation->validateEditForm();
             }
             else{
                 
@@ -387,7 +390,14 @@ class UsersController extends Controller {
     }
 
     
-
+    public function users_2Action(){
+        $pagination = new Pagination($this->route, $this->model->usersCount('users'));
+		$vars = [
+			'pagination' => $pagination->get(),
+			'usersList' => $this->model->usersListAll($this->route['page']),
+		];   
+        $this->view->render('Users list page', $vars);
+    }
 
 
     

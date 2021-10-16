@@ -41,13 +41,13 @@
                                 <!-- username -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Имя</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars['name'];?>" name="name" >
+                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars[0]['name'];?>" name="name" >
                                 </div>
 
                                 <!-- title -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Место работы</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars['occupation'];?>" name="occupation">
+                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars[0]['occupation'];?>" name="occupation">
                                 </div>
 
                                 <!-- tel -->

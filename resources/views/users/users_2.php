@@ -28,7 +28,7 @@
             </div>
             
             <div class="row" id="js-contacts">
-            <?php foreach($vars as $var):?>    
+            <?php foreach($userlist as $var):?>    
                 <div class="col-xl-4">
                     <div id="<?php echo $var['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $var['search'];?>">
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">

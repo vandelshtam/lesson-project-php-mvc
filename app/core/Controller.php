@@ -2,7 +2,6 @@
 
 namespace App\Core;
 
-//session_start();
 use App\Core\View;
 use App\Controllers\AuthController;
 

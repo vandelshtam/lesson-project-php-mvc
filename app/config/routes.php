@@ -95,8 +95,60 @@ return [
         'controller' => 'posts',
         'action' => 'posts',   
     ],
-    '/post/1' => [
+    '/favoritesPosts' => [
+        'controller' => 'posts',
+        'action' => 'favoritesPosts',   
+    ],
+    '/myPosts/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'myPosts',   
+    ],
+    '/post/{id:\d+}' => [
         'controller' => 'posts',
         'action' => 'post',   
+    ],
+    '/addNewComment/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'addNewComment',   
+    ],
+    '/deleteComment/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'deleteComment',   
+    ],
+    '/editPost/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'editPost',   
+    ],
+    '/bannedPost/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'bannedPost',   
+    ],
+    '/unBannedPost/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'unBannedPost',   
+    ],
+    '/changeAvatar/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'changeAvatar',   
+    ],
+    '/addFavorites/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'addFavorites',   
+    ],
+    '/deleteFavorites/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'deleteFavorites',   
+    ],
+    '/imagePostShow/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'imagePostShow',   
+    ],
+    '/delete_image/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'delete_image',   
+    ],
+    '/addPost/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'addPost',   
     ],
 ];

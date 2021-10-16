@@ -37,7 +37,8 @@ class Auth extends Model{
         $data = [
             'name' => $name,
             'email' => $email,
-            'password' => $password   
+            'password' => $password,
+            'search' =>  strtolower($name)  
         ];
         $newUser = $this->db->create($table,$data);
             if($newUser == true){
