@@ -124,6 +124,7 @@ class AuthController extends Controller {
         if($_SESSION['admin'] != 1 ){
             if(isset($_POST['confirm_password'])){
                 if($this->model->password_verification('users','id',$this->route['id'],$_POST['confirm_password']) == true){
+                    //flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
                     $this->view->redirect('/delete/'.$this->route['id']); 
                 }
                 else{
@@ -136,6 +137,34 @@ class AuthController extends Controller {
         }
         $this->view->render('Confirm password');
     }
+
+
+
+    public function confirm_password_delete_postAction(){
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this -> route['id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);   
+        }
+        else{
+            if($_SESSION['admin'] != 1 ){
+                if(isset($_POST['confirm_password'])){
+                    if($this->model->password_verification('users','id',$this->route['id'],$_POST['confirm_password']) == true){
+                        
+                        $this->view->redirect('/deletePost/'.$this->route['id']); 
+                    }
+                    else{
+                        flashMessage::addFlash('danger', 'Пароль не верный!');
+                    }
+                }
+            }
+            else{
+                //flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+                $this->view->redirect('/deletePost/'.$this->route['id']); 
+            }
+        }
+        $this->view->render('Confirm password delete post');
+    }
+
 
     public function deleteAction(){
 

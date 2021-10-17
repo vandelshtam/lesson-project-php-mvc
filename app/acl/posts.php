@@ -5,7 +5,7 @@ return [
     ],
     
     'authoris' => [
-        'posts', 'post','addNewComment', 'deleteComment','favoritesPosts','myPosts','editPost','changeAvatar','addFavorites', 'deleteFavorites', 'imagePostShow', 'delete_image', 'addPost'
+        'posts', 'post','addNewComment', 'deleteComment','favoritesPosts','myPosts','editPost','changeAvatar','addFavorites', 'deleteFavorites', 'imagePostShow', 'delete_image', 'addPost', 'deletePost'
     ],
 
     'guest' => [

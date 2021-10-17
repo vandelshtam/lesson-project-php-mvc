@@ -96,31 +96,43 @@ public function loadingFileImagePost($new_image){
   }  
 }
 
-function delete_file($table,$param,$id)
+function delete_file($table,$param,$value)
 {     
-    $user = $this->db->getOneParam($table,$param,$id);   
-    if($user['avatar']!=null)
+    $post = $this->db->getOneParam($table,$param,$value);   
+    if($post['avatar']!=null)
     {
-        unlink($user['avatar']);
+        unlink($post['avatar']);
     }    
 }
 
-function delete_file_post($table,$param,$id)
+function delete_avatar_post($table,$param,$value)
 {     
-    $user = $this->db->getOneParam($table,$param,$id);   
-    if($user['avatar_post']!=null)
+    $post = $this->db->getOneParam($table,$param,$value);   
+    if($post['avatar_post']!=null)
     {
-        unlink($user['avatar_post']);
+        unlink($post['avatar_post']);
     }    
 }
 
-function delete_image_post($table,$param,$param2,$id)
+function delete_image_post($table,$param,$param2,$value)
 {     
-    $image = $this->db->getOneParam($table,$param,$id);   
-    if($image['image']!=null)
+    $image = $this->db->getOneParam($table,$param,$value);   
+    if($image[''.$param2.'']!=null)
+    {
+        unlink($image[''.$param2.'']);
+    }    
+}
+
+function delete_all_images_file($table,$id,$param_where,$param_order,$param_sort)
+{     
+  $images = $this->db->getTableParams($table,$id,$param_where,$param_order,$param_sort); 
+  //dd($images);
+  foreach($images as $image){
+    if(isset($image['image']))
     {
         unlink($image['image']);
-    }    
+    }
+  }    
 }
 
 public function createImage($table,$data){

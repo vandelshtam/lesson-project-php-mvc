@@ -29,13 +29,28 @@ class Posts extends Model{
         return $this->db->getOneParam($table,$param,$value);
     }
 
+    //получение данных из одной таблицы Users
+    public function getUser($table,$param,$value){
+        return $this->db->getOneParam($table,$param,$value);
+    }
+
     //все картинки к посту
     public function  imagesPost($table,$id,$param_where,$param_order,$param_sort){
         
         return $this->db->getTableParams($table,$id,$param_where,$param_order,$param_sort);
     }
 
+    //новый пост
+    public function  createPost($table,$data){
+            
+        $this->db->create($table,$data);
+    }
     
+    //удалить данные из любой таблицы 
+    public function deleteTablePost($table,$param,$value){
+        $this -> db -> deleteParam($table,$param,$value);
+    }
+
 
     //все комментарии к посту
     public function  comments($tables, $id, $where_param){
@@ -67,6 +82,11 @@ class Posts extends Model{
         return $this->db->delete($table,$id);
     } 
 
+    //получение из таблицы id последней записанной записи
+    public function newPostId(){
+        return $this->db->userId();
+        
+    }
 
 
 

@@ -26,7 +26,7 @@
             <div class="row p-3 ">
                 <div class="col-xl-12">
                 <?php if ($_SESSION['auth'] == true || $_SESSION['admin'] == 1):?>
-                    <a class="btn btn-info" href="/addPost">Добавить пост</a>
+                    <a class="btn btn-info" href="/addPost/<?=$_SESSION['user_id'];?>">Добавить пост</a>
                 <?php endif;?>       
                 </div>
             </div>
@@ -57,7 +57,7 @@
                                 <?php endif;?> 
                                 <?php if ($_SESSION['admin'] == 1 || $_SESSION['user_id'] == $post[0]['user_id']):?>
                                 <!-- повторное подтверждение пароля для безопасности -->
-                                <a class="dropdown-item" onclick="return confirm('are your sure?')" href="/confirm-password/{{ $post->id }}/{{ 'deletePost' }}"">
+                                <a class="dropdown-item" onclick="return confirm('are your sure?')" href="/confirm_password_delete_post/<?=$post[0]['id'];?>">
                                     <i class="fa fa-window-close btn btn-info"></i>
                                 Удалить пост</a>    
                                 <?php endif;?>

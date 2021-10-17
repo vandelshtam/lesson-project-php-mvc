@@ -24,7 +24,7 @@
             <div class="row">
                 <div class="col-xl-12">
                 <?php if ($_SESSION['auth'] == true || $_SESSION['admin'] == 1):?>
-                    <a class="btn btn-info" href="/addPost">Добавить пост</a>
+                    <a class="btn btn-info" href="/addPost/<?=$_SESSION['user_id'];?>">Добавить пост</a>
                 <?php endif;?>
                     
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">

@@ -147,6 +147,17 @@ class QueryBuilder {
         
     }
 
+    public function deleteParam($table,$param, $value)
+    {
+        $sql = "DELETE FROM {$table} WHERE {$param}=:{$param}";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':'.$param.'', $value);
+        //$statement->bindParam(':id', $id);//принимает только переменную ввкести строку или цифру нельзя
+        $statement->execute();
+        
+        
+    }
+
     public function getUserAllTable($tables){
         
         $sql = 'SELECT * FROM ' .$tables[0];

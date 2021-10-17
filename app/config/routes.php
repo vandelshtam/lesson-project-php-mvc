@@ -87,7 +87,11 @@ return [
     '/setUser/{id:\d+}' => [
         'controller' => 'auth',
         'action' => 'setUser',   
-    ],            
+    ],
+    '/confirm_password_delete_post/{id:\d+}' => [
+        'controller' => 'auth',
+        'action' => 'confirm_password_delete_post',   
+    ],               
 
 
 
@@ -150,5 +154,9 @@ return [
     '/addPost/{id:\d+}' => [
         'controller' => 'posts',
         'action' => 'addPost',   
+    ],
+    '/deletePost/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'deletePost',   
     ],
 ];
