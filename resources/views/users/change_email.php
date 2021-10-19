@@ -5,12 +5,16 @@
                 <i class='subheader-icon fal fa-lock'></i> Безопасность
             </h1>
         </div>
-        <div class="alert alert-danger text-dark" role="alert">
+        <!-- сообщения об ошибках-->
+        <?php if(!empty($errors)):?> 
+            <div class="alert alert-danger text-dark" role="alert">
             <strong>Уведомление!</strong>
-                <?php if(isset($errors)): foreach($errors as $error):?>
+                <?php foreach($errors as $error):?>
                 <p><?=$error; ?></p>
-                <?php endforeach; endif;?>        
+                <?php endforeach;?>        
             </div>
+            <?php endif;?>    
+            <!-- сообщения об ошибках-->
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>

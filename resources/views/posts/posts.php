@@ -126,6 +126,7 @@
         </div>
     <?php endforeach;?> 
 </div>
+<?php echo $pagination; ?>
 </main>
 <script src="js/vendors.bundle.js"></script>
     <script src="js/app.bundle.js"></script>

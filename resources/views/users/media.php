@@ -5,12 +5,18 @@
                 <i class='subheader-icon fal fa-image'></i> Загрузить аватар
             </h1>
         </div>
-        <div class="alert alert-danger text-dark" role="alert">
-        <strong>Уведомление!</strong>
-                <?php if(isset($errors)): foreach($errors as $error):?>
+
+        <!-- сообщения об ошибках-->
+        <?php if(!empty($errors)):?> 
+            <div class="alert alert-danger text-dark" role="alert">
+            <strong>Уведомление!</strong>
+                <?php foreach($errors as $error):?>
                 <p><?=$error; ?></p>
-                <?php endforeach; endif;?>        
-        </div>
+                <?php endforeach;?>        
+            </div>
+            <?php endif;?>    
+            <!-- сообщения об ошибках-->
+
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>

@@ -77,7 +77,7 @@
                                  <?php endif;?> 
                                  <?php if ($post['banned'] == 1 && $_SESSION['admin'] == 1):?>
                                     <a class="dropdown-item"  href="/unBannedPost/<?=$post['post_id'];?>">
-                                        <i class="fa fa-unlock-close btn btn-warning"></i>Разблокировать пост</a>   
+                                        <i class="fa fa-unlock btn btn-warning"></i>Разблокировать пост</a>   
                                 <?php endif;?>
                                 <?php if($post['banned'] == 0 && $_SESSION['admin'] == 1):?> 
                                     <a class="dropdown-item"  href="/bannedPost/<?=$post['post_id'];?>">

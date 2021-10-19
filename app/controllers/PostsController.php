@@ -3,6 +3,7 @@ namespace App\Controllers;
 session_start();
 
 use App\Models\Posts;
+use App\lib\Pagination;
 use App\Core\Controller;
 use App\Models\Validator;
 use App\Models\flashMessage;
@@ -17,15 +18,25 @@ class PostsController extends Controller{
 	}
 
     public function postsAction(){
+        if(empty($this->route['page'])){
+            $page = 1;
+        }
+        else{
+            $page = $this->route['page'];
+        }
+        $pagination = new Pagination($this->route, $this->model->postsCount('posts'));
         $navigate = [
             'myPosts' => 0,
             'favorites' => 0,
             'postsAll' => 1,
             'searchPosts' => 0];
-            $data = ['users', 'infos', 'posts'];
+            //$data = ['users', 'infos', 'posts'];
+
             $vars = [
-                'posts' => $this->model->postsAll($data,'user_id', 'users.id'),
-                'navigate'  => $navigate
+                //'posts' => $this->model->postsAll($data,'user_id', 'users.id'),
+                'navigate'  => $navigate,
+                'pagination' => $pagination->get(),
+			    'posts' => $this->model->postsListAll($page),
                 ];  
             $this->view->render('Posts list page', $vars);
     }
@@ -182,6 +193,24 @@ class PostsController extends Controller{
         $this -> model -> updatePost('posts',$data,'id',$this->route['id']); 
         flashMessage::addFlash('success', 'Вы успешно раззаблокировали пост');
         $this->view->redirect('/post/'.$this->route['id']);
+    }
+
+    public function bannedCommentAction(){
+        $data = ['banned' => 1];
+        $comment = $this -> model -> getComment('comments','id',$this->route['id']);
+        $post = $comment['post_id'];
+        $this -> model -> updateComment('comments',$data,'id',$this->route['id']); 
+        flashMessage::addFlash('success', 'Вы успешно заблокировали комментарий');
+        $this->view->redirect('/post/'.$post);
+    }
+
+    public function unBannedCommentAction(){
+        $data = ['banned' => 0];
+        $comment = $this -> model -> getComment('comments','id',$this->route['id']);
+        $post = $comment['post_id'];
+        $this -> model -> updateComment('comments',$data,'id',$this->route['id']); 
+        flashMessage::addFlash('success', 'Вы успешно раззаблокировали комментарий');
+        $this->view->redirect('/post/'.$post);
     }
 
     public function addFavoritesAction(){

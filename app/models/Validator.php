@@ -272,6 +272,8 @@ class Validator {
 
 
 
+//===========методы валидации ==============
+
 
   private function validateUsername(){
     $val = trim($this->data['name']);

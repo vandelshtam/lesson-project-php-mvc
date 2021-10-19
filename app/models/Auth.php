@@ -68,27 +68,23 @@ class Auth extends Model{
     }
 
     //проверка наличия и получение пользователя
-    public function isUser($table, $param, $value){
+    public function getUser($table, $param, $value){
         return $this->db->getOneParam($table, $param, $value);
     }
 
     //ID последней записи в таблицу БД
     public function newLastUserId(){
-        return $this->db->userId();
+        return $this->db->lastId();
     }
-    //получение данных из таблицы по  полю user_id
-    public function getTableUser($table,$param,$user_id){
-        return $this->db->getOneParam($table,$param,$user_id);
-    }
-
+    
     //запись нового пользователя в таблицу
     public function createNewUser($table, $data){
         $this->db->create($table,$data);
     }
 
     //обновление данных пользователя
-    public function updateUsersTable($table,$data,$id){  
-        return $this->db->update($table, $data, $id);
+    public function updateUser($table,$data,$param,$param2){  
+        return $this->db->updateAny($table, $data, $param,$param2);
     }
 
     //проверка пароля
@@ -112,7 +108,7 @@ class Auth extends Model{
         $data = [
             'password' => $password   
         ];
-        $this->db->update('users', $data, $id);
+        $this->db->updateAny('users', $data,'id', $id);
     }
 
     //проверка почты

@@ -189,25 +189,11 @@
         </div>
       </form>   
     </div>
-                            </div>
+ </div>
     <br>
     <br>
     
-      <script src="{{ asset('js/vendors.bundle.js') }}"></script>
-      <script src="{{ asset('js/app.bundle.js') }}"></script>
-      <script>
-  
-          $(document).ready(function()
-          {
-  
-          });
-  
-      </script>      
-      
-
-
-
-
+    
 <!-- навигационная строка раздела комментариев -->
 <div id="navbar-example2" class="navbar navbar-light bg-info px-3 m-auto col-lg-12 col-xl-12 rounded">
     <a class="navbar-brand" href="#">Комментарии</a>
@@ -233,10 +219,10 @@
         <small class="ml-auto "><?=$comment['updated_at'];?></small>
         <!-- заблокированные коментарии -->
         <?php if ($_SESSION['admin'] == 1 && $comment['banned'] == 1):?>
-            <a class="text-warning ml-auto"  href="/unBannedComment/{{ $comment->id }}/{{ $post->id }}">
+            <a class="text-warning ml-auto"  href="/unBannedComment/<?=$comment['id'];?>">
                 <i class="fa fa-unlock btn btn-warning"> </i>Разблокировать комментарий</a>   
         <?php elseif ($_SESSION['admin'] == 1):?>
-            <a class="bt text-danger ml-auto"  href="/bannedComment/{{ $comment->id }}/{{ $post->id }}">
+            <a class="bt text-danger ml-auto"  href="/bannedComment/<?=$comment['id'];?>">
                 <i class="fa fa-lock btn btn-danger"> </i>Заблокировать комментарий</a>
         <?php endif;?> 
         <form action="/deleteComment/<?=$comment['id'];?>" method="POST"  class=" m-auto">
@@ -265,10 +251,10 @@
         <small class="ml-auto"><?=$comment['created_at'];?></small>
         <!-- заблокированные коментарии -->
         <?php if ($_SESSION['admin'] == 1 && $comment['banned'] ==1 ):?>
-            <a class="text-warning ml-auto"  href="/unBannedComment/{{ $comment->id }}/{{ $post->id }}">
+            <a class="text-warning ml-auto"  href="/unBannedComment/<?=$comment['id'];?>">
                 <i class="fa fa-lunock btn btn-warning"></i>Разблокировать комментарий</a>   
         <?php elseif ($_SESSION['admin'] == 1 && $comment['banned'] == 0):?>
-            <a class="text-danger ml-auto"  href="/bannedComment/{{ $comment->id }}/{{ $post->id }}">
+            <a class="text-danger ml-auto"  href="/bannedComment/<?=$comment['id'];?>">
                 <i class="fa fa-lock btn btn-danger"></i>Заблокировать комментарий</a>
         <?php endif;?> 
         <form action="/deleteComment/<?=$comment['id'];?>" method="POST"  class=" m-auto">
@@ -294,6 +280,6 @@
   
 </main> 
 <script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="js/app.bundle.js"></script>
     
         

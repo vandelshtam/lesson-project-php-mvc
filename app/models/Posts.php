@@ -73,8 +73,18 @@ class Posts extends Model{
         return $this->db->getOneParam($table,$param,$value);
     }
 
+    //получение  одного комментария  из одной таблицы 'comments'
+    public function getComment($table,$param,$value){
+        return $this->db->getOneParam($table,$param,$value);
+    }
+
     //обновление в одной таблице постов 'posts'
     public function updatePost($table,$data,$param,$param2){
+        $this->db->updateAny($table, $data, $param,$param2);
+    }
+
+    //обновление в одной таблице постов 'comments'
+    public function updateComment($table,$data,$param,$param2){
         $this->db->updateAny($table, $data, $param,$param2);
     }
 
@@ -126,14 +136,14 @@ class Posts extends Model{
     }
 
 
-    //получение количества строк в таблице
-    public function usersCount($table) {
+    //получение количества постов
+    public function postsCount($table) {
 		return $this->db->countColumn($table);   
 	}
 
-    //получение пользователей из нескольких таблиц по условиям выборки пагинации
-    public function usersListAll($route) {
-        $tables = ['users', 'infos', 'socials'];
+    //получение постов из нескольких таблиц по условиям выборки пагинации ДОДЕЛАТЬ!!!!!
+    public function postsListAll($route) {
+        $tables = ['users', 'infos', 'posts'];
 		$max = 4;
 		$params = [
 			'max' => $max,

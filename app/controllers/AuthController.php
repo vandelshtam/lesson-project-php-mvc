@@ -37,7 +37,7 @@ class AuthController extends Controller {
                 }
                 else{
                     if($this->model->registerUser('users',$_POST['name'],$_POST['email'],$_POST['password']) == true){
-                        $newUserId = $this->model->newLastuserId();    
+                        $newUserId = $this->model->newLastUserId();    
                         $dataInfos = [ 
                             'status' => 0,
                             'location' => '',
@@ -47,10 +47,10 @@ class AuthController extends Controller {
                             'infosable_id' => $newUserId   
                         ];
                         $this->model->createNewUser('infos', $dataInfos);
-                        $userInfo = $this->model->getTableUser('infos','user_id',$newUserId);
+                        $userInfo = $this->model->getUser('infos','user_id',$newUserId);
                         $c = 'c_'.$newUserId;
                         $data = ['info_id' => $userInfo['id'], 'c' => $c];
-                        $this->model->updateUsersTable('users',$data,$newUserId);
+                        $this->model->updateUser('users',$data,'id',$newUserId);
 
                         $dataSocials = [ 
                             'vk' => '',
@@ -59,9 +59,9 @@ class AuthController extends Controller {
                             'user_id' => $newUserId, 
                         ];
                         $this->model->createNewUser('socials', $dataSocials);
-                        $userSocials = $this->model->getTableUser('socials', 'user_id', $newUserId);
+                        $userSocials = $this->model->getUser('socials', 'user_id', $newUserId);
                         $data = ['social_id' => $userSocials['id']];
-                        $this->model->updateUsersTable('users',$data,$newUserId);
+                        $this->model->updateUser('users',$data,'id',$newUserId);
                         
                         flashMessage::addFlash('success', 'Вы успешно зарегистрировались, пожалуйста авторизуйтесь');
                         //mail( 'cee71195d6-2d2352@inbox.mailtrap.io', 'Сообщение с сайта - Вы успешно зарегистрированы', 'otto@otto');
@@ -168,7 +168,7 @@ class AuthController extends Controller {
 
     public function deleteAction(){
 
-        $user = $this->model->isUser('users', 'id', $this->route['id']);
+        $user = $this->model->getUser('users', 'id', $this->route['id']);
         if(empty($user)){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
@@ -179,7 +179,7 @@ class AuthController extends Controller {
             $this->view->redirect('/');
         } 
         
-        $info = $this->model->isUser('infos', 'id', $user['info_id']);
+        $info = $this->model->getUser('infos', 'id', $user['info_id']);
         unlink($info['avatar']);
 
         $this->model->deleteTable('users', $this->route['id']);
@@ -195,7 +195,7 @@ class AuthController extends Controller {
             $this->view->redirect('/');
         } 
         $data = ['admin' => 1];
-        $this->model->updateUsersTable('users',$data,$this->route['id']);
+        $this->model->updateUser('users',$data,'id',$this->route['id']);
         flashMessage::addFlash('success', 'Вы успешно  изменили роль пользователя!');
         $this->view->redirect('/');
     }
@@ -206,7 +206,7 @@ class AuthController extends Controller {
             $this->view->redirect('/');
         } 
         $data = ['admin' => 0];
-        $this->model->updateUsersTable('users',$data,$this->route['id']);
+        $this->model->updateUser('users',$data,'id',$this->route['id']);
         flashMessage::addFlash('success', 'Вы успешно  изменили роль пользователя!');
         $this->view->redirect('/');
     }

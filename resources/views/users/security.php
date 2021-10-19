@@ -27,7 +27,19 @@
                 <div class="alert alert-info" ">
                 <?php flashMessage::display_flash('info') ;?>
                 </div>
-                <?php endif;?>         
+                <?php endif;?> 
+                
+                <!-- сообщения об ошибках-->
+            <?php if(!empty($errors)):?> 
+            <div class="alert alert-danger text-dark" role="alert">
+            <strong>Уведомление!</strong>
+                <?php foreach($errors as $error):?>
+                <p><?=$error; ?></p>
+                <?php endforeach;?>        
+            </div>
+            <?php endif;?>    
+            <!-- сообщения об ошибках-->
+
         <form action="" method="POST">
             <div class="row">
                 <div class="col-xl-6">

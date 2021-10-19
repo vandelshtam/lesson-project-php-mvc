@@ -5,12 +5,16 @@
                 <i class='subheader-icon fal fa-plus-circle'></i> Добавить пользователя
             </h1>
         </div>
-        <div class="alert alert-danger text-dark" role="alert">
+        <!-- сообщения об ошибках-->
+        <?php if(!empty($errors)):?> 
+            <div class="alert alert-danger text-dark" role="alert">
             <strong>Уведомление!</strong>
-                <?php if(isset($errors)): foreach($errors as $error):?>
+                <?php foreach($errors as $error):?>
                 <p><?=$error; ?></p>
-                <?php endforeach; endif;?>        
+                <?php endforeach;?>        
             </div>
+            <?php endif;?>    
+            <!-- сообщения об ошибках-->
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>
@@ -124,7 +128,7 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0" name="vk">
+                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0" name="vk" value="<?php if(isset($_POST['vk'])){echo $_POST['vk'];}?>">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -138,7 +142,7 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0" name="telegram">
+                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0" name="telegram" value="<?php if(isset($_POST['telegram'])){echo $_POST['telegram'];}?>">
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -152,7 +156,7 @@
                                                     </span>
                                                 </span>
                                             </div>
-                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0" name="instagram">
+                                            <input type="text" class="form-control border-left-0 bg-transparent pl-0" name="instagram" value="<?php if(isset($_POST['instagram'])){echo $_POST['instagram'];}?>">
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">

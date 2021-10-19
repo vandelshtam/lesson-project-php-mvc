@@ -6,12 +6,16 @@
             </h1>
 
         </div>
-        <div class="alert alert-danger text-dark" role="alert">
+        <!-- сообщения об ошибках-->
+        <?php if(!empty($errors)):?> 
+            <div class="alert alert-danger text-dark" role="alert">
             <strong>Уведомление!</strong>
-                <?php if(isset($errors)): foreach($errors as $error):?>
+                <?php foreach($errors as $error):?>
                 <p><?=$error; ?></p>
-                <?php endforeach; endif;?>        
-        </div>
+                <?php endforeach;?>        
+            </div>
+            <?php endif;?>    
+            <!-- сообщения об ошибках-->
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>
@@ -53,13 +57,13 @@
                                 <!-- tel -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Номер телефона</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars['phone'];?>" name="phone">
+                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars[0]['phone'];?>" name="phone">
                                 </div>
 
                                 <!-- address -->
                                 <div class="form-group">
                                     <label class="form-label" for="simpleinput">Адрес</label>
-                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars['location'];?>" name="location">
+                                    <input type="text" id="simpleinput" class="form-control" value="<?=$vars[0]['location'];?>" name="location">
                                 </div>
                                 <div class="col-md-12 mt-3 d-flex flex-row-reverse">
                                     <button class="btn btn-warning" name="submit">Редактировать</button>

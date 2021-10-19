@@ -62,8 +62,8 @@ public function updateAvatar($table, $data, $param, $value){
 } 
 
 
-//генерирование имени картинки 
-public function generate_string($input,$strength){
+//генерирование приставки к имени картинки, для создания нового названия 
+private function generate_string($input,$strength){
   $input_length = strlen($input);
     $random_string = '';
     for($i = 0; $i < $strength; $i++) {

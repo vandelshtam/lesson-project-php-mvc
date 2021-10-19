@@ -13,6 +13,6 @@ return [
     ],
 
     'admin' => [
-        'create_user', 'bannedPost', 'unBannedPost'
+        'create_user', 'bannedPost', 'unBannedPost','bannedComment', 'unBannedComment'
     ],
     ];

@@ -21,7 +21,7 @@
                 <?php endif;?>
             <!-- флеш сообщения -->
 
-             <!-- сообщения об ошибках-->
+            <!-- сообщения об ошибках-->
             <?php if(!empty($errors)):?> 
             <div class="alert alert-danger text-dark" role="alert">
             <strong>Уведомление!</strong>
@@ -30,7 +30,7 @@
                 <?php endforeach;?>        
             </div>
             <?php endif;?>    
-<!-- сообщения об ошибках-->
+            <!-- сообщения об ошибках-->
 
 <main id="js-page-content" role="main" class="page-content mt-3">
     <div class="subheader">

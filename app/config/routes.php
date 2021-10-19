@@ -131,6 +131,14 @@ return [
         'controller' => 'posts',
         'action' => 'unBannedPost',   
     ],
+    '/bannedComment/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'bannedComment',   
+    ],
+    '/unBannedComment/{id:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'unBannedComment',   
+    ],
     '/changeAvatar/{id:\d+}' => [
         'controller' => 'posts',
         'action' => 'changeAvatar',   
