@@ -16,18 +16,24 @@ use App\Models\MediaBuilder;
 class UsersController extends Controller {
 
     public function usersAction(){
+        if(empty($this->route['page'])){
+            $page = 1;
+        }
+        else{
+            $page = $this->route['page'];
+        }
         $pagination = new Pagination($this->route, $this->model->usersCount('users'));
         
 		$vars = [
 			'pagination' => $pagination->get(),
-			'usersList' => $this->model->usersListAll($this->route['page']),
+			'usersList' => $this->model->usersListAll($page),
 		];   
         $this->view->render('Users list page', $vars);
     }
 
     public function user_profileAction(){
 
-        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+        if($this->model->getUser('users','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -37,8 +43,7 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         $tables = ['users', 'infos', 'socials'];
-        $vars = $this->model->getUsersOne($tables,$this->route['id'],'user');
-        //dd($vars);
+        $vars = $this->model->getUserAllTable($tables,$this->route['id'],'user_id','id','user_id','users.id');
         $this->view->render('User profile page', $vars);
     }
 
@@ -46,7 +51,7 @@ class UsersController extends Controller {
     public function editAction(){
         $vars =[];
         $errors = [];
-        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+        if($this->model->getUser('users','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -56,7 +61,8 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         
-        $vars = $this->model->getUsersOne(['users', 'infos', 'socials'],$this->route['id'],'user');
+        $vars = $this->model->getUserAllTable(['users', 'infos', 'socials'],$this->route['id'],'user_id','id','user_id','users.id');
+    
 
         if(!empty($_POST['name']) || !empty($_POST['occupation']) || !empty($_POST['phone']) || isset($_POST['location'])){
 
@@ -68,15 +74,15 @@ class UsersController extends Controller {
                     'location' => $_POST['location'],
                     'phone' => $_POST['phone']
                 ];
-                $this->model->updateUser('infos',$data,$vars['info_id']);
+                $this->model->updateUser('infos',$data,'id',$vars[0]['info_id']);
 
                 $data_users = [
                     'name' => $_POST['name']
                 ];
                 
-                $this->model->updateUser('users',$data_users,$vars['user_id']);
+                $this->model->updateUser('users',$data_users,'id',$vars[0]['user_id']);
                 flashMessage::addFlash('success', 'Вы успешно изменили данные профиля');
-                $this->view->redirect('/user/'.$vars['user_id']);
+                $this->view->redirect('/user/'.$vars[0]['user_id']);
             }
             else{
                 flashMessage::addFlash('ganger', 'Вы допустили ошибку при заполнении формы, исправьте данные');
@@ -88,7 +94,7 @@ class UsersController extends Controller {
 
 
     public function mediaAction(){
-        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+        if($this->model->getUser('users','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -98,7 +104,7 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         $errors =[];
-        $vars = $this->model->getOneTableWhereUser_id('infos','user_id',$this->route['id']);
+        $vars = $this->model->getOneTable('infos','user_id',$this->route['id']);
 
         if(!empty($_FILES)){
             $validate = new Validator($_POST);
@@ -107,15 +113,16 @@ class UsersController extends Controller {
             }
             else{
                 $media = new MediaBuilder;
-                $new_avatar=$media->makeNewAvatar();
-                if($media->loadingFileAvatar() == false){
+                $new_avatar = $this->model->makeNewAvatar('avatar');
+                if($this->model->loadingFileAvatar($new_avatar) == false){
                     flashMessage::addFlash('denger', 'Не удалось загрузить файл');
                 }
                 else{
                     $dataAvatar = ['avatar' => $new_avatar];
-                    $imageId = $this->model->getOneTableWhereUser_id('infos','user_id',$this->route['id']);
-                    $media->delete_file('infos','id',$imageId['id']);
-                    $media->updateAvatar('infos',$dataAvatar,$imageId['id']); 
+                    $imageId = $this->model->getOneTable('infos','user_id',$this->route['id']);
+                    $this->model->deleteFileAvatar('infos','id',$imageId['id']);
+                    $media = new MediaBuilder;
+                    $media->updateAvatar('infos',$dataAvatar,'id',$imageId['id']); 
                     flashMessage::addFlash('success', 'Вы успешно загрузили новый аватар');
                     $this->view->redirect('/user/'.$this->route['id']); 
                 }
@@ -127,7 +134,7 @@ class UsersController extends Controller {
 
     public function statusShowAction(){
 
-        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+        if($this->model->getUser('users','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -137,7 +144,7 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
 
-        $users = $this->model->getOneTableWhereUser_id('infos','user_id',$this->route['id']);
+        $users = $this->model->getOneTable('infos','user_id',$this->route['id']);
         $vars = [
                 'status' => [ 0 => 'Онлайн',
                         1 => 'Не беспокоить',
@@ -150,7 +157,7 @@ class UsersController extends Controller {
 
     public function statusSetAction(){
         
-        if($this->model->getOneUser_oneTable('infos','id',$this->route['id']) == false){
+        if($this->model->getUser('infos','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -170,7 +177,7 @@ class UsersController extends Controller {
             'status' => $status
         ];
         
-        $this->model->updateUser('infos',$data,$this->route['id']);
+        $this->model->updateUser('infos',$data,'id',$this->route['id']);
         flashMessage::addFlash('success', 'Вы успешно изменили статус');
         $this->view->redirect('/');
     }
@@ -196,7 +203,7 @@ class UsersController extends Controller {
             }
             else{
                 
-                $user = $this->model->getOneUser_oneTable('users','email',$_POST['email']);
+                $user = $this->model->getUser('users','email',$_POST['email']);
 
                 if(!empty($user))
                 {
@@ -223,9 +230,10 @@ class UsersController extends Controller {
                     ];
                     
                     $this->model->createUser('infos', $dataInfos);
-                    $userInfo = $this->model->getOneUser_oneTable('infos','user_id',$newUserId);
-                    $data = ['info_id' => $userInfo['id']];
-                    $this->model->updateUser('users',$data,$newUserId);
+                    $userInfo = $this->model->getUser('infos','user_id',$newUserId);
+                    $c = 'c_'.$newUserId;
+                    $data = ['info_id' => $userInfo['id'], 'c' => $c];
+                    $this->model->updateUser('users',$data,'id',$newUserId);
 
                     $dataSocials = [ 
                         'vk' => '',
@@ -236,17 +244,15 @@ class UsersController extends Controller {
 
                     
                     $this->model->createUser('socials', $dataSocials);
-                    $userSocial = $this->model->getOneUser_oneTable('socials','user_id',$newUserId);
+                    $userSocial = $this->model->getUser('socials','user_id',$newUserId);
                     
                     $data = ['social_id' => $userSocial['id']];
-                    $this->model->updateUser('users',$data,$newUserId); 
+                    $this->model->updateUser('users',$data,'id',$newUserId); 
                 
                
                     if(!empty($_POST['location']) || !empty($_POST['occupation']) || !empty($_POST['phone']) || !empty($_POST['status'])){
                         $list_statuses_set=[ 'онлайн' => 0,  'не беспокоить' => 1,  'отошел' => 2];
                         $status_key = $list_statuses_set[$_POST['status']];
-
-                        $validation = new Validator($_POST);
                         
                         $dataInfos = [ 
                                 'status' => $status_key,
@@ -257,7 +263,7 @@ class UsersController extends Controller {
                                 'infosable_id' => $newUserId   
                              ];
                             
-                            $this->model->updateUser('infos',$dataInfos,$userInfo['id']);   
+                            $this->model->updateUser('infos',$dataInfos,'id',$userInfo['id']);   
                     }
                     
                     if(!empty($_POST['vk']) || !empty($_POST['telegram']) || !empty($_POST['instagram'])){
@@ -269,19 +275,20 @@ class UsersController extends Controller {
                                     'user_id' => $newUserId, 
                                 ];
                             $tableSocials = 'socials';
-                            $this->model->updateUser($tableSocials,$dataSocials,$userSocial['id']);  
+                            $this->model->updateUser($tableSocials,$dataSocials,'id',$userSocial['id']);  
                        
                     }
                     
                     if(!empty($_FILES['avatar']['name'])){
                        
                         $media = new MediaBuilder;
-                        if($media->loadingFileAvatar() == false){
+                        $new_avatar = $this->model->makeNewAvatar('avatar');
+                        if($this->model->loadingFileAvatar($new_avatar) == false){
                             flashMessage::addFlash('denger', 'Не удалось загрузить файл'); 
                         }
                         else{
-                            $dataAvatar = ['avatar' => $media->makeNewAvatar()];
-                            $media->updateAvatar('infos',$dataAvatar,$userInfo['id']); 
+                            $dataAvatar = ['avatar' => $new_avatar];
+                            $media->updateAvatar('infos',$dataAvatar,'id',$userInfo['id']); 
                         }    
                     }
                     flashMessage::addFlash('success', 'Вы успешно добавили нового пользователя'); 
@@ -296,7 +303,7 @@ class UsersController extends Controller {
 
     public function securityAction(){
         $errors = [];
-        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+        if($this->model->getUser('users','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -340,7 +347,7 @@ class UsersController extends Controller {
 
     public function change_emailAction(){
         $errors = [];
-        if($this->model->getOneUser_oneTable('users','id',$this->route['id']) == false){
+        if($this->model->getUser('users','id',$this->route['id']) == false){
             flashMessage::addFlash('info', 'Такого пользователя нет!');
             $this->view->redirect('/');
         }
@@ -388,17 +395,6 @@ class UsersController extends Controller {
         $vars = null;
         $this->view->render('Change email', $vars, $errors);
     }
-
-    
-    public function users_2Action(){
-        $pagination = new Pagination($this->route, $this->model->usersCount('users'));
-		$vars = [
-			'pagination' => $pagination->get(),
-			'usersList' => $this->model->usersListAll($this->route['page']),
-		];   
-        $this->view->render('Users list page', $vars);
-    }
-
 
     
     
