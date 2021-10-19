@@ -35,7 +35,7 @@
 <main id="js-page-content" role="main" class="page-content mt-3">
     <div class="subheader">
         <h1 class="subheader-title">
-            <i class='subheader-icon fal fa-user'></i> Название поста
+            <i class='subheader-icon fal fa-user'></i> <?=$post['name_post'];?>
         </h1>
     </div>
      

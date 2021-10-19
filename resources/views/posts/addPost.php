@@ -69,7 +69,7 @@
                                 <div class="panel-content" >   
                                     <div class="form-group">
                                         <label class="form-label" for="example-fileinput">Выберите фотографию</label>
-                                        <input type="file" id="example-fileinput" class="form-control-file" name="image_post">
+                                        <input type="file" id="example-fileinput" class="form-control-file" name="image">
                                     </div>   
                                 </div>
                             </div> 

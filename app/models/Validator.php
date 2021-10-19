@@ -23,7 +23,7 @@ class Validator {
   }
 
 
-  //валидация 
+  //валидация всего
   public function validateGeneral(){
     foreach(self::$fieldsGeneral as $field){
       if(!array_key_exists($field, $this->data)){
@@ -63,7 +63,6 @@ class Validator {
       $this->validateImage();
     }
     
-    
     return $this->errors;
   }
 
@@ -84,6 +83,8 @@ class Validator {
     return $this->errors;
   }
 
+
+
   //форма смены пароля
   public function validateSecurityForm(){
     foreach(self::$fieldsSecurity as $field){
@@ -96,6 +97,8 @@ class Validator {
     $this->validateConfirmPassword();
     return $this->errors;
   }
+
+
 
   //валидация данных формы редактирования данных пользователя
   public function validateEditForm(){
@@ -112,6 +115,8 @@ class Validator {
     return $this->errors;
   }
 
+
+
   //валидация данных формы редактирования данных пользователя
   public function validateEditPost(){
     foreach(self::$fieldsEditPost as $field){
@@ -120,19 +125,14 @@ class Validator {
         return;
       }
     }
-
-    
       $this->validateNamePost();
-  
-    
       $this->validateTitlePost();
-  
-    
       $this->validateTextPost();
-  
-    
+
     return $this->errors;
   }
+
+
 
   //валидация данных для таблицы infos информации о пользователе
   public function validateInfoUserForm(){
@@ -153,6 +153,8 @@ class Validator {
     }
     return $this->errors;
   }
+
+
 
   //валидация данных из формы создания нового пользователя
   public function validateCreateUserForm(){
@@ -190,6 +192,8 @@ class Validator {
     return $this->errors;
   }
 
+
+
   //валидация аватара
   public function validateAvatarForm(){
     foreach(self::$fieldsAvatar as $field){
@@ -202,6 +206,8 @@ class Validator {
       return $this->errors;
   }
 
+
+
   //валидация аватара
   public function validateAvatarPostForm(){
     foreach(self::$fieldsAvatarPost as $field){
@@ -213,6 +219,7 @@ class Validator {
       $this->validateImage();
       return $this->errors;
   }
+
 
 
   //валидвция из формы смены почты
@@ -228,6 +235,7 @@ class Validator {
   }
 
   
+
   public function validateInfoLocationForm(){
     foreach(self::$fieldsInfo as $field){
       if(!array_key_exists($field, $this->data)){
@@ -238,6 +246,8 @@ class Validator {
     $this->validateLocation();
     return $this->errors;
   }
+
+
 
   public function validateSocialUserForm(){
     foreach(self::$fieldsSocial as $field){
@@ -257,6 +267,11 @@ class Validator {
     }
     return $this->errors;
   }
+
+
+
+
+
 
   private function validateUsername(){
     $val = trim($this->data['name']);
@@ -433,7 +448,7 @@ class Validator {
     }
     else{
       if(in_array($file_type,$expensions)=== false){
-        $this->addError('avatar_post','extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+        $this->addError('avatar_post','avatar extension not allowed, please choose a JPEG or PNG or webp or jpg file');
       }
     }
     return $this->errors;
@@ -447,7 +462,7 @@ class Validator {
     }
     else{
       if(in_array($file_type,$expensions)=== false){
-        $this->addError('image','extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+        $this->addError('image','image extension not allowed, please choose a JPEG or PNG or webp or jpg file');
       }
     }
     return $this->errors;
@@ -491,5 +506,3 @@ class Validator {
     $this->errors[$key] = $val;
   }
 }
-
-?>
