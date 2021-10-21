@@ -14,13 +14,13 @@ public function makeNewImage($name_image_file){
   $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   $strength = 10; 
   $random_string = $this ->  generate_string($permitted_chars,$strength);      
-  $new_avatar='uploads/'.$random_string.$image_name;
+  $new_avatar = $random_string.$image_name;
   return $new_avatar;
 }
 
 //загрузка новой картинки в папку проекта
 public function loadingFileImage($new_image, $name_image_file){
-  $direct='/Applications/MAMP/htdocs/lesson-project-php-mvc/public/';
+  $direct='/Applications/MAMP/htdocs/lesson-project-php-mvc/public/uploads/';
   $image_name_tmp=$_FILES[''.$name_image_file.'']['tmp_name'];
   if(is_uploaded_file($image_name_tmp)){
     if(move_uploaded_file($image_name_tmp, $direct.$new_image )){

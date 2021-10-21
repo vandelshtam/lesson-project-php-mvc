@@ -2,7 +2,7 @@
 
 return [
     "database" => [
-        "database" => "laravel-training-project",
+        "database" => "bbb",
         "username" => "root",
         "password" => "root",
         "connection" => "mysql:host=localhost:8889",

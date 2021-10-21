@@ -74,7 +74,7 @@
                             <?php elseif ($post[0]['banned'] == 1):?> 
                             <img src="/lesson-project-php-mvc/public/img/demo/avatars/avatar-admin-lg.png" class="rounded-circle shadow-2 img-thumbnail" alt="" style="width: 80%">  
                             <?php else:?>
-                            <img src="/lesson-project-php-mvc/public/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt="" style="width: 80%">
+                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt="" style="width: 80%">
                             <?php endif;?>
                             <br>
                             <hr> 

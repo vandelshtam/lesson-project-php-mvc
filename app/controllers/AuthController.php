@@ -91,7 +91,7 @@ class AuthController extends Controller {
             else{
                 if($this->model->loginUser('users','email',$_POST['email'],$_POST['password']) == true){
 
-                    $user = $this->model->isUser('users','email',$_POST['email']);
+                    $user = $this->model->getUser('users','email',$_POST['email']);
                     //dd($user);
                     if($_POST['rememberme']){
                         $time = 86400;

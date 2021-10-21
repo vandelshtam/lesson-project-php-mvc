@@ -99,6 +99,10 @@ return [
         'controller' => 'posts',
         'action' => 'posts',   
     ],
+    '/posts/posts/{page:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'posts',   
+    ],
     '/favoritesPosts' => [
         'controller' => 'posts',
         'action' => 'favoritesPosts',   
@@ -166,5 +170,39 @@ return [
     '/deletePost/{id:\d+}' => [
         'controller' => 'posts',
         'action' => 'deletePost',   
+    ],
+
+
+    '/chats' => [
+        'controller' => 'chats',
+        'action' => 'chats',   
+    ],
+    '/myChats' => [
+        'controller' => 'chats',
+        'action' => 'myChats',   
+    ],
+    '/favoritesChats' => [
+        'controller' => 'chats',
+        'action' => 'favoritesChats',   
+    ],
+    '/openChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'openChat',   
+    ],
+    '/bannedChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'bannedChat',   
+    ],
+    '/unBannedChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'unBannedChat',   
+    ],
+    '/addChatShow/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'addChatShow',   
+    ],
+    '/editChatShow/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'editChatShow',   
     ],
 ];

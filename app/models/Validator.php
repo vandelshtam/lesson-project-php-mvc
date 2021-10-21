@@ -10,10 +10,12 @@ class Validator {
   private static $fieldsSecurity = ['new_password', 'confirm_password'];
   private static $fieldsEdit = ['name', 'occupation', 'location', 'phone'];
   private static $fieldsEditPost = ['name_post', 'title_post', 'text'];
+  private static $fieldsChatForm = ['name_chat'];
   private static $fieldsInfo = [ 'occupation', 'location', 'phone'];
   private static $fieldsSocial = [ 'vk', 'telegram', 'instagram'];
   private static $fieldsAvatar = [ 'avatar'];
   private static $fieldsAvatarPost = [ 'avatar_post'];
+  private static $fieldsAvatarChat = [ 'avatar_chat'];
   private static $fieldsEmail = [ 'new_email'];
   private static $fieldsCreate = ['name', 'email', 'password', 'occupation', 'location', 'phone','vk', 'telegram', 'instagram'];
   private static $fieldsGeneral = ['name', 'email', 'password', 'occupation', 'location', 'phone','vk', 'telegram', 'instagram'];
@@ -132,6 +134,18 @@ class Validator {
     return $this->errors;
   }
 
+  //валидация данных формы редактирования данных пользователя
+  public function validateChatForm(){
+    foreach(self::$fieldsChatForm as $field){
+      if(!array_key_exists($field, $this->data)){
+        trigger_error("'$field' is not present in the data");
+        return;
+      }
+    }
+      $this->validateChat();
+    return $this->errors;
+  }
+
 
 
   //валидация данных для таблицы infos информации о пользователе
@@ -194,7 +208,7 @@ class Validator {
 
 
 
-  //валидация аватара
+  //валидация аватара пользователя
   public function validateAvatarForm(){
     foreach(self::$fieldsAvatar as $field){
       if(!array_key_exists($field, $this->data)){
@@ -208,7 +222,7 @@ class Validator {
 
 
 
-  //валидация аватара
+  //валидация аватара поста
   public function validateAvatarPostForm(){
     foreach(self::$fieldsAvatarPost as $field){
       if(!array_key_exists($field, $this->data)){
@@ -220,9 +234,20 @@ class Validator {
       return $this->errors;
   }
 
+  //валидация аватара чата пока не нужен!!!!!======!!!!!!!
+  public function validateAvatarChat(){
+    foreach(self::$fieldsAvatarChat as $field){
+      if(!array_key_exists($field, $this->data)){
+        trigger_error("'$field' is not present in the data");
+        return;
+      }
+    }
+      $this->validateImage();
+      return $this->errors;
+  }
 
 
-  //валидвция из формы смены почты
+  //валидация из формы смены почты
   public function validateChangeEmailForm(){
     foreach(self::$fieldsEmail as $field){
       if(!array_key_exists($field, $this->data)){
@@ -268,6 +293,82 @@ class Validator {
     return $this->errors;
   }
 
+private function validateImage(){
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");
+    $file_type = $_FILES['image']['type'];
+      if(in_array($file_type,$expensions)=== false){
+        $this->addError('image','Image extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+      }
+        /*
+        if($file_size > 2097152) {
+          $errors[]='File size must be excately 2 MB';
+        }  
+        */
+  }
+
+
+  //применяю пока этот метод валидации аватара юзера
+  public function validateImageAvatar(){  
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
+    $file_type = $_FILES['avatar']['type'];
+    if(empty($file_type)){
+        $this->addError('avatar','image cannot be empty');
+    }
+    else{
+      if(in_array($file_type,$expensions)=== false){
+        $this->addError('avatar','extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+      }
+    }
+    return $this->errors;
+  }
+
+
+  //пока применяю этот метод валидации аватара поста
+  public function validateImageAvatarPost(){  
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
+    $file_type = $_FILES['avatar_post']['type'];
+    if(empty($file_type)){
+        $this->addError('avatar_post','image cannot be empty');
+    }
+    else{
+      if(in_array($file_type,$expensions)=== false){
+        $this->addError('avatar_post','avatar extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+      }
+    }
+    return $this->errors;
+  }
+
+
+  //пока применяю этот метод валидации аватара чата
+  public function validateImageAvatarChat(){  
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
+    $file_type = $_FILES['avatar_chat']['type'];
+    if(empty($file_type)){
+        $this->addError('avatar_chat','image cannot be empty');
+    }
+    else{
+      if(in_array($file_type,$expensions)=== false){
+        $this->addError('avatar_chat','avatar extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+      }
+    }
+    return $this->errors;
+  }
+
+
+  //применяю пока этот метод валидации картинки для  загрузки в пост
+  public function validateImagePost(){  
+    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
+    $file_type = $_FILES['image']['type'];
+    if(empty($file_type)){
+        $this->addError('image','image cannot be empty');
+    }
+    else{
+      if(in_array($file_type,$expensions)=== false){
+        $this->addError('image','image extension not allowed, please choose a JPEG or PNG or webp or jpg file');
+      }
+    }
+    return $this->errors;
+  }
 
 
 
@@ -415,61 +516,7 @@ class Validator {
     }
   }
 
-  private function validateImage(){
-    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");
-    $file_type = $_FILES['avatar']['type'];
-      if(in_array($file_type,$expensions)=== false){
-        $this->addError('avatar','extension not allowed, please choose a JPEG or PNG or webp or jpg file');
-      }
-        /*
-        if($file_size > 2097152) {
-          $errors[]='File size must be excately 2 MB';
-        }  
-        */
-  }
-
-  public function validateImageAvatar(){  
-    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
-    $file_type = $_FILES['avatar']['type'];
-    if(empty($file_type)){
-        $this->addError('avatar','image cannot be empty');
-    }
-    else{
-      if(in_array($file_type,$expensions)=== false){
-        $this->addError('avatar','extension not allowed, please choose a JPEG or PNG or webp or jpg file');
-      }
-    }
-    return $this->errors;
-  }
-
-  public function validateImageAvatarPost(){  
-    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
-    $file_type = $_FILES['avatar_post']['type'];
-    if(empty($file_type)){
-        $this->addError('avatar_post','image cannot be empty');
-    }
-    else{
-      if(in_array($file_type,$expensions)=== false){
-        $this->addError('avatar_post','avatar extension not allowed, please choose a JPEG or PNG or webp or jpg file');
-      }
-    }
-    return $this->errors;
-  }
-
-  public function validateImagePost(){  
-    $expensions= array("image/jpeg","image/jpg","image/png", "image/webp");  
-    $file_type = $_FILES['image']['type'];
-    if(empty($file_type)){
-        $this->addError('image','image cannot be empty');
-    }
-    else{
-      if(in_array($file_type,$expensions)=== false){
-        $this->addError('image','image extension not allowed, please choose a JPEG or PNG or webp or jpg file');
-      }
-    }
-    return $this->errors;
-  }
-
+  
 
   private function validateNamePost(){
     $val = trim($this->data['name_post']);
@@ -478,6 +525,18 @@ class Validator {
     } else {
       if(!preg_match('/[a-zA-Z0-9]{3,36}/', $val)){
         $this->addError('name_post','name post must be 3-36 chars & alphanumeric');
+      }
+    }
+  }
+
+
+  private function validateChat(){
+    $val = trim($this->data['name_chat']);
+    if(empty($val)){
+      $this->addError('name_chat', 'name chat cannot be empty');
+    } else {
+      if(!preg_match('/[a-zA-Z0-9]{3,36}/', $val)){
+        $this->addError('name_chat','name chat must be 3-36 chars & alphanumeric');
       }
     }
   }
@@ -500,6 +559,18 @@ class Validator {
     } else {
       if(!preg_match('/[a-zA-Z0-9]{3,360}/', $val)){
         $this->addError('text','text post must be 3-360 chars & alphanumeric');
+      }
+    }
+  }
+
+
+  private function validateNameChat(){
+    $val = trim($this->data['name_chat']);
+    if(empty($val)){
+      $this->addError('name_chat', 'name chat cannot be empty');
+    } else {
+      if(!preg_match('/[a-zA-Z0-9]{3,36}/', $val)){
+        $this->addError('name_chat','name chat must be 3-36 chars & alphanumeric');
       }
     }
   }
