@@ -48,7 +48,8 @@
                 <div class="row no-gutters row-grid">
                     <div class="col-12">
                         <div class="d-flex flex-column align-items-center justify-content-center p-4">  
-                            <!-- аватар чата -->    
+                            <!-- аватар чата --> 
+                        <form action="/editChatShow/<?=$chat['id'];?>" method="POST" enctype="multipart/form-data" class="col-lg-12 col-xl-12 m-auto">   
                             <h2 align="center">Аватар чата</h2>
                             <div class="panel-container col-lg-12 col-xl-12 m-auto" >    
                                 <div class="panel-content" > 
@@ -59,21 +60,23 @@
                                         <div class="form-group">
                                             <img src="/lesson-project-php-mvc/public/uploads/<?=$chat['chat_avatar'];?>" alt="" class="img-responsive" width="200">
                                         </div>      
-                                    <div class="form-group">
-                                        <label class="form-label" for="example-fileinput">Выберите аватар</label>
-                                        <input type="file" id="example-fileinput" class="form-control-file" name="avatar_chat">
-                                    </div>   
+                                        <div class="form-group">
+                                            <label class="form-label" for="example-fileinput">Выберите аватар</label>
+                                            <input type="file" id="example-fileinput" class="form-control-file" name="avatar_chat">
+                                        </div> 
+                                        <div class="col-lg-11 col-xl-11 m-auto d-flex flex-row-reverse">   
+                                        <button class="btn btn-warning" type="submit" name="submit_avatar">Загрузить аватар</button>
+                                    </div>  
                                 </div>
                             </div>
                             <br>
                             <hr> 
-
+                        </form>
                             <!-- Название чата -->
-                            <h5 class="col-md-12 text-center mt-3">
-                                
+                            <h5 class="col-md-12 text-center mt-3">    
                                 <div class="form-group ">
-                                    <label class="form-label" for="simpleinput">Введите название чата</label>
-                                    <input type="text" id="simpleinput" class="form-control" name="name_chat" value="<?php if(isset($_POST['name_chat'])){echo $_POST['name_chat'];}?>">
+                                    <label class="form-label" for="simpleinput">Введите новое название чата</label>
+                                    <input type="text" id="simpleinput" class="form-control" name="name_chat" value="<?php if(isset($_POST['name_chat'])){echo $_POST['name_chat'];}else{echo $chat['name_chat'];}?>">
                                 </div>
    
                             <!--  участники чата  -->
@@ -82,10 +85,10 @@
                             <div class="row" id="js-contacts">    
                             <?php foreach ($userlists as $user):?>
                                 <?php if($_SESSION['admin'] == 1 || $chat['author_user_id'] == $_SESSION['user_id']):?>
-                                    <div class="row" id="js-contacts">
+                                    <div class="row " id="js-contacts">
                 
-                                    <div class="col-xl-4">
-                                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="">
+                                    <div class="col-xl-4 ">
+                                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover bg-blue bg-info-gradient" data-filter-tags="">
                                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                                             <div class="d-flex flex-row align-items-center">
                                                     <span class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></span>
@@ -119,7 +122,7 @@
                                                                 Предостиавить роль пользователя</a>
                                                             <?php endif;?> 
                                                         <?php endif;?>
-                                                        <a class="dropdown-item md-1" href="/deleteUsersIsChat/<?=$user['user_id'];?>" onclick="return confirm('are you sure?');">
+                                                        <a class="dropdown-item md-1" href="/deleteUserChat/<?=$user['user_id'];?>" onclick="return confirm('are you sure?');">
                                                             <i class="fa fa-window md-1"></i>
                                                         Удалить пользователя из чата</a>
                                                         
@@ -172,9 +175,9 @@
                                                 <span>
                                                        <div class="form-group text-left">
                                                         <div class="custom-control custom-checkbox">
-                                                            <input type="text" class="custom-control-input" name="add_user"   value="<?=$user[0]['id'];?>" hidden>
-                                                            <input type="checkbox" class="custom-control-input" name="rememberme_<?=$user[0]['id'];?>" id="rememberme_<?=$user[0]['id'];?>">
-                                                            <label class="custom-control-label" for="rememberme_<?=$user[0]['id'];?>">Добавить пользователя</label>
+                                                            <input type="text" class="custom-control-input" name="add_user"   value="<?=$user[0]['user_id'];?>" hidden>
+                                                            <input type="checkbox" class="custom-control-input" name="rememberme_<?=$user[0]['user_id'];?>" id="rememberme_<?=$user[0]['user_id'];?>">
+                                                            <label class="custom-control-label" for="rememberme_<?=$user[0]['user_id'];?>">Добавить пользователя</label>
                                                         </div>
                                                     </div>     
                                                     </span>

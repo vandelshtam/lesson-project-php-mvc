@@ -5,7 +5,7 @@ return [
     ],
     
     'authoris' => [
-        'chats' , 'openChat', 'favoritesChats', 'myChats', 'bannedChat', 'unBannedChat','addChatShow','editChatShow'
+        'chats' , 'openChat', 'favoritesChats', 'myChats', 'addChatShow','editChatShow','message','delete_message','onFavorites', 'offFavorites','deleteChat','roleModerator', 'roleParticipant'
     ],
 
     'guest' => [
@@ -13,6 +13,6 @@ return [
     ],
 
     'admin' => [
-        //
+        'bannedChat', 'unBannedChat'
     ],
     ];

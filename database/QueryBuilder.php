@@ -86,6 +86,19 @@ class QueryBuilder {
         $statement->execute();
         return $statement->fetch(PDO::FETCH_ASSOC);
     }
+
+     //получение одной записи по двум  условиям(полям) из любой одной таблицы
+     public function getOneParamTwo($table,$param,$param2,$value,$value2)
+     {
+         $sql = "SELECT * FROM {$table} WHERE {$param}=:{$param} AND {$param2}=:{$param2}";
+         //$sql = "SELECT * FROM {$table} WHERE {$param}= {$value} AND {$param2}={$value2}";
+         $statement = $this->pdo->prepare($sql);
+         $statement->bindValue(':'.$param.'', $value);
+         $statement->bindValue(':'.$param2.'', $value2);
+         //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+         $statement->execute();
+         return $statement->fetch(PDO::FETCH_ASSOC);
+     }
     
     //обновление в любой таблице
     public function updateAny($table, $data, $param, $param2)
@@ -105,6 +118,29 @@ class QueryBuilder {
             $statement->bindValue(':'.$keys.'', $value);
         }
         $statement->bindValue(':param2', $param2);
+        $statement->execute($data);
+    }
+
+    //обновление в любой таблице по двум условиям
+    public function updateAnyTwoParam($table, $data, $param, $param2,$param3,$param4)
+    {    
+        $keys = array_keys($data);
+        $string = '';
+        foreach($keys as $key)
+        {
+            $string .= $key .'=:'. $key .',';
+        }
+        $keys = rtrim($string, ',');
+        $data['param2'] = $param2;
+        $data['param4'] = $param4;
+        $sql = "UPDATE {$table} SET {$keys} WHERE {$param}=:param2 AND {$param3}=:param4";
+        //echo $sql;die;
+        $statement = $this->pdo->prepare($sql);
+        foreach($data as $key => $value){
+            $statement->bindValue(':'.$keys.'', $value);
+        }
+        $statement->bindValue(':param2', $param2);
+        $statement->bindValue(':param4', $param4);
         $statement->execute($data);
     }
     

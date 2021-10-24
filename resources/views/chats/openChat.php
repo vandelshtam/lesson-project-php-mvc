@@ -31,7 +31,7 @@
             </div>
 
             <!-- отправка сообщения -->
-            <form action="/message/<?=$chat[0]['name_chat'];?>" method="GET" class="col-lg-12 col-xl-12 ml-auto fixed-bottom mt-15">
+            <form action="/message/<?=$chat[0]['id'];?>" method="POST" class="col-lg-12 col-xl-12 ml-auto fixed-bottom mt-15">
                                 
                 <div class="border-faded bg-faded p-3 mb-g d-flex mt-3 ">
                     <input type="text"  name="message"  placeholder="Ввести текст сообщения" style="width: 1100px;">

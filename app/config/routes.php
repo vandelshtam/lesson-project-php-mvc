@@ -205,4 +205,32 @@ return [
         'controller' => 'chats',
         'action' => 'editChatShow',   
     ],
+    '/message/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'message',   
+    ],
+    '/delete_message/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'delete_message',   
+    ],
+    '/onFavorites/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'onFavorites',   
+    ],
+    '/offFavorites/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'offFavorites',   
+    ],
+    '/deleteChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'deleteChat',   
+    ],
+    '/roleModerator/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'roleModerator',   
+    ],
+    '/roleParticipant/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'roleParticipant',   
+    ],
 ];

@@ -1,5 +1,5 @@
 <?php use App\Models\flashMessage;?> 
-<main id="js-page-content" role="main" class="page-content mt-3">
+<main id="js-page-content" role="main" class="page-content mt-6">
 
         <!-- флеш сообщения - начало блока -->
         <!-- флеш сообщения -->
@@ -23,9 +23,7 @@
             <!-- флеш сообщения -->    
             <!-- флеш сообщения - окончание блока -->
         <div class="sticky-top bg-white">
-            <div class="subheader  mt-5">
-                <h1 class="subheader-title"> </h1>
-            </div>
+           
             <div class="subheader  mt-5">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список чатов
@@ -81,6 +79,9 @@
                                         <?=$chat['names'];?>
                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
+                                        <?php if ($chat['favorites'] == 1):?>
+                                            <span class="star ml-3"></span>
+                                        <?php endif;?>
                                     </a>
 
                                     <!--выпадающее подменю-->
