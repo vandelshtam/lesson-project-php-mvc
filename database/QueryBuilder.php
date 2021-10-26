@@ -32,7 +32,7 @@ class QueryBuilder {
     //"SELECT * FROM posts  INNER JOIN infos ON infos.id = posts.info_id INNER JOIN users ON users.id = posts.user_id";
     
     //запрос одной записи из нескольких таблиц
-    public function getWhereTableAll($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2 )
+    public function getWhereTableAll($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2,$join ,$where_param_3)
     {
         //$table_param - параметр из присоединяемой таблицы (user_id, post_id, и т д)
         //$table_param_2 - параметр из основной таблицы (users.id, posts.id и т д)
@@ -43,7 +43,8 @@ class QueryBuilder {
         foreach(array_slice($tables, 1) as $table){    
             $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.'.$table_param.'  = '.$table_param_2;
         }
-        $sql = $str .' WHERE '.array_pop($tables).'.'.$where_param.' LIKE :'.$where_param_2;
+        $sql = $str .$join.' WHERE '.array_pop($tables).'.'.$where_param.' LIKE :'.$where_param_2.$where_param_3;
+        //dd($sql);
         $statement = $this->pdo->prepare($sql);
         $statement->bindValue(':'.$where_param_2, $value);
         //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
@@ -51,9 +52,57 @@ class QueryBuilder {
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    //запрос одной записи из нескольких таблиц  по двум параметрам !!!!пока не работает  и не нужна
+    public function getWhereTableAllTwoParam($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2,$where_param_3,$where_param_4 )
+    {
+        //$table_param - параметр из присоединяемой таблицы (user_id, post_id, и т д)
+        //$table_param_2 - параметр из основной таблицы (users.id, posts.id и т д)
+        //$where_param - условие выборки из таблицы (user_id, post_id, и.т.п)
+        //$where_param_2 - значение условия выборки из таблицы (например id)
+        //образец формируемого запроса - $sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id   INNER JOIN posts ON posts.user_id = users.id WHERE posts.id LIKE :id"
+        $str = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){    
+            $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.'.$table_param.'  = '.$table_param_2;
+        }
+        $sql = $str .' WHERE '.array_pop($tables).'.'.$where_param.' LIKE :'.$where_param_2. ' AND '.$where_param_3.' LIKE '.$where_param_4;
+        //dd($sql);
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':'.$where_param_2, $value);
+        $statement->bindValue(':'.$where_param_3, $where_param_4);
+        //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
 
-    //получение всех записей из нескольких таблиц
-    public function getAllTableAll($tables,$table_param,$table_param_2){
+    //запрос одной записи из нескольких таблиц  по трем параметрам !!!!пока не работает  и не нужна
+    public function getWhereTableAllThreeParam($tables, $value)
+    {
+        //$table_param - параметр из присоединяемой таблицы (user_id, post_id, и т д)
+        //$table_param_2 - параметр из основной таблицы (users.id, posts.id и т д)
+        //$where_param - условие выборки из таблицы (user_id, post_id, и.т.п)
+        //$where_param_2 - значение условия выборки из таблицы (например id)
+        //образец формируемого запроса - $sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id   INNER JOIN posts ON posts.user_id = users.id WHERE posts.id LIKE :id"
+        //$sql = "SELECT * FROM userlists  INNER JOIN infos ON infos.user_id = users.id   INNER JOIN posts ON posts.user_id = users.id WHERE posts.id LIKE :id"
+        $sql = "SELECT * FROM users WHERE id = {$value}";
+        /*
+        $str = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){    
+            $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.'.$table_param.'  = '.$table_param_2;
+        }
+        */
+        //$sql = $str .' WHERE '.array_pop($tables).'.'.$where_param.' LIKE :'.$where_param_2. ' AND '.$where_param_3.' LIKE '.$where_param_4. ' AND '.$where_param_5.' LIKE '.$where_param_6;
+        dd($sql);
+        $statement = $this->pdo->prepare($sql);
+        //$statement->bindValue(':'.$where_param_2, $value);
+        //$statement->bindValue(':'.$where_param_3, $where_param_4);
+        //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    //получение всех записей из нескольких таблиц  дополнительными условиями
+    public function getAllTableAll($tables,$table_param,$table_param_2, $join , $where_param_3){
         //$table_param - параметр из присоединяемой таблицы (user_id, post_id, и т д)
         //$table_param_2 - параметр из основной таблицы (users.id, posts.id и т д)
         //образец формируемого запроса - $sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id   INNER JOIN posts ON posts.user_id = users.id"
@@ -61,10 +110,29 @@ class QueryBuilder {
         foreach(array_slice($tables, 1) as $table){    
             $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.'.$table_param.'  = '.$table_param_2;
         }
+        $sql = $sql.$join.$where_param_3;
+        //dd($sql);
         $statement=$this->pdo->prepare($sql);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    //получение всех записей из нескольких таблиц  дополнительными условиями
+    public function getTableAll($tables,$table_param,$table_param_2){
+        //$table_param - параметр из присоединяемой таблицы (user_id, post_id, и т д)
+        //$table_param_2 - параметр из основной таблицы (users.id, posts.id и т д)
+        //образец формируемого запроса - $sql = "SELECT * FROM users  INNER JOIN infos ON infos.user_id = users.id   INNER JOIN posts ON posts.user_id = users.id"
+        $sql = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){    
+            $sql .= '  INNER JOIN ' .$table. ' ON '. $table.'.'.$table_param.'  = '.$table_param_2;
+        }
+        
+        //dd($sql);
+        $statement=$this->pdo->prepare($sql);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 
     //получение записей из любой одной таблицы с сортировкой 
     public function getTableParams($table,$value,$param_value,$param_where,$param_order,$param_sort){   
@@ -95,6 +163,20 @@ class QueryBuilder {
          $statement = $this->pdo->prepare($sql);
          $statement->bindValue(':'.$param.'', $value);
          $statement->bindValue(':'.$param2.'', $value2);
+         //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+         $statement->execute();
+         return $statement->fetchAll(PDO::FETCH_ASSOC);
+     }
+
+     //получение одной записи по трем  условиям(полям) из любой одной таблицы
+     public function getOneParamThree($table,$param,$param2,$param3,$value,$value2,$value3)
+     {
+         $sql = "SELECT * FROM {$table} WHERE {$param}=:{$param} AND {$param2}=:{$param2} AND {$param3}=:{$param3}";
+         //$sql = "SELECT * FROM {$table} WHERE {$param}= {$value} AND {$param2}={$value2}";
+         $statement = $this->pdo->prepare($sql);
+         $statement->bindValue(':'.$param.'', $value);
+         $statement->bindValue(':'.$param2.'', $value2);
+         $statement->bindValue(':'.$param3.'', $value3);
          //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
          $statement->execute();
          return $statement->fetch(PDO::FETCH_ASSOC);
@@ -144,6 +226,17 @@ class QueryBuilder {
         $statement->execute($data);
     }
     
+    //удаление записи в любой таблице по двум параметрам
+    public function deleteTwoParam($table,$param, $param2,$value,$value2)
+    {
+        $sql = "DELETE FROM {$table} WHERE {$param}=:{$param} AND {$param2}=:{$param2}";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':'.$param.'', $value);
+        $statement->bindValue(':'.$param2.'', $value2);
+        //$statement->bindParam(':id', $id);//принимает только переменную, ввести строку или цифру нельзя
+        $statement->execute();    
+    }
+
     //удаление записи в любой таблице
     public function deleteParam($table,$param, $value)
     {

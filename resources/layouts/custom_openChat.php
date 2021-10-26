@@ -38,7 +38,7 @@
                 <a class="nav-link " href="/deleteChat/<?=$_SESSION['chat_id'];?>" onclick="return confirm('are you sure?');">Удалить<span class="sr-only">(current)</span></a>
             </li>
         </ul> 
-        <?php if ($_SESSION['admin']):?>
+        <?php if ($_SESSION['admin'] == 1):?>
             <?php if ($_SESSION['banned'] == 0):?>
             <ul class="navbar-nav md-3">
                 <li class="nav-item active">
@@ -52,7 +52,22 @@
                     <a class="nav-link " href="/unBannedChat/<?=$_SESSION['chat_id'];?>" onclick="return confirm('are you sure?');">Разблокировать<span class="sr-only">(current)</span></a>
                 </li>
             </ul> 
-            <?php endif;?>    
+            <?php endif;?>
+            
+        <?php endif;?> 
+        <?php if($_SESSION['auth'] == true && $_SESSION['admin'] != 1):?>
+            <ul class="navbar-nav md-3">
+                <li class="nav-item active">
+                    <a class="nav-link " href="/exitChat/<?=$_SESSION['user_id'];?>" onclick="return confirm('are you sure?');">Выйти из чата<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>     
+        <?php endif;?>
+        <?php if($_SESSION['author_chat'] == 'author' || $_SESSION['admin'] == 1):?>
+            <ul class="navbar-nav md-3">
+                <li class="nav-item active">
+                    <a class="nav-link " href="/roleChat/<?=$_SESSION['user_id'];?>">Роль<span class="sr-only">(current)</span></a>
+                </li>
+            </ul>     
         <?php endif;?>
         
         <!-- информации о чате в панели навигации -->

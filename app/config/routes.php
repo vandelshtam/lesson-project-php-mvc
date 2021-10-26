@@ -233,4 +233,16 @@ return [
         'controller' => 'chats',
         'action' => 'roleParticipant',   
     ],
+    '/deleteUserChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'deleteUserChat',   
+    ],
+    '/exitChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'exitChat',   
+    ],
+    '/roleChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'roleChat',   
+    ],
 ];

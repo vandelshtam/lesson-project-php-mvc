@@ -85,10 +85,8 @@
                             <div class="row" id="js-contacts">    
                             <?php foreach ($userlists as $user):?>
                                 <?php if($_SESSION['admin'] == 1 || $chat['author_user_id'] == $_SESSION['user_id']):?>
-                                    <div class="row " id="js-contacts">
-                
-                                    <div class="col-xl-4 ">
-                                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover bg-blue bg-info-gradient" data-filter-tags="">
+                                <div class="col-xl-4 ">
+                                    <div class="card border shadow-0 mb-g shadow-sm-hover bg-blue bg-info-gradient" >
                                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                                             <div class="d-flex flex-row align-items-center">
                                                     <span class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></span>
@@ -110,16 +108,16 @@
                                                         
                                                         <p class="dropdown-item md-1" href="/roleParticipantShow/<?=$user['user_id'];?>">
                                                                 <i class="fa fa-sun md-1"></i>        
-                                                            Текущая роль - "<?=$user['role'];?>"</p>
-                                                        <?php if ($_SESSION['admin'] == 1 || $chat['author_user_id'] == $_SESSION['user_id']):?>
-                                                            <?php if($user['role'] == 'participant'):?>
+                                                            Текущая роль - "<?=$user['role_chat'];?>"</p>
+                                                        <?php if ($_SESSION['admin'] == 1 || $chat['author_user_id'] == $_SESSION['user_id'] || $user['role_chat'] == 'moderator'):?>
+                                                            <?php if($user['role_chat'] == 'participant'):?>
                                                                 <a class="dropdown-item md-1" href="/roleModerator/<?=$user['user_id'];?>">
                                                                     <i class="fa fa-lock md-1"></i>
-                                                                Предостиавить роль модератора</a>
-                                                            <?php elseif ($user['role'] == 'moderator'):?>
+                                                                Предоставить роль модератора</a>
+                                                            <?php elseif ($user['role_chat'] == 'moderator'):?>
                                                                 <a class="dropdown-item md-1" href="/roleParticipant/<?=$user['user_id'];?>">
                                                                     <i class="fa fa-lock md-1"></i>
-                                                                Предостиавить роль пользователя</a>
+                                                                Предоставить роль пользователя</a>
                                                             <?php endif;?> 
                                                         <?php endif;?>
                                                         <a class="dropdown-item md-1" href="/deleteUserChat/<?=$user['user_id'];?>" onclick="return confirm('are you sure?');">
@@ -134,11 +132,12 @@
                                                 <span class="collapsed-hidden">+</span>
                                                 <span class="collapsed-reveal">-</span>
                                             </button>        
-                                            </div>    
-                                            </div>
-                                        </div>
-                                    </div> 
-                                <?php endif;?>
+                                        </div>    
+                                    </div>
+                                </div>
+                              </div> 
+                            </div>
+                            <?php endif;?>
                             <?php endforeach;?>    
                             </div> 
 
@@ -147,22 +146,22 @@
                             <div class="row" id="js-contacts">
                                 
                                 <?php foreach ($users as $user):?>
-                                <?php if($_SESSION['admin'] == 1  || $_SESSION['user_id'] == $chat['user_id']):?>
+                                <?php if($_SESSION['admin'] == 1  || $_SESSION['user_id'] == $chat['author_user_id']):?>
                                 <div class="col-xl-4">
-                                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="">
+                                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" >
                                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                                             <div class="d-flex flex-row align-items-center">
-                                                    <span class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user[0]['avatar'];?>'); background-size: cover;"></span>
+                                                    <span class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></span>
                                                 </span>
                                                 <div class="info-card-text flex-1 md-1">
                                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                                        <?=$user[0]['name'];?>
+                                                        <?=$user['name'];?>
                                                     </a>
                 
                                                     <!--подменю-->
-                                                    <?php if ($_SESSION['auth'] == true && $_SESSION['admin'] == 1):?>
+                                                    <?php if ($_SESSION['auth'] == true || $_SESSION['admin'] == 1):?>
                                                         
-                                                        <a class="dropdown-item md-auto" href="/user/<?=$user[0]['user_id'];?>">
+                                                        <a class="dropdown-item md-auto" href="/user/<?=$user['user_id'];?>">
                                                             <i class="fa fa-edit md-auto"></i>
                                                         Открыть  профиль</a>
                                                     <?php endif;?>      
@@ -173,23 +172,28 @@
                                                     <span class="collapsed-reveal">-</span>
                                                 </button>
                                                 <span>
-                                                       <div class="form-group text-left">
-                                                        <div class="custom-control custom-checkbox">
-                                                            <input type="text" class="custom-control-input" name="add_user"   value="<?=$user[0]['user_id'];?>" hidden>
-                                                            <input type="checkbox" class="custom-control-input" name="rememberme_<?=$user[0]['user_id'];?>" id="rememberme_<?=$user[0]['user_id'];?>">
-                                                            <label class="custom-control-label" for="rememberme_<?=$user[0]['user_id'];?>">Добавить пользователя</label>
-                                                        </div>
+                                                    <div class="form-group text-left">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="text" class="custom-control-input" name="add_user"   value="<?=$user['user_id'];?>" hidden>
+                                                                <input type="checkbox" class="custom-control-input" name="rememberme_<?=$user['user_id'];?>" id="rememberme_<?=$user['user_id'];?>">
+                                                                <label class="custom-control-label" for="rememberme_<?=$user['user_id'];?>">Добавить пользователя</label>
+                                                            </div>
                                                     </div>     
-                                                    </span>
+                                                </span>
                                             </div>
-                                        </div>    
+                                        </div> 
+                                           
                                     </div>
+                                      
                                 </div> 
                                 <?php endif;?> 
                                 <?php endforeach;?>     
-                            </div>     
-                    </div>   
+                            </div> 
+                               
+                    </div> 
+                     
                 </div>
+                
             </div>
        </div>
 

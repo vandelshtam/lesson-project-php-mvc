@@ -82,30 +82,31 @@
                                         <?=$chat['names'];?>
                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
-                                        <?php if ($chat['favorites'] == 1):?>
-                                            <span class="star ml-3"></span>
+                                        <?php if($_SESSION['admin'] != 1 && $chat['favorites'] == 1):?>
+                                            <span class="star ml-3">В избранном</span>
+                                        
+                                        <?php elseif($_SESSION['admin'] != 1 && $chat['favorites_chat'] == 1):?> 
+                                            <span class="star ml-3">В избранном</span>
                                         <?php endif;?>
                                     </a>
 
                                     <!--выпадающее подменю-->
-                                    <?php if ($_SESSION['admin'] == 1  || ($_SESSION['user_id'] && $chat['banned'] !=1)):?>
+                                    <?php if ($_SESSION['admin'] == 1  || ($_SESSION['auth'] == true && $chat['banned'] !=1)):?>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="/openChat/<?=$chat['id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Открыть чат</a> 
-                                        <?php if ($chat['favorites'] == 1):?>
-                                        <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['id'];?>">
+                                        <?php if ($chat['favorites'] == 1 || $chat['favorites_chat'] == 1):?>
+                                        <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['chat_id'];?>">
                                             <i class="fa fa-lock"></i>
                                         Удалить из  избранного</a>    
                                         <?php else:?>
-                                        <a class="dropdown-item" href="/onFavorites/<?=$chat['id'];?>">
+                                        <a class="dropdown-item" href="/onFavorites/<?=$chat['chat_id'];?>">
                                             <i class="fa fa-lock"></i>
                                         Добавить в избранные</a>
                                         <?php endif;?>
                                         
-                                        <?php if ($_SESSION['admin'] == 1 
-                                        || ($_SESSION['user_id'] == $chat['author_user_id'] &&  ($chat['banned'] !=1)) 
-                                        || $chat['role'] == 'author'):?>
+                                        <?php if ($_SESSION['admin'] == 1 || ($_SESSION['user_id'] == $chat['author_user_id'] &&  $chat['banned'] !=1) || $chat['role_chat'] == 'moderator'):?>
                                         <a href="/editChatShow/<?=$chat['id'];?>" class="dropdown-item" >
                                             <i class="fa fa-window-close"></i>
                                         Редактировать чат
@@ -122,9 +123,7 @@
                                             Заблокировать чат</a>      
                                             <?php endif;?>   
                                         <?php endif;?> 
-                                        <?php if ($_SESSION['admin'] == 1  
-                                        || ($_SESSION['user_id'] == $chat['author_user_id'] &&  ($chat['banned'] !=1)) 
-                                        || $chat['role'] == 'author'):?>  
+                                        <?php if ($_SESSION['admin'] == 1  || ($_SESSION['user_id'] == $chat['author_user_id'] &&  $chat['banned'] !=1)):?>  
                                         <a href="/deleteChat/<?=$chat['id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                             <i class="fa fa-window-close"></i>
                                         Удалить чат</a>
@@ -161,7 +160,7 @@
 </main>
 
 <script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()

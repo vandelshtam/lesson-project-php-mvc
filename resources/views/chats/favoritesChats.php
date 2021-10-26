@@ -79,9 +79,9 @@
                                         <?=$chat['names'];?>
                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
-                                        <?php if ($chat['favorites'] == 1):?>
+                                        
                                             <span class="star ml-3"></span>
-                                        <?php endif;?>
+                                        
                                     </a>
 
                                     <!--выпадающее подменю-->
@@ -90,12 +90,12 @@
                                         <a class="dropdown-item" href="/openChat/<?=$chat['id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Открыть чат</a> 
-                                        <?php if ($chat['favorites'] == 1):?>
-                                        <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['id'];?>">
+                                        <?php if ($chat['favorites'] == 1 || $chat['favorites_chat'] == 1):?>
+                                        <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['chat_id'];?>">
                                             <i class="fa fa-lock"></i>
                                         Удалить из  избранного</a>    
                                         <?php else:?>
-                                        <a class="dropdown-item" href="/onFavorites/<?=$chat['id'];?>">
+                                        <a class="dropdown-item" href="/onFavorites/<?=$chat['chat_id'];?>">
                                             <i class="fa fa-lock"></i>
                                         Добавить в избранные</a>
                                         <?php endif;?>
@@ -158,7 +158,7 @@
 </main>
 
 <script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()

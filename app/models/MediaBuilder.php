@@ -39,10 +39,11 @@ public function loadingFileImage($new_image, $name_image_file){
 //удаление картинки из папки проекта
 public function delete_image($table,$param,$param2,$value)
 {     
-    $image = $this->db->getOneParam($table,$param,$value); 
+    $image = $this->db->getOneParam($table,$param,$value);
+    //dd($image[''.$param2.'']); 
     if(isset($image[''.$param2.'']))
     {
-        unlink($image[''.$param2.'']);
+        unlink('uploads/'.$image[''.$param2.'']);
     }    
 }
 
@@ -79,11 +80,9 @@ function delete_all_images_file($table,$value,$param_value,$param_where,$param_o
   foreach($images as $image){
     if(isset($image['image']))
     {
-        unlink($image['image']);
+        unlink('uploads/'.$image['image']);
     }
   }    
 }
-
-
 
 }
