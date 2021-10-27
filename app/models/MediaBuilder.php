@@ -8,6 +8,8 @@ class MediaBuilder extends Model{
 
 //  все необходимые методы ==========
 
+
+
 //создание имени новой картинки
 public function makeNewImage($name_image_file){ 
   $image_name=$_FILES[''.$name_image_file.'']['name']; 
@@ -17,6 +19,9 @@ public function makeNewImage($name_image_file){
   $new_avatar = $random_string.$image_name;
   return $new_avatar;
 }
+
+
+
 
 //загрузка новой картинки в папку проекта
 public function loadingFileImage($new_image, $name_image_file){
@@ -36,31 +41,43 @@ public function loadingFileImage($new_image, $name_image_file){
 }
 
 
+
+
 //удаление картинки из папки проекта
 public function delete_image($table,$param,$param2,$value)
 {     
     $image = $this->db->getOneParam($table,$param,$value);
-    //dd($image[''.$param2.'']); 
     if(isset($image[''.$param2.'']))
     {
         unlink('uploads/'.$image[''.$param2.'']);
     }    
 }
 
+
+
+
 //запись новой картинки в галерею поста
 public function createImage($table,$data){
   $this->db->create($table,$data);
 }
+
+
+
 
 //обновление аватара поста
 public function updateAvatar($table, $data, $param, $value){
   $this->db->updateAny($table, $data, $param, $value);   
 }
 
+
+
+
  // удалить запись ссылки на фотографию из таблицы
  public function  deleteImage($table,$id){          
   return $this->db->delete($table,$id);
 } 
+
+
 
 
 //генерирование приставки к имени картинки, для создания нового названия 
@@ -73,6 +90,9 @@ private function generate_string($input,$strength){
     }
     return $random_string;  
 }
+
+
+
 
 //удаление группы картинок
 function delete_all_images_file($table,$value,$param_value,$param_where,$param_order,$param_sort){     

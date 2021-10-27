@@ -245,4 +245,8 @@ return [
         'controller' => 'chats',
         'action' => 'roleChat',   
     ],
+    '/setRoleChat/{id:\d+}' => [
+        'controller' => 'chats',
+        'action' => 'setRoleChat',   
+    ],
 ];

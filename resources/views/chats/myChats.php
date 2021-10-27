@@ -93,13 +93,16 @@
                                         <a class="dropdown-item" href="/openChat/<?=$chat['id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Открыть чат</a> 
-                                        <?php if ($chat['favorites'] == 1 || $chat['favorites_chat'] == 1):?>
+                                        <?php if (isset($chat['favorites_chat']) == 1):?>
+                                            <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['chat_id'];?>">
+                                            <i class="fa fa-sun"></i>
+                                        <?php elseif ($chat['favorites'] == 1):?>
                                         <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['chat_id'];?>">
-                                            <i class="fa fa-lock"></i>
+                                            <i class="fa fa-sun"></i>
                                         Удалить из  избранного</a>    
                                         <?php else:?>
                                         <a class="dropdown-item" href="/onFavorites/<?=$chat['chat_id'];?>">
-                                            <i class="fa fa-lock"></i>
+                                            <i class="fa fa-sun"></i>
                                         Добавить в избранные</a>
                                         <?php endif;?>
                                         

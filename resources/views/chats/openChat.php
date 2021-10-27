@@ -49,7 +49,7 @@
                 <?php if($_SESSION['user_id'] != $message['user_id']):?>
                 <div class="col-lg-8 col-xl-8 ml-auto mb-3 mt-3">
                     <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover rounded">
-                        <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top bg-warning bg-info-gradient" >
+                        <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top bg-green bg-success-gradient" >
                             <div class="d-flex flex-row align-items-center ">
                                 
                                 <!-- статус пользователя -->
@@ -144,5 +144,5 @@
 </main>
 
 <script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
-    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
+<script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     

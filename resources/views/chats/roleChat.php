@@ -1,12 +1,41 @@
 <?php use App\Models\flashMessage;?>    
-    <main id="js-page-content" role="main" class="page-content mt-3">
+    <main id="js-page-content" role="main" class="page-content mt-6">
         <div class="subheader">
             <h1 class="subheader-title">
                 <i class='subheader-icon fal fa-sun'></i> Установить роль
             </h1>
         </div>
-            
-        <form action="/roleChat/<?=$vars['users_id'];?>" method="POST">
+<!-- флеш сообщения -->
+<?php if(isset($_SESSION['success'])):;?>
+    <div class="alert alert-success" >
+        <?php flashMessage::display_flash('success') ;?>
+    </div>
+<?php endif;?>
+
+<?php if(isset($_SESSION['danger'])):;?>
+    <div class="alert alert-danger" ">
+        <?php flashMessage::display_flash('danger') ;?>
+    </div>
+<?php endif;?> 
+                                            
+<?php if(isset($_SESSION['info'])):;?>
+    <div class="alert alert-info" ">
+        <?php flashMessage::display_flash('info') ;?>
+    </div>
+<?php endif;?>
+<!-- флеш сообщения -->
+
+<!-- сообщения об ошибках-->
+<?php if(!empty($errors)):?> 
+    <div class="alert alert-danger text-dark" role="alert">
+        <strong>Уведомление!</strong>   
+            <?php foreach($errors as $error):?>
+                <p><?=$error; ?></p>
+            <?php endforeach;?>        
+    </div>
+<?php endif;?>    
+<!-- сообщения об ошибках-->            
+        <form action="/setRoleChat/<?=$_SESSION['chat_id'];?>" method="POST">
             <div class="row">
                 <div class="col-xl-6">
                     <div id="panel-1" class="panel">
@@ -20,20 +49,28 @@
                                         <!-- status -->
                                         <div class="form-group">
                                             <label class="form-label" for="example-select">Выберите статус</label>
-                                            <select class="form-control" id="example-select" name="status">
-                                            <?php foreach ($vars['status'] as $key => $var):?>
-                                                
-                                                    <?php if ($key == $vars['users']['status']): ?>
-                                                        <option selected><?=$vars['status'][$key]; ?></option>
-                                                    <?php else:?>
-                                                        <option><?=$var;?></option>
-                                                    <?php endif;?>
+                                            <select class="form-control" id="example-select" name="role">
+                                            <?php foreach ($statuses as $key => $status):?>       
+                                                    <option><?=$status;?></option>      
+                                            <?php endforeach;?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <!-- status -->
+                                        <div class="form-group">
+                                            <label class="form-label" for="example-select">Выберите статус</label>
+                                            
+                                            <select class="form-control" id="example-select" name="user">
+                                            <?php foreach ($users as $key => $user):?> 
+                                                          
+                                                    <option value="<?=$user['user_id'];?>">Имя пользователя : <?=$user['name'];?>;   Текущая роль : <?=$user['role_chat'];?></option>       
                                             <?php endforeach;?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                        <button class="btn btn-warning">Set Role</button>
+                                        <button class="btn btn-warning" onclick="return confirm('ВНИМАНИЕ! предоставляя роль author другому пользователю, вы теряете эту роль. Вам автоматически будет присвоена роль moderator, вы потеряете часть возможностей. Are you sure?');">Set Role</button>
                                     </div>
                                 </div>
                             </div>
@@ -42,49 +79,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row p-2 form-check" id="js-contacts">
             
-                                <?php if($_SESSION['admin'] == 1 || $_SESSION['auth'] == true):?>
-                                <?php foreach ($users as $user):?>
-                                
-                                <div class="col-xl-4 m-auto">
-
-                                    <div id="c_1" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="">
-                                        <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
-                                            <div class="d-flex flex-row align-items-center">
-                                                    <span class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></span>
-                                                </span>
-                                                <div class="info-card-text flex-1 md-1">
-                                                    <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
-                                                        <?=$user['name'];?>   
-                                                    </a>
-                
-                                                    <!--подменю-->
-                                                    <?php if ($_SESSION['admin'] == 1 || $_SESSION['auth'] == true):?>
-                                                        
-                                                        <a class="dropdown-item col-md-4" href="/user/<?=$user['id'];?>">
-                                                            <i class="fa fa-edit md-1"></i>
-                                                        Открыть  профиль</a>
-                                                    <?php endif;?>     
-                                                      
-                                                </div>
-                                                <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
-                                                    <span class="collapsed-hidden">+</span>
-                                                    <span class="collapsed-reveal">-</span>
-                                                </button>
-                                                <span>
-                                                            <input class="form-check-input" type="text"  name="user_<?=$user['id'];?>"   value="<?=$user['id'];?>" hidden>
-                                                            <input class="form-check-input" type="radio"  name="flexRadioDefault" id="flexRadioDefault1">
-                                                            <label class="form-check-label" for="flexRadioDefault1">Выбрать пользователя</label>
-                                                    </span>
-                                            </div>
-                                        </div>    
-                                    </div>
-
-                                </div> 
-                    <?php endforeach;?>
-                    <?php endif;?> 
-                    </div>    
                         
         </form>
     </main>

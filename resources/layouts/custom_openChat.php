@@ -32,12 +32,14 @@
             <li class="nav-item active">
                 <a class="nav-link " href="/editChatShow/<?=$_SESSION['chat_id'];?>" >Редактировать <span class="sr-only">(current)</span></a>
             </li>
-        </ul>    
+        </ul> 
+        <?php if ($_SESSION['admin'] == 1 || $_SESSION['author_user_id'] == $_SESSION['user_id'] ):?>   
         <ul class="navbar-nav md-3">
             <li class="nav-item active">
                 <a class="nav-link " href="/deleteChat/<?=$_SESSION['chat_id'];?>" onclick="return confirm('are you sure?');">Удалить<span class="sr-only">(current)</span></a>
             </li>
         </ul> 
+        <?php endif;?>
         <?php if ($_SESSION['admin'] == 1):?>
             <?php if ($_SESSION['banned'] == 0):?>
             <ul class="navbar-nav md-3">
@@ -62,7 +64,7 @@
                 </li>
             </ul>     
         <?php endif;?>
-        <?php if($_SESSION['author_chat'] == 'author' || $_SESSION['admin'] == 1):?>
+        <?php if($_SESSION['author_user_id'] == $_SESSION['user_id'] || $_SESSION['admin'] == 1):?>
             <ul class="navbar-nav md-3">
                 <li class="nav-item active">
                     <a class="nav-link " href="/roleChat/<?=$_SESSION['user_id'];?>">Роль<span class="sr-only">(current)</span></a>

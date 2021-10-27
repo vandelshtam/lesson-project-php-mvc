@@ -82,11 +82,11 @@
                                         <?=$chat['names'];?>
                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
-                                        <?php if($_SESSION['admin'] != 1 && $chat['favorites'] == 1):?>
-                                            <span class="star ml-3">В избранном</span>
+                                        <?php if($_SESSION['admin'] == 1 && $chat['favorites'] == 1):?>
+                                            <span class="star ml-3"></span>
                                         
                                         <?php elseif($_SESSION['admin'] != 1 && $chat['favorites_chat'] == 1):?> 
-                                            <span class="star ml-3">В избранном</span>
+                                            <span class="star ml-3"></span>
                                         <?php endif;?>
                                     </a>
 
@@ -96,13 +96,16 @@
                                         <a class="dropdown-item" href="/openChat/<?=$chat['id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Открыть чат</a> 
-                                        <?php if ($chat['favorites'] == 1 || $chat['favorites_chat'] == 1):?>
+                                        <?php if (isset($chat['favorites_chat']) == 1):?>
+                                            <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['chat_id'];?>">
+                                            <i class="fa fa-sun"></i>
+                                        <?php elseif ($chat['favorites'] == 1):?>
                                         <a class="dropdown-item btn-warning" href="/offFavorites/<?=$chat['chat_id'];?>">
-                                            <i class="fa fa-lock"></i>
+                                            <i class="fa fa-sun"></i>
                                         Удалить из  избранного</a>    
                                         <?php else:?>
                                         <a class="dropdown-item" href="/onFavorites/<?=$chat['chat_id'];?>">
-                                            <i class="fa fa-lock"></i>
+                                            <i class="fa fa-sun"></i>
                                         Добавить в избранные</a>
                                         <?php endif;?>
                                         
@@ -112,7 +115,7 @@
                                         Редактировать чат
                                         </a>
                                         <?php endif;?>
-                                        <?php if ($_SESSION['admin']):?>
+                                        <?php if ($_SESSION['admin'] == 1):?>
                                             <?php if ($chat['banned'] == 1):?>
                                             <a class="dropdown-item btn-warning" href="/unBannedChat/<?=$chat['id'];?>">
                                                 <i class="fa fa-lock"></i>

@@ -30,6 +30,7 @@ class ChatsController extends Controller{
             ];
         $_SESSION['navigate'] = $navigate;    
         $data = ['users', 'infos', 'chats'];
+        $data_userlist = ['users', 'infos', 'userlists']; 
         if($_SESSION['admin'] == 1){
             $vars = [
                 'chats' => $this->model->chatsAll($data,'user_id', 'users.id','', ''),
@@ -37,13 +38,11 @@ class ChatsController extends Controller{
                 ];
         }
         else{
-            $data_userlist = ['users', 'infos', 'userlists']; 
             $chats = $this->model->userlistChat($data_userlist, $_SESSION['user_id'],'user_id','user_id', 'user_id', 'users.id',' INNER JOIN chats ON chats.id = userlists.chat_id ', '');
             $vars = [
                 'chats' => $chats,
                 'navigate'  => $navigate
                 ];
-                //dd($vars);
         }
         $this->view->render('Chats list page', $vars);
     }
@@ -66,30 +65,26 @@ class ChatsController extends Controller{
         ];
         $_SESSION['navigate'] = $navigate;
         $data = ['users', 'infos','chats'];
+        
         if($_SESSION['admin'] == 1){
+            $chats = $this->model->chatsAllFavorites($data, 1, 'favorites', 'value', 'user_id', 'users.id','','');
+            if(count($chats) == false){flashMessage::addFlash('danger', 'У вас нет избранных чатов');}
             $vars = [
-                'chats' => $this->model->chatsAllFavorites($data, 1, 'favorites', 'value', 'user_id', 'users.id','',''),
+                'chats' => $chats,
                 'navigate'  => $navigate
                 ];
         }
         else{
             $data_userlist = ['users', 'infos','userlists']; 
-            
             $chats = $this->model->userlistChat($data_userlist, $_SESSION['user_id'],'user_id','user_id', 'user_id', 'users.id',' INNER JOIN chats ON chats.id = userlists.chat_id ', ' AND userlists.favorites_chat LIKE 1');
-            if(count($chats) == false){
-                flashMessage::addFlash('danger', 'У вас нет избранных чатов');
+            if(count($chats) == false){flashMessage::addFlash('danger', 'У вас нет избранных чатов');}
                 $vars = [
                     'chats' => $chats,
                     'navigate'  => $navigate
                     ];
-            }
-            else{
-                $vars = [
-                    'chats' => $chats,
-                    'navigate'  => $navigate
-                    ];
-            }              
-        }   
+        }
+            
+           
         $this->view->render('Chats favorites page', $vars);
     }
 
@@ -113,28 +108,21 @@ class ChatsController extends Controller{
         $_SESSION['navigate'] = $navigate;    
         $data = ['users', 'infos', 'chats'];
         if($_SESSION['admin'] == 1){
+            $chats = $this->model->chatsAllMy($data, $_SESSION['user_id'], 'author_user_id', 'value', 'user_id', 'users.id','','');
+            if(count($chats) == false){flashMessage::addFlash('danger', ' Вы пока не создали ни одного чата');}
         $vars = [
-            'chats' => $this->model->chatsAllMy($data, $_SESSION['user_id'], 'author_user_id', 'value', 'user_id', 'users.id','',''),
+            'chats' => $chats,
             'navigate'  => $navigate
             ];
         }
         else{
             $data_userlist = ['users', 'infos','userlists']; 
-            
             $chats = $this->model->userlistChat($data_userlist, $_SESSION['user_id'],'user_id','user_id', 'user_id', 'users.id',' INNER JOIN chats ON chats.id = userlists.chat_id ', ' AND chats.author_user_id LIKE '.$_SESSION['user_id'].'');
-            if(count($chats) == false){
-                flashMessage::addFlash('danger', ' Вы пока не создали ни одного чата');
+            if(count($chats) == false){flashMessage::addFlash('danger', ' Вы пока не создали ни одного чата');}
                 $vars = [
                     'chats' => $chats,
                     'navigate'  => $navigate
-                    ];
-            }
-            else{
-                $vars = [
-                    'chats' => $chats,
-                    'navigate'  => $navigate
-                    ];
-            }              
+                    ];    
         }
         $this->view->render('My Chats list', $vars);
     }
@@ -161,7 +149,7 @@ class ChatsController extends Controller{
         $data_messages = ['users', 'infos', 'messages']; 
         $tables = ['users', 'infos', 'chats']; 
         $chat = $this->model->chatOne($tables,$this->route['id'], 'chat_id','chat_id', 'user_id', 'users.id','','');
-        //dd($chat);
+
         $navigate = [
             'myChats' => 0,
             'favorites' => 0,
@@ -250,12 +238,6 @@ class ChatsController extends Controller{
             ]; 
             
         $validation = new Validator($_POST);
-
-        if($_SESSION['admin'] != 1 && $_SESSION['auth'] != true){
-            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
-            $this->view->redirect('/posts');
-        } 
-
         
         if(empty($_POST['name_chat'])){
             flashMessage::addFlash('info', 'Нужно обязательно заполнить пол: "name chat"');    
@@ -264,13 +246,13 @@ class ChatsController extends Controller{
             
             if($validation->validateChatForm() != null){
                 $errors = $validation->validateChatForm();
+                $this->view->render('Add new chat', $vars, $errors); die;
             }
             else{
                 
                 $chat = $this->model->getChat('chats','name_chat',$_POST['name_chat']);
 
-                if(!empty($chat))
-                {
+                if(!empty($chat)){
                     flashMessage::addFlash('info', 'Не возможно добавить чат с таким названием, это название уже занято');    
                 }
                 else{
@@ -291,7 +273,7 @@ class ChatsController extends Controller{
                             'c' => 0,
                             'search' => strtolower($_POST['name_chat']),   
                         ];
-
+                        // проверка наличия аватара и валидация до создания запимси в таблице
                         if(!empty($_FILES['avatar_chat']['name'])){
                             $validate = new Validator($_POST);
                             if($validate->validateImageAvatarChat() != null){
@@ -306,7 +288,7 @@ class ChatsController extends Controller{
                                 }
                             }
                         }
-                        
+                    //создание записи чата в таблицу    
                     $this->model->createChat('chats', $dataChat);
                     $newChatId =  $this->model->newChatId();
                     $c = 'c_'.$newChatId;
@@ -321,7 +303,7 @@ class ChatsController extends Controller{
                     foreach($arrey_user_new_chat as $user_id){
                         $arrey_db[] = ['user_id' => $user_id,  'chat_id' => $newChatId, 'userlistable_id' => $newChatId, 'userlistable_type' => 'App\Models\Chat','name_list_chat' => $_POST['name_chat'], 'role_chat' => 'participant'];    
                     }
-                   
+                    //запись пользователей в таблицу userlists
                     foreach($arrey_db as $data){  
                         $this->model->createUserlist('userlists',$data);
                     }
@@ -329,6 +311,7 @@ class ChatsController extends Controller{
                     $data_chat = ['user_id' => $_SESSION['user_id'],  'chat_id' => $newChatId, 'userlistable_id' => $newChatId, 'userlistable_type' => 'App\Models\Chat','name_list_chat' => $_POST['name_chat'], 'role_chat' => 'author'];
                     $this->model->createUserlist('userlists',$data_chat);
 
+                    //запись аватара в таблицу после валидации имени чата и записи миени в таблицу
                     if(!empty($_FILES['avatar_chat']['name'])){                       
                         $media = new MediaBuilder;
                         $dataAvatar = ['chat_avatar' => $new_avatar];
@@ -353,7 +336,6 @@ class ChatsController extends Controller{
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/chats');
         } 
-        //dd($_SESSION['navigate']['favorites']);
         $userInChat = $this->model->getUserInChat('userlists','chat_id','user_id',$this->route['id'],$_SESSION['user_id']);
         $chat = $this->model->getChat('chats','id',$this->route['id']);
 
@@ -364,7 +346,7 @@ class ChatsController extends Controller{
         
         $this->model->set_session_chat($chat);
         
-        if($_SESSION['admin'] != 1  && $userInChat['role_chat'] != 'moderator' && $chat['author_user_id'] != $_SESSION['user_id']){
+        if($_SESSION['admin'] != 1  && $userInChat[0]['role_chat'] != 'moderator' && $chat['author_user_id'] != $_SESSION['user_id']){
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/chats');
         }
@@ -389,7 +371,7 @@ class ChatsController extends Controller{
             'users' => $users_add_not_in_chat,
             'userlists' => $userlists,
              ]; 
-//dd($vars);
+
         if(!empty($_FILES['avatar_chat']['name'])){
             $this->updateAvatar($vars,$errors);
         }
@@ -400,7 +382,6 @@ class ChatsController extends Controller{
             if($_POST['name_chat'] != $chat['name_chat']){
                 $this->changeNameChat($vars,$errors);
             }
-
             //запись в таблицу нового состава уастников чата
             if(!empty($_POST['add_user'])){   
                 $this->addNewUserInChat($users_add_not_in_chat,$chat);
@@ -452,12 +433,12 @@ class ChatsController extends Controller{
 
 
     public function delete_messageAction(){
-        $get_message = $this->model->getMessageUserInChat('messages','id','user_id',$this->route['id'],$_SESSION['user_id']);
+        $get_message = $this->model->getChat('messages','id',$this->route['id']);
         if(empty($get_message)){
-            flashMessage::addFlash('danger', ' Чат не найден');
-            $this->view->redirect('/chats');
+            flashMessage::addFlash('danger', ' сообщение не найдено');
+            $this->view->redirect('/openChat/'.$_SESSION['chat_id']);
         }
-        if($_SESSION['auth'] != true){
+        if($get_message['user_id'] != $_SESSION['user_id'] && $_SESSION['admin'] !=1){
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/chats');
         } 
@@ -627,7 +608,6 @@ class ChatsController extends Controller{
         } 
         
         $userInChat = $this->model->getUserInChat('userlists','chat_id','user_id',$_SESSION['chat_id'],$this->route['id']);
-        //dd($userInChat[0]['role_chat']);
         $chat = $this->model->getChat('chats','id',$_SESSION['chat_id']);
         
         if($userInChat == false){
@@ -655,16 +635,13 @@ class ChatsController extends Controller{
             $this->view->redirect('/chats');
         } 
         
-        $userInChat = $this->model->getUserInChat('userlists','chat_id','user_id',$_SESSION['chat_id'],$this->route['id']);
         $chat = $this->model->getChat('chats','id',$_SESSION['chat_id']);
         
         if($_SESSION['admin'] != 1  && $chat['author_user_id'] != $_SESSION['user_id']){
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/chats');
         }
-        if($_POST){
-        dd($_POST);
-        }
+        
         $errors = [];
         $navigate = [
             'myChats' => 0,
@@ -672,34 +649,81 @@ class ChatsController extends Controller{
             'chatsAll' => 0,
             'openChat' => 0]; 
         $data_userlist = ['users', 'infos', 'userlists'];     
-        //$userInChat = $this->model->getUserInChat('userlists','chat_id','user_id',$this->route['id'],$_SESSION['user_id']); 
-        $userlists = $this->model->userlistChat($data_userlist, $this->route['id'], 'chat_id','chat_id', 'user_id', 'users.id','','');
+        $userlists = $this->model->userlistChat($data_userlist, $_SESSION['chat_id'], 'chat_id','chat_id', 'user_id', 'users.id','','');
+        
         $statuses = [
-            'participant' => 0,
-            'moderator' => 1,
-            'author' => 2
+            'participant' ,
+            'moderator',
+            'author'
         ];
-        $status = $statuses[$_POST['role_chat']];
-        $data = [
-            'role_chat' => $status
-        ];
-        if($_POST['role_chat'] == 'author'){
-        $data_chat = [
-            'role' => $status,
-            'author_user_id'  => $this->route['id']
-        ];
-        $this -> model -> updateTableTwoParam('userlists',$data,'user_id',$this->route['id'], 'chat_id', $_SESSION['chat_id']); 
-        $this -> model -> updateChat('chats',$data_chat,'id',$this->route['id']); 
-        flashMessage::addFlash('success', 'Вы успешно изменили роль участника чата');
-        }
         $vars = [
             'chat' => $this->model->getChat('chats','id',$this->route['id']),
             'navigate'  => $navigate,
             'users' => $userlists,
+            'statuses' => $statuses
              ]; 
         $this->view->render('roleChat', $vars,$errors);
-        //$this->view->redirect('/');
     }
+
+
+
+
+
+
+    public function setRoleChatAction(){
+        
+        if($_SESSION['auth'] != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/chats');
+        } 
+        
+        $chat = $this->model->getChat('chats','id',$_SESSION['chat_id']);
+        
+        if($_SESSION['admin'] != 1  && $chat['author_user_id'] != $_SESSION['user_id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/chats');
+        }
+        
+        $errors = [];
+        $navigate = [
+            'myChats' => 0,
+            'favorites' => 0,
+            'chatsAll' => 0,
+            'openChat' => 0]; 
+        $data_userlist = ['users', 'infos', 'userlists'];   
+        $selected_userlist_id = $this->model->getUserInChat('userlists','chat_id','user_id',$this->route['id'],$_POST['user']);
+        $userlists = $this->model->userlistChat($data_userlist, $this->route['id'], 'chat_id','chat_id', 'user_id', 'users.id','','');
+         
+        if($_POST['role'] == 'author'){
+            //изменение в таблице  chats
+            $data_chat = ['author_user_id'  => $_POST['user'],'user_id' => $_POST['user']];
+            $this -> model -> updateChat('chats',$data_chat,'id',$chat['id']);
+            //изменение в таблице userlists 
+            $data_old_author = [
+                'role_chat' => 'moderator'
+            ];
+            $selected_old_userlist_id = $this->model->getUserInChat('userlists','chat_id','user_id',$chat['id'],$_SESSION['user_id']);
+            
+            $this -> model -> updateChat('userlists',$data_old_author,'id',$selected_old_userlist_id[0]['id']); 
+            
+            $data_new_author = [
+                'role_chat' => 'author'
+            ];
+
+            $this -> model -> updateChat('userlists',$data_new_author,'id',$selected_userlist_id[0]['id']); 
+        }
+        else{
+            //изменение в таблице userlists 
+            $data = [
+            'role_chat' => $_POST['role'],
+            'user_id' => $_POST['user']
+        ];
+            $this -> model -> updateChat('userlists',$data,'id',$selected_userlist_id[0]['id']); 
+        }
+        flashMessage::addFlash('success', 'Вы успешно изменили роль участника чата');
+        $this->view->redirect('/openChat/'.$this->route['id']);
+    }
+
 
 
 
@@ -774,7 +798,6 @@ class ChatsController extends Controller{
     private function addNewUserInChat($users_add_not_in_chat,$chat){
         //получение массива id всех выбранных пользователей
         $arrey_user_new_chat = $this->model->listsIdUserInChat($users_add_not_in_chat);
-        //dd($arrey_user_new_chat);
         //формирование массива данных о пользователях и чате в котором они участвуют, для групповой записи в таблицу ''userlists'
         $arrey_db = [];
         if(!empty($_POST['name_chat'])){
@@ -791,9 +814,7 @@ class ChatsController extends Controller{
                 $db_arrey[] = $db;    
             
         } 
-        //dd($db_arrey);
-        foreach($arrey_db as $data){ 
-            //dd($data);           
+        foreach($arrey_db as $data){           
             $this->model->createUserlist('userlists',$data);
         } 
     }

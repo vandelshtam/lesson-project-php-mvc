@@ -5,7 +5,7 @@ return [
     ],
     
     'authoris' => [
-        'chats' , 'openChat', 'favoritesChats', 'myChats', 'addChatShow','editChatShow','message','delete_message','onFavorites', 'offFavorites','deleteChat','roleModerator', 'roleParticipant','deleteUserChat','exitChat','roleChat'
+        'chats' , 'openChat', 'favoritesChats', 'myChats', 'addChatShow','editChatShow','message','delete_message','onFavorites', 'offFavorites','deleteChat','roleModerator', 'roleParticipant','deleteUserChat','exitChat','roleChat','setRoleChat'
     ],
 
     'guest' => [
