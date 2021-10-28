@@ -27,9 +27,13 @@ class UsersController extends Controller {
 		$vars = [
 			'pagination' => $pagination->get(),
 			'usersList' => $this->model->usersListAll($page),
-		];   
+		]; 
+       // dd($_SESSION);
         $this->view->render('Users list page', $vars);
     }
+
+
+
 
     public function user_profileAction(){
 
@@ -43,9 +47,12 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         $tables = ['users', 'infos', 'socials'];
-        $vars = $this->model->getUserAllTable($tables,$this->route['id'],'user_id','id','user_id','users.id');
+        $vars = $this->model->getUserAllTable($tables,$this->route['id'],'user_id','id','user_id','users.id','','');
         $this->view->render('User profile page', $vars);
     }
+
+
+
 
 
     public function editAction(){
@@ -61,7 +68,7 @@ class UsersController extends Controller {
             $this->view->redirect('/');
         } 
         
-        $vars = $this->model->getUserAllTable(['users', 'infos', 'socials'],$this->route['id'],'user_id','id','user_id','users.id');
+        $vars = $this->model->getUserAllTable(['users', 'infos', 'socials'],$this->route['id'],'user_id','id','user_id','users.id','','');
     
 
         if(!empty($_POST['name']) || !empty($_POST['occupation']) || !empty($_POST['phone']) || isset($_POST['location'])){
@@ -77,7 +84,8 @@ class UsersController extends Controller {
                 $this->model->updateUser('infos',$data,'id',$vars[0]['info_id']);
 
                 $data_users = [
-                    'name' => $_POST['name']
+                    'name' => $_POST['name'],
+                    'search' => strtolower($_POST['name'])
                 ];
                 
                 $this->model->updateUser('users',$data_users,'id',$vars[0]['user_id']);
@@ -91,6 +99,9 @@ class UsersController extends Controller {
         }
         $this->view->render('Edit user profile page', $vars, $errors);
     }
+
+
+
 
 
     public function mediaAction(){
@@ -132,6 +143,9 @@ class UsersController extends Controller {
     }
 
 
+
+
+
     public function statusShowAction(){
 
         if($this->model->getUser('users','id',$this->route['id']) == false){
@@ -154,6 +168,9 @@ class UsersController extends Controller {
                 ];            
         $this->view->render('Status user page', $vars);
     }
+
+
+
 
     public function statusSetAction(){
         
@@ -181,6 +198,9 @@ class UsersController extends Controller {
         flashMessage::addFlash('success', 'Вы успешно изменили статус');
         $this->view->redirect('/');
     }
+
+
+
 
 
     public function create_userAction(){
@@ -215,7 +235,8 @@ class UsersController extends Controller {
                             'name' => $_POST['name'],
                             'email' => $_POST['email'],
                             'password' => $passwordNewUser,
-                            'admin' => 0 
+                            'admin' => 0,
+                            'search' => strtolower($_POST['name']) 
                         ];
                     $this->model->createUser('users', $dataUsers);
                     $newUserId =  $this->model->newUserId();
@@ -301,6 +322,9 @@ class UsersController extends Controller {
     }
 
 
+
+
+
     public function securityAction(){
         $errors = [];
         if($this->model->getUser('users','id',$this->route['id']) == false){
@@ -340,9 +364,12 @@ class UsersController extends Controller {
         else{
             flashMessage::addFlash('info', 'Необходимо заполнить все поля формы'); 
         }   
-        $vars = null;
+        $vars = [];
         $this->view->render('Security', $vars, $errors);
     }
+
+
+
 
 
     public function change_emailAction(){
@@ -369,7 +396,7 @@ class UsersController extends Controller {
                     if($_POST['new_email'] == $_POST['confirm_email']){
                         if($auth->password_verification('users','id',$this->route['id'],$_POST['password']) == true){
                             $data = ['email' => $_POST['new_email']];
-                            $this->model->updateUser('users',$data,$this->route['id']);
+                            $this->model->updateUser('users',$data,'id',$this->route['id']);
                             flashMessage::addFlash('success', 'Вы успешно изменили почту'); 
                             $this->view->redirect('/');
                         }
@@ -394,8 +421,5 @@ class UsersController extends Controller {
         }
         $vars = null;
         $this->view->render('Change email', $vars, $errors);
-    }
-
-    
-    
+    }   
 }

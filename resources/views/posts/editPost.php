@@ -61,7 +61,7 @@
                             <!-- аватар поста --> 
                         <form action="" method="POST" enctype="multipart/form-data" class="col-lg-12 col-xl-12 m-auto">       
                             <h2 align="center">Аватар поста</h2>
-                            <img src="/lesson-project-php-mvc/public/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail col-lg-10 col-xl-10" alt="" >
+                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail col-lg-10 col-xl-10" alt="" >
                             <div class="panel-container col-lg-12 col-xl-12 m-auto" >
                                 <div class="panel-hdr">
                                     <h2>Текущий аватар</h2>
@@ -86,7 +86,7 @@
                                     <?php foreach ($images as $image):?>
                                         <div class="col-md-3 galery-item">
                                             <div>
-                                                <img src="/lesson-project-php-mvc/public/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail">
+                                                <img src="/lesson-project-php-mvc/public/uploads/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail">
                                             </div>
                                         <input type="file" id="example-fileinput" class="form-control-file" name="delete_image" hidden>    
                                         <a href="/delete_image/<?=$image['id'];?>" onclick="return confirm('are your sure?')" class="btn btn-danger my-button">Delete image</a>

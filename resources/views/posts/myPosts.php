@@ -1,5 +1,5 @@
 <?php use App\Models\flashMessage;?>    
-<main id="js-page-content" role="main" class="page-content mt-3">
+<main id="js-page-content" role="main" class="page-content mt-6">
 
             <!-- флеш сообщения -->
             <?php if(isset($_SESSION['success'])):;?>
@@ -21,7 +21,7 @@
             <?php endif;?>
             <!-- флеш сообщения -->
             
-            <div class="row">
+            <div class="row sticky-top bg-white mt-5">
                 <div class="col-xl-12">
                 <?php if ($_SESSION['auth'] == true || $_SESSION['admin'] == 1):?>
                     <a class="btn btn-info" href="/addPost">Добавить пост</a>

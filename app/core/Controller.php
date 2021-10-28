@@ -29,22 +29,20 @@ abstract class Controller{
         if(class_exists($pach)){
             return new $pach();
         }
-        //dd($pach);
     }
 
     public function checkAcl(){
         $this->acl = require '/Applications/MAMP/htdocs/lesson-project-php-mvc/app/acl/'.$this->route['controller'].'.php';
-        //dd($_SESSION['auth']);
         if($this->isAcl('all')){
             return true;
         }
-        if($_SESSION['auth'] == true && $this->isAcl('authoris')){
+        if(isset($_SESSION['auth']) == true && $this->isAcl('authoris')){
             return true;
         }
-        if(isset($_SESSION['auth']) && $this->isAcl('guest')){
+        if(empty($_SESSION['auth']) && $this->isAcl('guest')){
             return true;
         }
-        if($_SESSION['admin'] == 1 && $this->isAcl('admin')){
+        if(isset($_SESSION['admin']) == 1 && $this->isAcl('admin')){
             return true;
         }
         

@@ -16,14 +16,14 @@
 </head>
 <body>
     <div class="page-wrapper auth">
-        <div class="page-inner bg-brand-gradient">
+        <div class="page-inner bg-primary bg-danger-gradient">
             <div class="page-content-wrapper bg-transparent m-0">
-                <div class="height-10 w-100 shadow-lg px-4 bg-brand-gradient">
+                <div class="height-10 w-100 shadow-lg px-4 bg-danger bg-primary-gradient">
                     <div class="d-flex align-items-center container p-0">
                         <div class="page-logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 border-0">
                             <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
-                                <img src="img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
-                                <span class="page-logo-text mr-1">Учебный проект</span>
+                                <img src="img/message.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                                <span class="page-logo-text mr-1">Book of friends</span>
                             </a>
                         </div>
                         <span class="text-white opacity-50 ml-auto mr-2 hidden-sm-down">
@@ -50,12 +50,16 @@
                             </div>
                             <div class="col-xl-6 ml-auto mr-auto">
                                 <div class="card p-4 rounded-plus bg-faded">
-                                    <div class="alert alert-danger text-dark" role="alert">
-                                        <strong>Уведомление!</strong>
-                                            <?php if(isset($errors)): foreach($errors as $error):?>
-                                            <p><?=$error; ?></p>
-                                            <?php endforeach; endif;?>        
-                                    </div>
+                                    <!-- сообщения об ошибках-->
+                                    <?php if(!empty($errors)):?> 
+                                        <div class="alert alert-danger text-dark" role="alert">
+                                            <strong>Уведомление!</strong>   
+                                                <?php foreach($errors as $error):?>
+                                                    <p><?=$error; ?></p>
+                                                <?php endforeach;?>        
+                                        </div>
+                                    <?php endif;?>    
+                                    <!-- сообщения об ошибках-->
                                     <?php if(isset($_SESSION['success'])):;?>
                                             <div class="alert alert-success" ">
                                             <?php flashMessage::display_flash('success') ;?>

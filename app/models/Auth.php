@@ -50,7 +50,7 @@ class Auth extends Model{
     }
 
     //запись в сессию данных авторизованного пользователя
-    public function set_session_auth($user_id,$email,$name,$admin,$time)
+    public function set_session_auth($user_id,$email,$name,$admin,$time,$superadmin)
     {
         ini_set('session.gc_maxlifetime', $time);
         ini_set('session.cookie_lifetime', $time);
@@ -58,18 +58,32 @@ class Auth extends Model{
         $_SESSION['login']=$email;
         $_SESSION['name']=$name;
         $_SESSION['admin']=$admin;
+        $_SESSION['superadmin']=$superadmin;
         $_SESSION['auth']=true;
     }
 
     //выход из сиситемы
     public function logoutUser()
-    {    
-        $this->set_session_auth('NULL','NULL','NULL','NULL',172800);    
+    {  
+        unset($_SESSION['user_id']);
+        unset($_SESSION['name']);
+        unset($_SESSION['login']);
+        unset($_SESSION['admin']);
+        unset($_SESSION['auth']);
+        unset($_SESSION['superadmin']); 
+        ini_set('session.gc_maxlifetime', 172800);
+        ini_set('session.cookie_lifetime', 172800);   
+       
     }
 
     //проверка наличия и получение пользователя
     public function getUser($table, $param, $value){
         return $this->db->getOneParam($table, $param, $value);
+    }
+
+    //получить все записи из таблицы по параметру
+    public function getAll($table,$param,$value){
+        return $this->db->getAllParam($table,$param,$value);
     }
 
     //ID последней записи в таблицу БД
@@ -127,6 +141,18 @@ class Auth extends Model{
     //удаление данных пользователя из таблицы
     public function deleteTable($table,$id){
         $this->db->delete($table,$id);
+    }
+
+    //удалить аватар из папки проекта 
+    public function deleteFileAvatar($table,$param,$avatar,$value){
+        $media = new MediaBuilder;
+        return $media -> delete_image($table,$param,$avatar,$value);
+    }
+
+    //удалить аватары из папки проекта 
+    public function deleteFileAvatars($table,$param,$avatar,$value){
+        $media = new MediaBuilder;
+        return $media -> delete_images($table,$param,$avatar,$value);
     }
 
 }

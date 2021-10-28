@@ -47,10 +47,30 @@ public function loadingFileImage($new_image, $name_image_file){
 public function delete_image($table,$param,$param2,$value)
 {     
     $image = $this->db->getOneParam($table,$param,$value);
+    //dd($image[''.$param2.'']);
     if(isset($image[''.$param2.'']))
     {
         unlink('uploads/'.$image[''.$param2.'']);
     }    
+}
+
+
+
+//удаление картинок из папки проекта
+public function delete_images($table,$param,$param2,$value)
+{     
+    $images = $this->db->getAllParam($table,$param,$value);
+    //dd($images);
+    
+   
+      foreach($images as $image){
+       // dd($image[''.$param2.'']);
+        if(isset($image[''.$param2.'']))
+        {
+            unlink('uploads/'.$image[''.$param2.'']);
+        } 
+      } 
+   
 }
 
 

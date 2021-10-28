@@ -133,6 +133,20 @@ class QueryBuilder {
 
 
     //получение одной записи по любому условию(полю) из любой одной таблицы
+    public function getAllParam($table,$param,$value)
+    {
+        $sql = "SELECT * FROM {$table} WHERE {$param}=:{$param}";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':'.$param.'', $value);
+        //$statement->bindParam(':id', $id);//принимает только переменную ввести строку или цифру нельзя
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+
+
+    //получение одной записи по любому условию(полю) из любой одной таблицы
     public function getOneParam($table,$param,$value)
     {
         $sql = "SELECT * FROM {$table} WHERE {$param}=:{$param}";
@@ -285,7 +299,7 @@ class QueryBuilder {
 
 
 
-    
+
     //получение количества записей в таблице
     public function countColumn($table){
         

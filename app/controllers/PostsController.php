@@ -49,7 +49,7 @@ class PostsController extends Controller{
             'searchPosts' => 0];
             $data = ['users', 'infos', 'posts'];
             $vars = [
-                'posts' => $this->model->postsAllFavorites($data, 1, 'favorites', 'value', 'user_id', 'users.id'),
+                'posts' => $this->model->postsAllFavorites($data, 1, 'favorites', 'value', 'user_id', 'users.id','',''),
                 'navigate'  => $navigate
                 ];  
             $this->view->render('Posts favorites page', $vars);
@@ -63,7 +63,7 @@ class PostsController extends Controller{
             'searchPosts' => 0];
             $data = ['users', 'infos', 'posts'];
             $vars = [
-                'posts' => $this->model->postsAllMy($data, $this->route['id'], 'user_id', 'route_id', 'user_id', 'users.id'),
+                'posts' => $this->model->postsAllMy($data, $this->route['id'], 'user_id', 'route_id', 'user_id', 'users.id','',''),
                 'navigate'  => $navigate
                 ];    
             $this->view->render('My Posts list', $vars);
@@ -79,9 +79,9 @@ class PostsController extends Controller{
             $data = ['users', 'infos', 'socials', 'posts']; 
             $tables = ['users', 'infos', 'comments'];   
             $vars = [
-                'post' => $this->model->postOne($data,$this->route['id'], 'post_id','id', 'user_id', 'users.id'),
+                'post' => $this->model->postOne($data,$this->route['id'], 'post_id','id', 'user_id', 'users.id','',''),
                 'navigate'  => $navigate,
-                'comments' => $this->model->commentsAll($tables, $this->route['id'], 'post_id', 'post_id', 'user_id', 'users.id'),
+                'comments' => $this->model->commentsAll($tables, $this->route['id'], 'post_id', 'post_id', 'user_id', 'users.id','',''),
                 'images' => $this->model->imagesPost('images',$this->route['id'], ':id','post_id','created_at',''),
                 ]; 
             $this->view->render('Posts list page', $vars);
@@ -89,7 +89,12 @@ class PostsController extends Controller{
 
 
     public function editPostAction(){
-        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $this->route['id']){
+        $post = $this->model->getPost('posts','id',$this->route['id']);
+        if($post == false){
+            flashMessage::addFlash('danger', 'Такого поста нет!');
+            $this->view->redirect('/posts');
+        }
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $post['user_id']){
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/post/'.$this->route['id']);
         }
@@ -126,7 +131,7 @@ class PostsController extends Controller{
                     flashMessage::addFlash('denger', 'Не удалось загрузить файл');    
                 }
                 else{
-                    $post = $this->model->getPost('posts','id',$this->route['id']);
+                   // $post = $this->model->getPost('posts','id',$this->route['id']);
                     $dataImage = ['image' => $new_image, 'user_id' => $post['user_id'], 'post_id' => $post['id'], 'imageable_id' => $post['id'], 'imageable_type' => 'App\Model\Post'];
                     $media = new MediaBuilder;
                     $media -> createImage('images',$dataImage);

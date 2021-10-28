@@ -1,7 +1,7 @@
 <?php 
 return [
     'all' => [
-        //
+        'users'
     ],
     
     'authoris' => [

@@ -18,6 +18,12 @@
             <?php flashMessage::display_flash('info') ;?>
             </div>
             <?php endif;?>
+
+            <?php if(isset($_SESSION['warning'])):;?>
+            <div class="alert alert-warning" ">
+            <?php flashMessage::display_flash('warning') ;?>
+            </div>
+            <?php endif;?>
             <div class="subheader">
                 <h1 class="subheader-title">
                     <i class='subheader-icon fal fa-users'></i> Список пользователей
@@ -25,7 +31,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-12">
-                    <a class="btn btn-success" href="/create_user">Добавить</a>
+                    <a class="btn btn-danger" href="/create_user">Добавить</a>
                     
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
                         <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
@@ -45,7 +51,7 @@
             
             <div class="row" id="js-contacts" >        
                  <?php foreach($usersList as $key => $var): ?>  
-                <div class="col-xl-4">
+                <div class="col-xl-4 rounded-3">
                     <div id="<?=$var['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?=$var['search'];?>">
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                         <div class="d-flex flex-row align-items-center">
@@ -59,7 +65,7 @@
                                 <?php if ($var['status'] == 2):?>
                                     <span class="status status-warning mr-3">
                                 <?php endif;?>
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$var['avatar'];?>'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$var['avatar'];?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="/lesson-project-php-mvc/public/js/javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
@@ -67,13 +73,13 @@
                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
                                         <i class="fal fa-angle-down d-inline-block ml-1 fs-md"></i>
                                     </a>
-                                    <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="/user/<?=$var['user_id'];?>">
-                                        <?php if($_SESSION['auth']):?>
+                                    <div class="dropdown-menu bg-ganger bg-danger-gradient rounded">
+                                    <a class="dropdown-item " href="/user/<?=$var['user_id'];?>">
+                                        <?php if(isset($_SESSION['auth']) == true):?>
                                             <i class="fa fa-edit"></i>
                                         Открыть профиль</a>
                                         <?php endif;?>
-                                        <?php if($_SESSION['user_id'] == $var['user_id'] || $_SESSION['admin'] == 1):?>
+                                        <?php if(isset($_SESSION['user_id']) == $var['user_id'] || isset($_SESSION['admin']) == 1):?>
                                         <a class="dropdown-item" href="/edit/<?php echo $var['user_id'];?>">
                                             <i class="fa fa-edit"></i>
                                         Редактировать</a>
@@ -92,21 +98,25 @@
                                         </a>
                                         <a href="/confirm_password/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                             <i class="fa fa-window-close"></i>
-                                            Удалить
+                                        Удалить
                                         </a>
                                         <?php endif;?>
-                                        <?php if($_SESSION['admin']):?>
+                                        <?php if(isset($_SESSION['admin']) == 1):?>
                                         <?php if($var['admin'] == 1):?>
-                                        <a href="/setUser/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
+                                        <a href="/setUser/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('Если вы изменимте пользователю роль админа, он потеряет привелегии, are you sure?');">
                                             <i class="fa fa-window-close">Отозвать роль админа? </i>
-                                            текущая роль пользователя: Админ
+                                            текущая роль: Админ
                                         </a>
                                         <?php else:?>
                                         <a href="/setAdmin/<?=$var['user_id'];?>" class="dropdown-item" onclick="return confirm('are you sure?');">
                                             <i class="fa fa-window-close">Назначить роль админа? </i>
-                                            текущая роль пользователя: Юзер
+                                            текущая роль: Юзер
                                         </a>    
                                         <?php endif;?>
+                                        
+                                        <?php endif;?>
+                                        <?php if(empty($_SESSION['auth'])):?>
+                                            <span class="text-truncate text-truncate-xl">У вас нет доступа, войдите в свой аккаунт или зарегистрируйтесь</span>
                                         <?php endif;?>
                                     </div>
                                     <span class="text-truncate text-truncate-xl"><?=$var['occupation'];?></span>
@@ -151,11 +161,11 @@
         <!-- BEGIN Page Footer -->
         <footer class="page-footer" role="contentinfo">
             <div class="d-flex align-items-center flex-1 text-muted">
-                <span class="hidden-md-down fw-700">2020 © Учебный проект</span>
+                <span class="hidden-md-down fw-700">2021 © Hobby project</span>
             </div>
             <div>
                 <ul class="list-table m-0">
-                    <li><a href="intel_introduction.html" class="text-secondary fw-700">Home</a></li>
+                    <li><a href="/" class="text-secondary fw-700">Home</a></li>
                     <li class="pl-3"><a href="info_app_licensing.html" class="text-secondary fw-700">About</a></li>
                 </ul>
             </div>

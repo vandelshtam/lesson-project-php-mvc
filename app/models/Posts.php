@@ -6,31 +6,28 @@ use App\Core\Model;
 class Posts extends Model{
 
     //вызывается метод получения данных всех постов, из нескольких таблиц ===
-    public function postsAll($tables,$table_param,$table_param_2){
-        return $this->db->getAllTableAll($tables,$table_param,$table_param_2);   
+    public function postsAll($tables,$table_param,$table_param_2,$join , $where_param_3){
+        return $this->db->getAllTableAll($tables,$table_param,$table_param_2,$join , $where_param_3);   
     }
 
     //получение всех избранных постов
-    public function postsAllFavorites($tables,$value,$where_param,$where_param_2,$table_param,$table_param_2 ){
-        return $this->db->getWhereTableAll($tables, $value,$where_param,$where_param_2,$table_param,$table_param_2 );   
+    public function postsAllFavorites($tables,$value,$where_param,$where_param_2,$table_param,$table_param_2,$join ,$where_param_3 ){
+        return $this->db->getWhereTableAll($tables, $value,$where_param,$where_param_2,$table_param,$table_param_2,$join ,$where_param_3 );   
     }
 
     //получение всех "моих" постов
-    public function postsAllMy($tables,$value,$where_param,$where_param_2,$table_param,$table_param_2 ){
-        return $this->db->getWhereTableAll($tables, $value,$where_param,$where_param_2,$table_param,$table_param_2 );   
+    public function postsAllMy($tables,$value,$where_param,$where_param_2,$table_param,$table_param_2,$join ,$where_param_3 ){
+        return $this->db->getWhereTableAll($tables, $value,$where_param,$where_param_2,$table_param,$table_param_2,$join ,$where_param_3 );   
     }
 
     //получение одного поста  и информации из нескольких связанных таблиц
-    public function postOne($tables,$id,$where_param,$where_param_2,$table_param,$table_param_2 ){
-        return $this->db->getWhereTableAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2 );
+    public function postOne($tables,$id,$where_param,$where_param_2,$table_param,$table_param_2,$join ,$where_param_3 ){
+        return $this->db->getWhereTableAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2,$join ,$where_param_3 );
     }
 
     //все комментарии к посту
-    public function  commentsAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2 ){
-        //dd($fetch);
-        //return $this->db->comments($id);
-        //return $this->db->getOneAllTable($tables, $id, $where_param);
-        return $this->db->getWhereTableAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2 );
+    public function  commentsAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2,$join , $where_param_3 ){
+        return $this->db->getWhereTableAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2,$join , $where_param_3 );
     }
 
     //все картинки к посту

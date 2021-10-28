@@ -28,8 +28,8 @@ class Users extends Model{
     }
     
     //получение одного пользователя из нескольких связанных таблиц
-    public function getUserAllTable($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2){
-        return $this->db->getWhereTableAll($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2);
+    public function getUserAllTable($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2,$join ,$where_param_3){
+        return $this->db->getWhereTableAll($tables, $value, $where_param, $where_param_2, $table_param,$table_param_2,$join ,$where_param_3);
     }
     
     //получение из таблицы id последней записи данных 
@@ -38,8 +38,8 @@ class Users extends Model{
     }
 
     //вызывается метод получения данных всех пользователей, из нескольких таблиц,  из любого количества таблиц
-    public function getUsersAll($tables,$table_param,$table_param_2){
-        return $this->db->getAllTableAll($tables,$table_param,$table_param_2);
+    public function getUsersAll($tables,$table_param,$table_param_2,$join , $where_param_3){
+        return $this->db->getAllTableAll($tables,$table_param,$table_param_2,$join , $where_param_3);
         //return $this->db->getUserAllTable($tables);
     }
 
@@ -67,7 +67,7 @@ class Users extends Model{
     //удалить аватар из папки проекта 
     public function deleteFileAvatar($table,$param,$value){
         $media = new MediaBuilder;
-        return $media -> delete_image($table,$param,'avatar_post',$value);
+        return $media -> delete_image($table,$param,'avatar',$value);
     }
     
     //добавление данных в таблцу

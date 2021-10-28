@@ -17,10 +17,10 @@
 </head>
 <body>
     <div class="blankpage-form-field">
-        <div class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4">
+        <div class="page-logo m-0 w-100 align-items-center justify-content-center rounded border-bottom-left-radius-0 border-bottom-right-radius-0 px-4 bg-danger bg-primary-gradient">
             <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
-                <img src="/lesson-project-php-mvc/public/img/logo.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
-                <span class="page-logo-text mr-1">Учебный проект</span>
+                <img src="/lesson-project-php-mvc/public/img/message.png" alt="SmartAdmin WebApp" aria-roledescription="logo">
+                <span class="page-logo-text mr-1">Book of friends</span>
                 <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
             </a>
         </div>
@@ -53,8 +53,8 @@
                 <button type="submit" class="btn btn-default float-right">Подтвердить</button>
             </form>
         </div>
-        <div class="blankpage-footer text-center">
-            Нет аккаунта? <a href="/register"><strong>Зарегистрироваться</strong>
+        <div class="blankpage-footer text-center text-danger">
+            Нет аккаунта? <a class="text-danger" href="/register"><strong>Зарегистрироваться</strong>
         </div>
     </div>
     <video poster="/lesson-project-php-mvc/public/img/backgrounds/clouds.png" id="bgvid" playsinline autoplay muted loop>

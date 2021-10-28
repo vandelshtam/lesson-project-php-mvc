@@ -5,12 +5,7 @@
                 <i class='subheader-icon fal fa-lock'></i> Безопасность
             </h1>
         </div>
-        <div class="alert alert-danger text-dark" role="alert">
-            <strong>Уведомление!</strong>
-                <?php if(isset($errors)): foreach($errors as $error):?>
-                <p><?=$error; ?></p>
-                <?php endforeach; endif;?>        
-            </div>
+        
         <?php if(isset($_SESSION['success'])):;?>
                 <div class="alert alert-success" ">
                 <?php flashMessage::display_flash('success') ;?>
@@ -30,16 +25,15 @@
                 <?php endif;?> 
                 
                 <!-- сообщения об ошибках-->
-            <?php if(!empty($errors)):?> 
-            <div class="alert alert-danger text-dark" role="alert">
-            <strong>Уведомление!</strong>
-                <?php foreach($errors as $error):?>
-                <p><?=$error; ?></p>
-                <?php endforeach;?>        
-            </div>
-            <?php endif;?>    
-            <!-- сообщения об ошибках-->
-
+                <?php if(!empty($errors)):?> 
+                    <div class="alert alert-danger text-dark" role="alert">
+                        <strong>Уведомление!</strong>   
+                            <?php foreach($errors as $error):?>
+                                <p><?=$error; ?></p>
+                            <?php endforeach;?>        
+                    </div>
+                <?php endif;?>    
+                <!-- сообщения об ошибках-->
         <form action="" method="POST">
             <div class="row">
                 <div class="col-xl-6">

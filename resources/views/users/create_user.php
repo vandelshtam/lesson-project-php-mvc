@@ -160,7 +160,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-3 d-flex flex-row-reverse">
-                                        <button  class="btn btn-success" name="submit">Добавить</button>
+                                        <button  class="btn btn-danger" name="submit">Добавить</button>
                                     </div>
                                 </div>
                             </div>
@@ -171,6 +171,18 @@
             </div>
         </form>
     </main>
+    <!-- BEGIN Page Footer -->
+    <footer class="page-footer" role="contentinfo">
+            <div class="d-flex align-items-center flex-1 text-muted">
+                <span class="hidden-md-down fw-700">2021 © Hobby project</span>
+            </div>
+            <div>
+                <ul class="list-table m-0">
+                    <li><a href="/" class="text-secondary fw-700">Home</a></li>
+                    <li class="pl-3"><a href="info_app_licensing.html" class="text-secondary fw-700">About</a></li>
+                </ul>
+            </div>
+        </footer>
 
     <script src="/lesson-project-php-mvc/js/vendors.bundle.js"></script>
     <script src="/lesson-project-php-mvc/js/app.bundle.js"></script>

@@ -1,6 +1,6 @@
 
 <?php use App\Models\flashMessage;?>    
-<main id="js-page-content" role="main" class="page-content mt-3">
+<main id="js-page-content" role="main" class="page-content mt-6">
 
             <!-- флеш сообщения -->
             <?php if(isset($_SESSION['success'])):?>
@@ -40,12 +40,12 @@
     <div class="row">
       <div class="col-lg-12 col-xl-12 m-auto">
             <!-- profile summary -->
-            <div class="card mb-g rounded-top">
+            <div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">
                 <div class="row no-gutters row-grid">
                     <div class="col-12">
                         <div class="d-flex flex-column align-items-center justify-content-center p-4">
                             <!-- menu edit -->
-                                <a class="dropdown-item" href="/editPost/<?=$post[0]['post_id'];?>">
+                                <a class="dropdown-item"  href="/editPost/<?=$post[0]['post_id'];?>">
                                     <i class="fa fa-edit btn btn-info"></i>
                                 Редактировать пост</a>
                                 <?php if ($post[0]['favorites'] ==1 ):?>
@@ -70,7 +70,7 @@
                                 <?php endif;?>     
                             <!-- show post -->    
                             <?php if ($_SESSION['admin'] == 1 && $post[0]['banned'] == 1):?>
-                            <img src="/lesson-project-php-mvc/public/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail bt btn-warning" alt="logo" style="width: 80%">
+                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail bt btn-warning" alt="logo" style="width: 80%">
                             <?php elseif ($post[0]['banned'] == 1):?> 
                             <img src="/lesson-project-php-mvc/public/img/demo/avatars/avatar-admin-lg.png" class="rounded-circle shadow-2 img-thumbnail" alt="" style="width: 80%">  
                             <?php else:?>
@@ -85,9 +85,9 @@
                                 <h2 align="center">Галерея заблокированного поста</h2>
                                 <div class="row">
                                     <?php foreach ($images as $image):?>
-                                        <div class="col-md-3 galery-item col-lg-4 col-xl-4" style="width:400px; hight:200px>
+                                        <div class="col-md-3 galery-item col-lg-4 col-xl-4" style="width:400px; hight:200px;">
                                             <div>
-                                                <img src="/lesson-project-php-mvc/public/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail col-lg-4 col-xl-4" style="width:400px; hight:200px">
+                                                <img src="/lesson-project-php-mvc/public/uploads/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail col-lg-4 col-xl-4" style="width:400px; hight:200px">
                                             </div>
                                         <input type="file" id="example-fileinput" class="form-control-file" name="delete_image" hidden>    
                                         <a href="/imagePostShow/<?=$image['id'];?>" onclick="return confirm('are your sure?')" class="btn btn-info my-button">Open image</a>
@@ -104,7 +104,7 @@
                                     <?php foreach ($images as $image):?>
                                         <div class="col-md-3 galery-item">
                                             <div>
-                                                <img src="/lesson-project-php-mvc/public/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail" ">
+                                                <img src="/lesson-project-php-mvc/public/uploads/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail" ">
                                             </div>
                                            
                                         <a href="/imagePostShow/<?=$image['id'];?>"  class="btn btn-info my-button">Open image</a>
@@ -173,6 +173,9 @@
                 </div>
             </div>
        </div>
+
+       <div class="col-lg-12 col-xl-12 m-auto">
+            <div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">
        <!-- форма ввода коментария -->
        <form action="/addNewComment/<?=$post[0]['post_id'];?>" method="POST" enctype="multipart/form-data" class="col-lg-12 col-xl-12 m-auto">
         
@@ -184,7 +187,7 @@
                         <input type="text" id="simpleinput" class="form-control" name="user_id" value="<?=$_SESSION['user_id'];?> "  hidden>
                     </div>                                     
         </div>       
-         <div class="col-md-12 mt-3 d-flex flex-row-reverse">
+         <div class="col-md-12 mt-3 mb-3 d-flex flex-row-reverse">
           <button class="btn btn-info" type="submit" name="submit">Отправить комментарий</button>
         </div>
       </form>   
@@ -193,9 +196,10 @@
     <br>
     <br>
     
-    
+    <div class="col-lg-12 col-xl-12 m-auto">
+            <div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">    
 <!-- навигационная строка раздела комментариев -->
-<div id="navbar-example2" class="navbar navbar-light bg-info px-3 m-auto col-lg-12 col-xl-12 rounded">
+<div id="navbar-example2" class="navbar navbar-light  px-3 m-auto col-md-12  rounded" style="background-color: rgb(240 210 210);">
     <a class="navbar-brand" href="#">Комментарии</a>
     <ul class="nav nav-pills">
       <li class="nav-item">
@@ -212,56 +216,56 @@
     <?php foreach ($comments as $comment):?>
     <!-- комментарии авторизованного пользователя -->
     <?php if ($_SESSION['user_id'] == $comment['user_id']):?>
-    <div class=" col-lg-10 col-xl-10 mt-2 ml-auto" >
-        <div class="toast-header bg-info md-3 rounded-top nav-item">
-        <span class="rounded-circle profile-image d-block md-3" style="background-image:url('/lesson-project-php-mvc/public/<?=$comment['avatar'];?>'); background-size: cover;"> </span>
+    <div class=" col-lg-10 col-xl-10 mt-5 ml-auto" >
+        <div class="toast-header  md-3  rounded-top nav-item" style="background-color: rgb(240 210 210);">
+        <span class="rounded-circle profile-image d-block md-3" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$comment['avatar'];?>'); background-size: cover;"> </span>
         <strong class="ml-auto "><?=$comment['name'];?></strong>
         <small class="ml-auto "><?=$comment['updated_at'];?></small>
         <!-- заблокированные коментарии -->
         <?php if ($_SESSION['admin'] == 1 && $comment['banned'] == 1):?>
             <a class="text-warning ml-auto"  href="/unBannedComment/<?=$comment['id'];?>">
-                <i class="fa fa-unlock btn btn-warning"> </i>Разблокировать комментарий</a>   
+                <i class="fa fa-unlock btn btn-warning"> </i>Разблокировать</a>   
         <?php elseif ($_SESSION['admin'] == 1):?>
             <a class="bt text-danger ml-auto"  href="/bannedComment/<?=$comment['id'];?>">
-                <i class="fa fa-lock btn btn-danger"> </i>Заблокировать комментарий</a>
+                <i class="fa fa-lock btn btn-danger"> </i>Заблокировать</a>
         <?php endif;?> 
         <form action="/deleteComment/<?=$comment['id'];?>" method="POST"  class=" m-auto">
             <label class="form-label" for="simpleinput"></label>
             <input type="text" id="simpleinput" class="form-control" name="post_id" value="<?=$comment['post_id'];?>" hidden>
             <input type="text" id="simpleinput" class="form-control" name="user_id" value="<?=$_SESSION['user_id'];?> "  hidden> 
-          <button class="btn btn-info" type="submit" onclick="return confirm('are your sure?')" name="submit">Удалить комментарий</button>
+          <button class="btn btn-danger" type="submit" onclick="return confirm('are your sure?')" name="submit">Удалить</button>
         </form>       
         <!--<a class=" btn-close ml-auto text-white" onclick="return confirm('are your sure?')" aria-label="Close"  href="/deleteComment/<?=$comment['id'];?>"> Удалить комментарий</a>-->
         </div>
         <?php if ( $_SESSION['admin'] == 1 && $comment['banned'] ==1 ):?>
-        <h6 id="scrollspyHeading1 btn-danger" class="bg-danger bg-danger-gradient pt-4 pb-4 pl-4 text-white rounded-bottom"> Комментарий заблокирован из-за нарушения правил пользования веб сайтом : <?=$comment['comment'];?></h6>    
+        <h6 id="scrollspyHeading1 btn-danger" class="bg-danger bg-danger-gradient pt-3 pb-3 pl-3 text-white rounded-bottom"> Комментарий заблокирован из-за нарушения правил пользования веб сайтом : <?=$comment['comment'];?></h6>    
         <?php elseif ($comment['banned'] == 1):?>
-        <h6 id="scrollspyHeading1" class="bg-secondary bg-secondary-gradient pt-4 pb-4 pl-4 text-white rounded-bottom">Комментарий заблокирован из-за нарушения правил пользования веб сайтом </h6>
+        <h6 id="scrollspyHeading1" class="bg-secondary bg-secondary-gradient pt-3 pb-3 pl-3 text-white rounded-bottom">Комментарий заблокирован из-за нарушения правил пользования веб сайтом </h6>
         <?php else:?>
-        <h6 id="scrollspyHeading1" class="bg-warning bg-waning-gradient pt-4 pb-4 pl-4 rounded-bottom"><?=$comment['comment'];?></h6>
+        <h6 id="scrollspyHeading1" class=" pt-3 pb-3 pl-3 mb-5 rounded-bottom" style="background-color: rgb(240 170 180);"><?=$comment['comment'];?></h6>
         <?php endif;?>
     </div> 
 
     <!-- коментарии других пользователей -->
     <?php else:?>
-    <div class="col-lg-10 col-xl-10 mt-2"  >
+    <div class="col-lg-10 col-xl-10 mt-5"  >
         <div class="toast-header bg-info rounded-top">
-        <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$comment['avatar'];?>'); background-size: cover;"></span>
+        <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$comment['avatar'];?>'); background-size: cover;"></span>
         <strong class="md-3"><?=$comment['name'];?></strong>
         <small class="ml-auto"><?=$comment['created_at'];?></small>
         <!-- заблокированные коментарии -->
         <?php if ($_SESSION['admin'] == 1 && $comment['banned'] ==1 ):?>
             <a class="text-warning ml-auto"  href="/unBannedComment/<?=$comment['id'];?>">
-                <i class="fa fa-lunock btn btn-warning"></i>Разблокировать комментарий</a>   
+                <i class="fa fa-lunock btn btn-warning"></i>Разблокировать</a>   
         <?php elseif ($_SESSION['admin'] == 1 && $comment['banned'] == 0):?>
             <a class="text-danger ml-auto"  href="/bannedComment/<?=$comment['id'];?>">
-                <i class="fa fa-lock btn btn-danger"></i>Заблокировать комментарий</a>
+                <i class="fa fa-lock btn btn-danger"></i>Заблокировать</a>
         <?php endif;?> 
         <form action="/deleteComment/<?=$comment['id'];?>" method="POST"  class=" m-auto">
             <label class="form-label" for="simpleinput"></label>
             <input type="text" id="simpleinput" class="form-control" name="post_id" value="<?=$comment['post_id'];?>" hidden>
             <input type="text" id="simpleinput" class="form-control" name="user_id" value="<?=$_SESSION['user_id'];?> "  hidden> 
-          <button class="btn btn-info" type="submit" onclick="return confirm('are your sure?')" name="submit">Удалить комментарий</button>
+          <button class="btn btn-danger" type="submit" onclick="return confirm('are your sure?')" name="submit">Удалить</button>
         </form>     
         </div>
     <?php if ($_SESSION['admin'] == 1 && $comment['banned'] == 1):?>
@@ -269,13 +273,15 @@
     <?php elseif ($comment['banned'] == 1):?>
     <h6 id="scrollspyHeading1 btn-danger" class="bg-secondary bg-secondary-gradient pt-4 pb-4 pl-4 text-white rounded-bottom" > Комментарий заблокирован из-за нарушения правил пользования веб сайтом</h6>
     <?php else:?>
-    <h6 id="scrollspyHeading1" class=" bg-info-gradient pt-4 pb-4 pl-4 rounded-bottom" ><?=$comment['comment'];?></h6>
+    <h6 id="scrollspyHeading1" class=" bg-info-gradient pt-4 pb-4 pl-4 mb-5 rounded-bottom" ><?=$comment['comment'];?></h6>
     <?php endif;?>
     </div> 
    <?php endif;?> 
    
    <?php endforeach;?>
   </div>
+    </div>
+    
  
   
 </main> 
