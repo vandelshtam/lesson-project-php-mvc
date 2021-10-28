@@ -1,5 +1,6 @@
-<?php use App\Models\flashMessage;?>    
-<main id="js-page-content" role="main" class="page-content mt-3">
+<?php use App\Models\flashMessage;?> 
+   
+<main id="js-page-content" role="main" class="page-content mt-6">
 
             <!-- флеш сообщения -->
             <?php if(isset($_SESSION['success'])):;?>
@@ -20,7 +21,7 @@
             </div>
             <?php endif;?>
             <!-- флеш сообщения -->
-            
+            <div class="sticky-top bg-white mt-5">
             <div class="row">
                 <div class="col-xl-12">
                 <?php if ($_SESSION['auth'] == true || $_SESSION['admin'] == 1):?>
@@ -42,11 +43,12 @@
                     
                 </div>
             </div>
+            </div>
 
 <div class="row" id="js-contacts">
     <?php foreach ($posts as $post):?>
         <div class="col-xl-4">
-        <div id="<?php echo $post['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover" data-filter-tags="<?php echo $post['search_post'];?>">
+        <div id="<?php echo $post['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover" style="background-color: rgb(250 245 245);" data-filter-tags="<?php echo $post['search_post'];?>">
     <!-- не заблокированные посты -->
     <div class="subheader">
         <h1 class="subheader-title">
@@ -94,7 +96,7 @@
                             <?php if($post['banned'] == 1):?>
                             <img src="'/lesson-project-php-mvc/public/img/demo/avatars/type2.png'" class="rounded-circle shadow-2 img-thumbnail" alt=""">
                             <?php else:?>
-                            <img src="/lesson-project-php-mvc/public/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt=""">
+                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt=""">
                             <?php endif;?>
                             <h5 class="mb-0 fw-700 text-center mt-3">
                                 <?php if($post['banned'] == 1):?>
@@ -130,15 +132,7 @@
 </main>
 <script src="js/vendors.bundle.js"></script>
     <script src="js/app.bundle.js"></script>
-    <script>
-
-        $(document).ready(function()
-        {
-
-        });
-
-    </script>
-
+    
 <script src="js/vendors.bundle.js"></script>
     <script src="js/app.bundle.js"></script>
     <script>
