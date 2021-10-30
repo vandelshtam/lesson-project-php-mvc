@@ -1,22 +1,22 @@
 
 <?php use App\Models\flashMessage;?>    
-<main id="js-page-content" role="main" class="page-content mt-6">
+<main id="js-page-content" role="main" class="page-content mt-5">
 
             <!-- флеш сообщения -->
             <?php if(isset($_SESSION['success'])):?>
-            <div class="alert alert-success" ">
+            <div class="alert alert-success mt-3" >
             <?php flashMessage::display_flash('success') ;?>
             </div>
             <?php endif;?>
 
             <?php if(isset($_SESSION['danger'])):?>
-            <div class="alert alert-danger" ">
+            <div class="alert alert-danger mt-3" >
             <?php flashMessage::display_flash('danger') ;?>
             </div>
             <?php endif;?> 
                                             
             <?php if(isset($_SESSION['info'])):?>
-            <div class="alert alert-info" ">
+            <div class="alert alert-info mt-3" >
             <?php flashMessage::display_flash('info') ;?>
             </div>
             <?php endif;?>
@@ -173,9 +173,61 @@
                 </div>
             </div>
        </div>
+    </div>
+    
+    <nav class="col-lg-12 col-xl-12 m-auto navbar navbar-expand-lg navbar-dark bg-danger bg-primary-gradient sticky-top ">
+    <a class="navbar-brand d-flex align-items-center fw-500" href="users.html"><img alt="logo" class="d-inline-block align-top mr-2" src="/lesson-project-php-mvc/public/img/paper-airplane-5.png" style="width:35px;">comments</a> <button aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-target="#navbarColor02" data-toggle="collapse" type="button"><span class="navbar-toggler-icon"></span></button>
+    <div class="collapse navbar-collapse" id="navbarColor02">
+        <ul class="navbar-nav md-3">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">All <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <?php if($navigate['postsAll']==1):?>
+        <ul class="navbar-nav md-3">
+            <li class="nav-item active">
+                <a class="nav-link text-info" href="/posts" >Все комментарии <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <?php else:?>
+        <ul class="navbar-nav md-3">
+            <li class="nav-item active">
+                <a class="nav-link" href="/posts">Все комментарии <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <?php endif;?>
+        <?php if ($navigate['myPosts']==1):?>
+        <ul class="navbar-nav md-3">
+            <li class="nav-item active">
+                <a class="nav-link text-info" href="/myPosts/<?=$_SESSION['user_id'];?>" >Мои комментарии <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>    
+        <?php else:?>
+        <ul class="navbar-nav md-3">
+            <li class="nav-item active">
+                <a class="nav-link" href="/myPosts/<?=$_SESSION['user_id'];?>">Мои комментарии <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <?php endif;?>
+        <ul class="navbar-nav ml-auto">
+            <?php if($_SESSION['auth'] == true):?>
+            <li class="nav-item">
+                <a class="nav-link" href="/logout">Old comments</a>
+            </li>
+            <?php else:?>
+            <li class="nav-item">
+                <a class="nav-link" href="/login">New comments</a>
+            </li>
+            <?php endif;?>
+        </ul>
+    </div>
+</nav> 
 
-       <div class="col-lg-12 col-xl-12 m-auto">
-            <div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">
+<div class="col-lg-12 col-xl-12 m-auto sticky-top bg-white">
+    <div>
+        <br><br><br><br>
+    </div>
+        <div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">
        <!-- форма ввода коментария -->
        <form action="/addNewComment/<?=$post[0]['post_id'];?>" method="POST" enctype="multipart/form-data" class="col-lg-12 col-xl-12 m-auto">
         
@@ -193,23 +245,13 @@
       </form>   
     </div>
  </div>
-    <br>
-    <br>
-    
-    <div class="col-lg-12 col-xl-12 m-auto">
-            <div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">    
+
+<div class="col-lg-12 col-xl-12 m-auto">
+<div class="card mb-g rounded-top" style="background-color: rgb(250 245 245);">    
 <!-- навигационная строка раздела комментариев -->
 <div id="navbar-example2" class="navbar navbar-light  px-3 m-auto col-md-12  rounded" style="background-color: rgb(240 210 210);">
-    <a class="navbar-brand" href="#">Комментарии</a>
-    <ul class="nav nav-pills">
-      <li class="nav-item">
-        <a class="nav-link text-white" href="#scrollspyHeading1">Сначала новые</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-white"" href="#scrollspyHeading2">Сначала старые</a>
-      </li>
-    </ul>
-  </div>
+    <?php echo $pagination; ?>
+</div>
 
   <!-- comments -->
   <div  class=" col-lg-12 col-xl-12 m-auto" >
@@ -279,13 +321,15 @@
    <?php endif;?> 
    
    <?php endforeach;?>
+   
   </div>
+  <div id="navbar-example2" class="navbar navbar-light  px-3 m-auto col-md-12  rounded" style="background-color: rgb(240 210 210);">
+    <?php echo $pagination; ?>
     </div>
-    
- 
-  
+</div>
+<a href="#" class="opacity-50 col-lg-1 col-xl-1 ml-auto btn btn-success fixed-bottom mb-3 mr-3" type="submit" name="submit">В начало</a>
 </main> 
+
+
 <script src="js/vendors.bundle.js"></script>
 <script src="js/app.bundle.js"></script>
-    
-        

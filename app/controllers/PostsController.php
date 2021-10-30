@@ -5,6 +5,7 @@ session_start();
 use App\Models\Posts;
 use App\lib\Pagination;
 use App\Core\Controller;
+use App\lib\Pagination_comments;
 use App\Models\Validator;
 use App\Models\flashMessage;
 use App\Models\MediaBuilder;
@@ -17,7 +18,14 @@ class PostsController extends Controller{
 		$this->view->layout = 'custom_posts';
 	}
 
+
+
+
     public function postsAction(){
+        if($_SESSION['auth'] != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            $this->view->redirect('/posts');
+        }
         if(empty($this->route['page'])){
             $page = 1;
         }
@@ -30,10 +38,8 @@ class PostsController extends Controller{
             'favorites' => 0,
             'postsAll' => 1,
             'searchPosts' => 0];
-            //$data = ['users', 'infos', 'posts'];
 
             $vars = [
-                //'posts' => $this->model->postsAll($data,'user_id', 'users.id'),
                 'navigate'  => $navigate,
                 'pagination' => $pagination->get(),
 			    'posts' => $this->model->postsListAll($page),
@@ -41,7 +47,14 @@ class PostsController extends Controller{
             $this->view->render('Posts list page', $vars);
     }
 
+
+
+
     public function favoritesPostsAction(){
+        if($_SESSION['auth'] != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            $this->view->redirect('/posts');
+        }
         $navigate = [
             'myPosts' => 0,
             'favorites' => 1,
@@ -55,7 +68,15 @@ class PostsController extends Controller{
             $this->view->render('Posts favorites page', $vars);
     }
 
+
+
+
     public function myPostsAction(){
+        $get_post = $this->model->getUser('posts','user_id',$_SESSION['user_id']);
+        if($_SESSION['auth'] != true || $get_post != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            $this->view->redirect('/posts');
+        }
         $navigate = [
             'myPosts' => 1,
             'favorites' => 0,
@@ -70,22 +91,73 @@ class PostsController extends Controller{
     }
 
 
+
+
     public function postAction(){
+
+        $get_post = $this->model->getUser('posts','id',$this->route['id']);
+        if(empty($get_post)){
+            flashMessage::addFlash('danger', ' Пост не найден');
+            $this->view->redirect('/posts');
+        }
+        $data = ['users', 'infos', 'socials', 'posts']; 
+        $post = $this->model->postOne($data,$this->route['id'], 'post_id','id', 'user_id', 'users.id','','');
+        
+        if($_SESSION['admin'] != 1){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            $this->view->redirect('/posts');
+        }
+        
+
+        if(empty($_SESSION['page_id'])){
+            $page = 1;
+        }
+        else{
+            $page = $_SESSION['page_id'];
+        }
+        if(empty($_SESSION['route'])){
+            $route_paginate = [
+                "controller"=> "posts",
+                "action"=> "pagination_comments",
+                "page"=> 1];
+        }
+        else{
+            $route_paginate = $_SESSION['route'];
+        }
+        
+        $pagination_comments = new Pagination_comments($route_paginate, $this->model->postsCount('comments'));
         $navigate = [
             'myPosts' => 0,
             'favorites' => 0,
             'postsAll' => 0,
             'searchPosts' => 0];
             $data = ['users', 'infos', 'socials', 'posts']; 
-            $tables = ['users', 'infos', 'comments'];   
             $vars = [
-                'post' => $this->model->postOne($data,$this->route['id'], 'post_id','id', 'user_id', 'users.id','',''),
+                'post' => $post,
                 'navigate'  => $navigate,
-                'comments' => $this->model->commentsAll($tables, $this->route['id'], 'post_id', 'post_id', 'user_id', 'users.id','',''),
+                'comments' => $this->model->commentsListAll($page,'post_id',$this->route['id']),
+                'pagination' => $pagination_comments->get(),
                 'images' => $this->model->imagesPost('images',$this->route['id'], ':id','post_id','created_at',''),
                 ]; 
+            $this->model->set_session_post($post[0]); 
+            unset($_SESSION['page_id']);
+            unset($_SESSION['route']);    
             $this->view->render('Posts list page', $vars);
     }
+
+
+
+
+    public function pagination_commentsAction(){
+        unset($_SESSION['page_id']); 
+        unset($_SESSION['route']);    
+        $_SESSION['page_id'] = $this->route['page'];
+        $_SESSION['route'] = $this->route;
+        $this->view->redirect('/post/'.$_SESSION['post_id']);  
+    }
+
+
+
 
 
     public function editPostAction(){
@@ -131,7 +203,6 @@ class PostsController extends Controller{
                     flashMessage::addFlash('denger', 'Не удалось загрузить файл');    
                 }
                 else{
-                   // $post = $this->model->getPost('posts','id',$this->route['id']);
                     $dataImage = ['image' => $new_image, 'user_id' => $post['user_id'], 'post_id' => $post['id'], 'imageable_id' => $post['id'], 'imageable_type' => 'App\Model\Post'];
                     $media = new MediaBuilder;
                     $media -> createImage('images',$dataImage);
@@ -169,6 +240,9 @@ class PostsController extends Controller{
     }
 
 
+
+
+
     public function addNewCommentAction(){
         $this->route['id'];
         $data = [ 
@@ -181,26 +255,54 @@ class PostsController extends Controller{
     }
 
 
+
+
+
     public function deleteCommentAction(){
+        if($this->model->getPost('comments','user_id',$_SESSION['user_id']) != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$_POST['post_id']); 
+        }
         $this->model->deleteComment('comments','id',$this->route['id']);    
         $this->view->redirect('/post/'.$_POST['post_id']);  
     }
 
+
+
+
     public function bannedPostAction(){
+        if($_SESSION['admin'] != 1){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
         $data = ['banned' => 1];
         $this -> model -> updatePost('posts',$data,'id',$this->route['id']); 
         flashMessage::addFlash('success', 'Вы успешно заблокировали пост');
         $this->view->redirect('/post/'.$this->route['id']);
     }
 
+
+
+
     public function unBannedPostAction(){
+        if($_SESSION['admin'] != 1){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
         $data = ['banned' => 0];
         $this -> model -> updatePost('posts',$data,'id',$this->route['id']); 
         flashMessage::addFlash('success', 'Вы успешно раззаблокировали пост');
         $this->view->redirect('/post/'.$this->route['id']);
     }
 
+
+
+
     public function bannedCommentAction(){
+        if($_SESSION['admin'] != 1){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
         $data = ['banned' => 1];
         $comment = $this -> model -> getComment('comments','id',$this->route['id']);
         $post = $comment['post_id'];
@@ -209,7 +311,14 @@ class PostsController extends Controller{
         $this->view->redirect('/post/'.$post);
     }
 
+
+
+
     public function unBannedCommentAction(){
+        if($_SESSION['admin'] != 1){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
         $data = ['banned' => 0];
         $comment = $this -> model -> getComment('comments','id',$this->route['id']);
         $post = $comment['post_id'];
@@ -218,14 +327,28 @@ class PostsController extends Controller{
         $this->view->redirect('/post/'.$post);
     }
 
+
+
+
     public function addFavoritesAction(){
+        if($_SESSION['auth'] != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            $this->view->redirect('/posts');
+        }
         $data = ['favorites' => 1];
         $this -> model -> updatePost('posts',$data,'id',$this->route['id']); 
         flashMessage::addFlash('success', 'Вы успешно добавили пост в избранное');
         $this->view->redirect('/post/'.$this->route['id']);
     }
 
+
+
+
     public function deleteFavoritesAction(){
+        if($_SESSION['auth'] != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            $this->view->redirect('/posts');
+        }
         $data = ['favorites' => 0];
         $this -> model -> updatePost('posts',$data,'id',$this->route['id']); 
         flashMessage::addFlash('success', 'Вы успешно удалили пост из избранного');
@@ -233,7 +356,19 @@ class PostsController extends Controller{
     }
 
 
+
+
+
     public function imagePostShowAction(){
+        $post = $this->model->getPost('posts','id',$this->route['id']);
+        if($post == false){
+            flashMessage::addFlash('danger', 'Такого поста нет!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $post['user_id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
         $errors = [];
         $navigate = [
             'myPosts' => 0,
@@ -249,7 +384,19 @@ class PostsController extends Controller{
         $this->view->render('Image post show', $vars,$errors);
     }
 
-    public function delete_imageAction(){  
+
+
+
+    public function delete_imageAction(){ 
+        $post = $this->model->getPost('posts','id',$this->route['id']);
+        if($post == false){
+            flashMessage::addFlash('danger', 'Такого поста нет!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        }
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $post['user_id']){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post/'.$this->route['id']);
+        } 
         $image = $this->model->imagesPost('images',$this->route['id'],':id','id','created_at','');
         $this-> model -> deleteFileImage('images','id',$this->route['id']);
         $this -> model -> deleteImage('images',$this->route['id']); 
@@ -258,7 +405,14 @@ class PostsController extends Controller{
     }
 
 
+
+
+
     public function addPostAction(){
+        if($_SESSION['admin'] != 1 || $_SESSION['auth'] != true){
+            flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+            $this->view->redirect('/post');
+        }
         $errors = [];
         $navigate = [
             'myPosts' => 0,
@@ -309,14 +463,12 @@ class PostsController extends Controller{
 
                         if(!empty($_FILES['avatar_post']['name'])){
                             $validate = new Validator($_POST);
-                            //dd($_FILES['avatar_post']['name']);
                             if($validate->validateImageAvatarPost() != null){
                                 $errors = $validate->validateImageAvatarPost();
                                 $this->view->render('Add new post', $vars, $errors); die;  
                             }
                             else{
                                 $new_avatar=$this->model->makeNewAvatar('avatar_post');
-                                //dd($new_avatar);
                                 if($this->model->loadingFileAvatar($new_avatar) == false){
                                     flashMessage::addFlash('denger', 'Не удалось загрузить файл'); 
                                     $this->view->render('Add new post', $vars, $errors); die;     
@@ -328,11 +480,9 @@ class PostsController extends Controller{
                             if($validate->validateImagePost() != null){
                                 $errors = $validate->validateImagePost();
                                 $this->view->render('Add new post', $vars, $errors); die;  
-                                //dd($errors);
                             }
                             else{
                                 $new_image=$this->model->makeNewImage('image');
-                                //dd($new_image);
                                 if($this->model->loadingFileImage($new_image) == false){
                                     flashMessage::addFlash('denger', 'Не удалось загрузить файл'); 
                                     $this->view->render('Add new post', $vars, $errors); die;    
@@ -375,6 +525,7 @@ class PostsController extends Controller{
 
 
 
+
     public function deletePostAction(){
         $post = $this->model->getPost('posts','id',$this->route['id']);
         if($post == false){
@@ -389,13 +540,10 @@ class PostsController extends Controller{
         $this -> model -> deleteAllImagesInPost('images',$this->route['id'], ':id','post_id','created_at','');
         $this -> model -> deleteFileAvatar('posts','id',$this->route['id']); 
         
-
         $this->model->deleteTablePost('posts','id', $this->route['id']);
         $this->model->deleteTablePost('images','post_id',$this->route['id']);
         $this->model->deleteTablePost('comments','post_id',$this->route['id']);
         flashMessage::addFlash('success', 'Вы успешно удалили пост!');
         $this->view->redirect('/posts');
-    }
-
-    
+    }   
 }

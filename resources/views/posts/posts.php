@@ -4,19 +4,19 @@
 
             <!-- флеш сообщения -->
             <?php if(isset($_SESSION['success'])):;?>
-            <div class="alert alert-success" ">
+            <div class="alert alert-success mt-6" >
             <?php flashMessage::display_flash('success') ;?>
             </div>
             <?php endif;?>
-
             <?php if(isset($_SESSION['danger'])):;?>
-            <div class="alert alert-danger" ">
+            <div>
+            <div class="alert alert-danger mt-6" >
             <?php flashMessage::display_flash('danger') ;?>
             </div>
-            <?php endif;?> 
-                                            
+            <?php endif;?>                                
             <?php if(isset($_SESSION['info'])):;?>
-            <div class="alert alert-info" ">
+            <div>
+            <div class="alert alert-info mt-6" >
             <?php flashMessage::display_flash('info') ;?>
             </div>
             <?php endif;?>

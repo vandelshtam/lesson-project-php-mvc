@@ -324,4 +324,22 @@ class QueryBuilder {
         return $statement->fetchAll(PDO::FETCH_ASSOC);    
     }
 
+
+
+
+    //запрос по условиям пагинации  с параметром отбора
+    public function getCommentsListPaginate($tables, $params,$where,$value)
+    { 
+        $str = 'SELECT * FROM ' .$tables[0];
+        foreach(array_slice($tables, 1) as $table){
+            
+            $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id  ';
+        }
+        $sql = $str .'WHERE {$where}=:{$where}  LIMIT ' .$params['start']. ','.$params['max'];
+        $statement=$this->pdo->prepare($sql);
+        $statement->bindValue(':'.$where.'', $value);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);    
+    }
+
 }

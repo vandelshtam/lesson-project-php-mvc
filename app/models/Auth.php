@@ -17,6 +17,9 @@ class Auth extends Model{
         }
     }
 
+
+
+
     //авторизация 
     public function loginUser($table,$param,$value,$password){
         $user = $this->db->getOneParam($table, $param, $value);
@@ -31,6 +34,10 @@ class Auth extends Model{
             }
     }    
     
+
+
+
+
     //регистрация
     public function registerUser($table,$name,$email,$password_register){   
         $password = password_hash($password_register, PASSWORD_DEFAULT);
@@ -49,6 +56,10 @@ class Auth extends Model{
             }   
     }
 
+
+
+
+
     //запись в сессию данных авторизованного пользователя
     public function set_session_auth($user_id,$email,$name,$admin,$time,$superadmin)
     {
@@ -61,6 +72,10 @@ class Auth extends Model{
         $_SESSION['superadmin']=$superadmin;
         $_SESSION['auth']=true;
     }
+
+
+
+
 
     //выход из сиситемы
     public function logoutUser()
@@ -76,30 +91,54 @@ class Auth extends Model{
        
     }
 
+
+
+
+
     //проверка наличия и получение пользователя
     public function getUser($table, $param, $value){
         return $this->db->getOneParam($table, $param, $value);
     }
+
+
+
+
 
     //получить все записи из таблицы по параметру
     public function getAll($table,$param,$value){
         return $this->db->getAllParam($table,$param,$value);
     }
 
+
+
+
+
     //ID последней записи в таблицу БД
     public function newLastUserId(){
         return $this->db->lastId();
     }
     
+
+
+
+
     //запись нового пользователя в таблицу
     public function createNewUser($table, $data){
         $this->db->create($table,$data);
     }
 
+
+
+
+
     //обновление данных пользователя
     public function updateUser($table,$data,$param,$param2){  
         return $this->db->updateAny($table, $data, $param,$param2);
     }
+
+
+
+
 
     //проверка пароля
     public function password_verification($table,$param,$value,$password){
@@ -115,6 +154,10 @@ class Auth extends Model{
             }
     } 
  
+
+
+
+
     //запись пароля в таблицу
     public function setPassword($new_password,$id){
         
@@ -124,6 +167,10 @@ class Auth extends Model{
         ];
         $this->db->updateAny('users', $data,'id', $id);
     }
+
+
+
+
 
     //проверка почты
     public function email_verification($table,$param,$value,$email){
@@ -138,10 +185,20 @@ class Auth extends Model{
             }
     } 
     
+
+
+
+
+
     //удаление данных пользователя из таблицы
     public function deleteTable($table,$id){
         $this->db->delete($table,$id);
     }
+
+
+
+
+
 
     //удалить аватар из папки проекта 
     public function deleteFileAvatar($table,$param,$avatar,$value){
@@ -149,10 +206,13 @@ class Auth extends Model{
         return $media -> delete_image($table,$param,$avatar,$value);
     }
 
+
+
+
+
     //удалить аватары из папки проекта 
     public function deleteFileAvatars($table,$param,$avatar,$value){
         $media = new MediaBuilder;
         return $media -> delete_images($table,$param,$avatar,$value);
     }
-
 }

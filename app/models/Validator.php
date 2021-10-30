@@ -18,54 +18,12 @@ class Validator {
   private static $fieldsAvatarChat = [ 'avatar_chat'];
   private static $fieldsEmail = [ 'new_email'];
   private static $fieldsCreate = ['name', 'email', 'password', 'occupation', 'location', 'phone','vk', 'telegram', 'instagram'];
-  private static $fieldsGeneral = ['name', 'email', 'password', 'occupation', 'location', 'phone','vk', 'telegram', 'instagram'];
+  
+
+
 
   public function __construct($post_data){
     $this->data = $post_data;
-  }
-
-
-  //валидация всего
-  public function validateGeneral(){
-    foreach(self::$fieldsGeneral as $field){
-      if(!array_key_exists($field, $this->data)){
-        trigger_error("'$field' is not present in the data");
-        return;
-      }
-    }
-
-    if(!empty($_POST['name'])){
-      $this->validateUsername();
-    }
-    if(!empty($_POST['password'])){
-      $this->validatePassword();
-    }
-    if(!empty($_POST['email'])){
-      $this->validateEmail();
-    }
-    if(!empty($_POST['phone'])){
-      $this->validatePhone();
-    }
-    if(!empty($_POST['occupation'])){
-      $this->validateOccupation();
-    }
-    if(!empty($_POST['location'])){
-      $this->validateLocation();
-    }
-    if(!empty($_POST['vk'])){
-      $this->validateVk();
-    }
-    if(!empty($_POST['telegram'])){
-      $this->validateTelegram();
-    }
-    if(!empty($_POST['instagram'])){
-      $this->validateInstagram();
-    }
-    if(!empty($_FILES['avatar']['name'])){
-      $this->validateImage();
-    }
-    
-    return $this->errors;
   }
 
 

@@ -28,7 +28,6 @@ class UsersController extends Controller {
 			'pagination' => $pagination->get(),
 			'usersList' => $this->model->usersListAll($page),
 		]; 
-       // dd($_SESSION);
         $this->view->render('Users list page', $vars);
     }
 
@@ -316,8 +315,7 @@ class UsersController extends Controller {
                     $this->view->redirect('/');   
                 } 
             }    
-        }
-        
+        }   
         $this->view->render('Create user page', $vars, $errors);
     }
 

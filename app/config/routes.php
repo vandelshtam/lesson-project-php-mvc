@@ -103,6 +103,10 @@ return [
         'controller' => 'posts',
         'action' => 'posts',   
     ],
+    '/posts/pagination_comments/{page:\d+}' => [
+        'controller' => 'posts',
+        'action' => 'pagination_comments',   
+    ],
     '/favoritesPosts' => [
         'controller' => 'posts',
         'action' => 'favoritesPosts',   

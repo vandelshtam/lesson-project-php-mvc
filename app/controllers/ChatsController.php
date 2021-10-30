@@ -26,7 +26,8 @@ class ChatsController extends Controller{
             'myChats' => 0,
             'favorites' => 0,
             'chatsAll' => 1,
-            'openChat' => 0
+            'openChat' => 0,
+            'redirect' => 1
             ];
         $_SESSION['navigate'] = $navigate;    
         $data = ['users', 'infos', 'chats'];
@@ -61,7 +62,8 @@ class ChatsController extends Controller{
             'myChats' => 0,
             'favorites' => 1,
             'chatsAll' => 0,
-            'openChat' => 0
+            'openChat' => 0,
+            'redirect' => 2
         ];
         $_SESSION['navigate'] = $navigate;
         $data = ['users', 'infos','chats'];
@@ -103,7 +105,8 @@ class ChatsController extends Controller{
             'myChats' => 1,
             'favorites' => 0,
             'chatsAll' => 0,
-            'openChat' => 0
+            'openChat' => 0,
+            'redirect' => 2
         ];
         $_SESSION['navigate'] = $navigate;    
         $data = ['users', 'infos', 'chats'];
@@ -155,6 +158,7 @@ class ChatsController extends Controller{
             'favorites' => 0,
             'chatsAll' => 0,
             'openChat' => 1,
+            'redirect' => 4
         
             ];
         $_SESSION['navigate'] = $navigate; 
@@ -731,18 +735,20 @@ class ChatsController extends Controller{
 
     private function redirectRoute(){
         
-        if($_SESSION['navigate']['favorites'] == 1){
-            $this->view->redirect('/favoritesChats');
+        switch($_SESSION['navigate']['redirect']){
+            case 2:
+                $this->view->redirect('/favoritesChats');
+                break;
+            case 3:
+                $this->view->redirect('/myChats');
+                break;
+            case 1:
+                $this->view->redirect('/chats');
+                break;
+            case 4: 
+                $this->view->redirect('/openChat/'.$_SESSION['chat_id']);
+                break;
         }
-        if($_SESSION['navigate']['myChats'] == 1){
-            $this->view->redirect('/myChats');
-        }
-        if($_SESSION['navigate']['chatsAll'] == 1){
-            $this->view->redirect('/chats');
-        }
-        if($_SESSION['navigate']['openChat'] == 1){
-            $this->view->redirect('/openChat/'.$_SESSION['chat_id']);
-        }   
     }
 
 

@@ -6,9 +6,6 @@ use Imagick;
 
 class MediaBuilder extends Model{
 
-//  все необходимые методы ==========
-
-
 
 //создание имени новой картинки
 public function makeNewImage($name_image_file){ 
