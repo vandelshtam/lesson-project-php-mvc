@@ -64,7 +64,7 @@
                                 <?php if ($chat['banned'] == 1):?>
                                     <span class="status status-danger mr-3">
                                 <?php endif;?>
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$chat['chat_avatar'];?>'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$chat['chat_avatar'];?>'); background-size: cover;"></span>
                                 </span>
                                 
                             <div class="info-card-text flex-1">    

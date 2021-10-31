@@ -524,7 +524,7 @@ class PostsController extends Controller{
 
                     if(!empty($_FILES['image']['name'])){
                                         
-                        $dataImage = ['image' => $new_image, 'user_id' => $this->route['id'], 'post_id' => $newPostId, 'imageable_id' => $newPostId, 'imageable_type' => 'App\Model\Post'];
+                        $dataImage = ['image' => $new_image, 'user_id' => $this->route['id'], 'post_id' => $newPostId, 'imageable_id' => $newPostId];
                         $media = new MediaBuilder;
                         $media -> createImage('images',$dataImage); 
 

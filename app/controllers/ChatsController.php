@@ -305,14 +305,14 @@ class ChatsController extends Controller{
                     //формирование массива данных о пользователях и чате в котором они участвуют, для групповой записи в таблицу ''userlists'
                     $arrey_db = [];
                     foreach($arrey_user_new_chat as $user_id){
-                        $arrey_db[] = ['user_id' => $user_id,  'chat_id' => $newChatId, 'userlistable_id' => $newChatId, 'userlistable_type' => 'App\Models\Chat','name_list_chat' => $_POST['name_chat'], 'role_chat' => 'participant'];    
+                        $arrey_db[] = ['user_id' => $user_id,  'chat_id' => $newChatId, 'userlistable_id' => $newChatId, 'name_list_chat' => $_POST['name_chat'], 'role_chat' => 'participant'];    
                     }
                     //запись пользователей в таблицу userlists
                     foreach($arrey_db as $data){  
                         $this->model->createUserlist('userlists',$data);
                     }
                     //добавление записи автора чата в таблицу 'userlists'
-                    $data_chat = ['user_id' => $_SESSION['user_id'],  'chat_id' => $newChatId, 'userlistable_id' => $newChatId, 'userlistable_type' => 'App\Models\Chat','name_list_chat' => $_POST['name_chat'], 'role_chat' => 'author'];
+                    $data_chat = ['user_id' => $_SESSION['user_id'],  'chat_id' => $newChatId, 'userlistable_id' => $newChatId, 'name_list_chat' => $_POST['name_chat'], 'role_chat' => 'author'];
                     $this->model->createUserlist('userlists',$data_chat);
 
                     //запись аватара в таблицу после валидации имени чата и записи миени в таблицу

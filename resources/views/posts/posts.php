@@ -96,7 +96,7 @@
                             <?php if($post['banned'] == 1):?>
                             <img src="'/lesson-project-php-mvc/public/img/demo/avatars/type2.png'" class="rounded-circle shadow-2 img-thumbnail" alt=""">
                             <?php else:?>
-                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt=""">
+                            <img src="/lesson-project-php-mvc/public/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt=""">
                             <?php endif;?>
                             <h5 class="mb-0 fw-700 text-center mt-3">
                                 <?php if($post['banned'] == 1):?>
@@ -130,11 +130,9 @@
 </div>
 <?php echo $pagination; ?>
 </main>
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()

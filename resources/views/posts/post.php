@@ -70,11 +70,11 @@
                                 <?php endif;?>     
                             <!-- show post -->    
                             <?php if ($_SESSION['admin'] == 1 && $post[0]['banned'] == 1):?>
-                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail bt btn-warning" alt="logo" >
+                            <img src="/lesson-project-php-mvc/public/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail bt btn-warning" alt="logo" >
                             <?php elseif ($post[0]['banned'] == 1):?> 
                             <img src="/lesson-project-php-mvc/public/img/demo/avatars/avatar-admin-lg.png" class="rounded-circle shadow-2 img-thumbnail" alt="">  
                             <?php else:?>
-                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt="">
+                            <img src="/lesson-project-php-mvc/public/<?=$post[0]['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt="">
                             <?php endif;?>
                             <br>
                             <hr> 
@@ -87,7 +87,7 @@
                                     <?php foreach ($images as $image):?>
                                         <div class="col-md-3 galery-item col-lg-4 col-xl-4 sizeImageGaleryPost" >
                                             <div>
-                                                <img src="/lesson-project-php-mvc/public/uploads/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail col-lg-4 col-xl-4 sizeImageGaleryPost">
+                                                <img src="/lesson-project-php-mvc/public/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail col-lg-4 col-xl-4 sizeImageGaleryPost">
                                             </div>
                                         <input type="file" id="example-fileinput" class="form-control-file" name="delete_image" hidden>    
                                         <a href="/imagePostShow/<?=$image['id'];?>" onclick="return confirm('are your sure?')" class="btn btn-info my-button">Open image</a>
@@ -104,7 +104,7 @@
                                     <?php foreach ($images as $image):?>
                                         <div class="col-md-3 galery-item">
                                             <div>
-                                                <img src="/lesson-project-php-mvc/public/uploads/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail" ">
+                                                <img src="/lesson-project-php-mvc/public/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail" ">
                                             </div>
                                            
                                         <a href="/imagePostShow/<?=$image['id'];?>"  class="btn btn-info my-button">Open image</a>
@@ -122,10 +122,11 @@
                                     </small>
                                     <hr>
                             </h5>
+                            <!-- заблокированный пост, галерея -->
                             <?php elseif ($post[0]['banned'] == 1):?>
                                 <div class="row">        
                                     <div class="coll-md-12">        
-                                        <img  src="img/demo/avatars/avatar-admin-lg.png" alt="" class="img-fluid img-thumbnail gallery-image">
+                                        <img  src="/lesson-project-php-mvc/public/img/demo/avatars/avatar-m.png" alt="" class="img-fluid img-thumbnail gallery-image">
                                     </div>    
                                 </div>      
                             <h5 class="mb-0 fw-700 text-center mt-3 bt btn-danger">
@@ -264,7 +265,7 @@
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
                                 <span class="status status-success mr-3">
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url(/lesson-project-php-mvc/public/uploads/<?=$comment['avatar'];?>); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url(/lesson-project-php-mvc/public/<?=$comment['avatar'];?>); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
@@ -317,7 +318,7 @@
                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                             <div class="d-flex flex-row align-items-center">
                                 <span class="status status-success mr-3">
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url(/lesson-project-php-mvc/public/uploads/<?=$comment['avatar'];?>); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url(/lesson-project-php-mvc/public/<?=$comment['avatar'];?>); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">

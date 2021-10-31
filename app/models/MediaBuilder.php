@@ -13,7 +13,7 @@ public function makeNewImage($name_image_file){
   $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   $strength = 10; 
   $random_string = $this ->  generate_string($permitted_chars,$strength);      
-  $new_avatar = $random_string.$image_name;
+  $new_avatar = 'uploads/'.$random_string.$image_name;
   return $new_avatar;
 }
 
@@ -22,7 +22,7 @@ public function makeNewImage($name_image_file){
 
 //загрузка новой картинки в папку проекта
 public function loadingFileImage($new_image, $name_image_file){
-  $direct='/Applications/MAMP/htdocs/lesson-project-php-mvc/public/uploads/';
+  $direct='/Applications/MAMP/htdocs/lesson-project-php-mvc/public/';
   $image_name_tmp=$_FILES[''.$name_image_file.'']['tmp_name'];
   if(is_uploaded_file($image_name_tmp)){
     if(move_uploaded_file($image_name_tmp, $direct.$new_image )){
@@ -44,10 +44,11 @@ public function loadingFileImage($new_image, $name_image_file){
 public function delete_image($table,$param,$param2,$value)
 {     
     $image = $this->db->getOneParam($table,$param,$value);
-    //dd($image[''.$param2.'']);
     if(isset($image[''.$param2.'']))
     {
-        unlink('uploads/'.$image[''.$param2.'']);
+        $image_param = strchr($image[''.$param2.''], '/');
+        $image = strtr($image_param, '/', '');
+        unlink('uploads/'.$image);
     }    
 }
 
@@ -57,14 +58,13 @@ public function delete_image($table,$param,$param2,$value)
 public function delete_images($table,$param,$param2,$value)
 {     
     $images = $this->db->getAllParam($table,$param,$value);
-    //dd($images);
-    
-   
+
       foreach($images as $image){
-       // dd($image[''.$param2.'']);
         if(isset($image[''.$param2.'']))
         {
-            unlink('uploads/'.$image[''.$param2.'']);
+            $image_param = strchr($image[''.$param2.''], '/');
+            $image = strtr($image_param, '/', '');
+            unlink('uploads/'.$image);
         } 
       } 
    
@@ -97,6 +97,24 @@ public function updateAvatar($table, $data, $param, $value){
 
 
 
+
+//удаление группы картинок
+public function delete_all_images_file($table,$value,$param_value,$param_where,$param_order,$param_sort){     
+  $images = $this->db->getTableParams($table,$value,$param_value,$param_where,$param_order,$param_sort); 
+  foreach($images as $image){
+    if(isset($image['image']))
+    {
+        $image_param = strchr($image['image'], '/');
+        $image = strtr($image_param, '/', '');
+        unlink('uploads/'.$image);
+    }
+  }    
+}
+
+
+
+
+
 //генерирование приставки к имени картинки, для создания нового названия 
 private function generate_string($input,$strength){
   $input_length = strlen($input);
@@ -106,20 +124,6 @@ private function generate_string($input,$strength){
         $random_string .= $random_character;
     }
     return $random_string;  
-}
-
-
-
-
-//удаление группы картинок
-function delete_all_images_file($table,$value,$param_value,$param_where,$param_order,$param_sort){     
-  $images = $this->db->getTableParams($table,$value,$param_value,$param_where,$param_order,$param_sort); 
-  foreach($images as $image){
-    if(isset($image['image']))
-    {
-        unlink('uploads/'.$image['image']);
-    }
-  }    
 }
 
 }

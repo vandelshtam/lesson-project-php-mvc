@@ -65,7 +65,7 @@
                                 <?php if ($var['status'] == 2):?>
                                     <span class="status status-warning mr-3">
                                 <?php endif;?>
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$var['avatar'];?>'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$var['avatar'];?>'); background-size: cover;"></span>
                                 </span>
                                 <div class="info-card-text flex-1">
                                     <a href="/lesson-project-php-mvc/public/js/javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">

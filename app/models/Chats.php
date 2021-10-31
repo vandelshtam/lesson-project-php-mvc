@@ -27,13 +27,6 @@ class Chats extends Model{
 
 
 
-    //получение всех чатов по двум параметрам из всех связанных таблиц
-    public function chatsAllThreeParam($tables, $value){
-        $this->db->getWhereTableAllThreeParam($tables, $value);
-    }
-
-
-
     // метод получения  всех  сообщений из чата, из нескольких таблиц ===
     public function messagesChat($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2,$join, $where_param_3){
         return $this->db->getWhereTableAll($tables, $id,$where_param,$where_param_2,$table_param,$table_param_2,$join, $where_param_3 );   
@@ -60,12 +53,12 @@ class Chats extends Model{
 
     public function set_session_chat($chat){
         
-            $_SESSION['chat_id']  = null;
-            $_SESSION['banned'] = null;
-            $_SESSION['name_chat'] = null;
-            $_SESSION['chat_avatar'] = null;
-            $_SESSION['openChat'] = null;
-            $_SESSION['author_chat'] = null; 
+            unset($_SESSION['chat_id']);
+            unset($_SESSION['banned']);
+            unset($_SESSION['name_chat']);
+            unset($_SESSION['chat_avatar']);
+            unset($_SESSION['openChat']);
+            unset($_SESSION['author_user_id']);  
         
             $_SESSION['chat_id']  = $chat['id'];
             $_SESSION['banned'] = $chat['banned'];

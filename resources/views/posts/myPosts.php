@@ -53,10 +53,7 @@
             <i class='subheader-icon fal fa-user'></i> <?=$post['name_post'];?>
         </h1>
     </div> 
-    <!--<div class="row">-->
-      <!--<div class="col-lg-11 col-xl-11 m-auto">-->
-            <!-- profile summary -->
-            <!--<div class="card mb-g rounded-top">-->
+    
                 <div class="row no-gutters row-grid">   
                     <div class="col-12">   
                         <div class="d-flex flex-column align-items-center justify-content-center p-4"> 
@@ -92,7 +89,7 @@
                             <br>
                             <br> 
                             <?php if($post['banned'] == 1):?>
-                            <img src="'/lesson-project-php-mvc/public/img/demo/avatars/type2.png'" class="rounded-circle shadow-2 img-thumbnail" alt=""">
+                            <img src="'/lesson-project-php-mvc/public/img/demo/avatars/avatar-m.png'" class="rounded-circle shadow-2 img-thumbnail" alt=""">
                             <?php else:?>
                             <img src="/lesson-project-php-mvc/public/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail" alt=""">
                             <?php endif;?>
@@ -116,19 +113,14 @@
                         </div>
                     </div>   
                 </div>
-                
-            <!--</div>-->
-           
-       <!--</div>-->
-       
-    <!--</div>-->
+            
         </div>
         </div>
     <?php endforeach;?> 
 </div>
 </main>
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()

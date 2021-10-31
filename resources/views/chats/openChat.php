@@ -5,19 +5,19 @@
             </div>
             <!-- флеш сообщения - начало блока -->
             <?php if(isset($_SESSION['success'])):;?>
-            <div class="alert alert-success" ">
+            <div class="alert alert-success mt-5" ">
             <?php flashMessage::display_flash('success') ;?>
             </div>
             <?php endif;?>
 
             <?php if(isset($_SESSION['danger'])):;?>
-            <div class="alert alert-danger" ">
+            <div class="alert alert-danger mt-5" ">
             <?php flashMessage::display_flash('danger') ;?>
             </div>
             <?php endif;?> 
                                             
             <?php if(isset($_SESSION['info'])):;?>
-            <div class="alert alert-info" ">
+            <div class="alert alert-info mt-5" ">
             <?php flashMessage::display_flash('info') ;?>
             </div>
         <?php endif;?>
@@ -63,7 +63,7 @@
                                 <?php if ($message['status'] == 2):?>
                                     <span class="status status-warning mr-3">
                                 <?php endif;?>
-                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$message['avatar'];?>'); background-size: cover;"></span>
+                                    <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$message['avatar'];?>'); background-size: cover;"></span>
                                 </span>
                                 
                                 <div class="info-card-text flex-1">
@@ -111,7 +111,7 @@
                                     <?php if ($message['status'] == 2):?>
                                         <span class="status status-warning mr-3">
                                     <?php endif;?>
-                                        <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$message['avatar'];?>'); background-size: cover;"></span></span>
+                                        <span class="rounded-circle profile-image d-block " style="background-image:url('/lesson-project-php-mvc/public/<?=$message['avatar'];?>'); background-size: cover;"></span></span>
                                     
                                         <div class="info-card-text flex-1">
                                             <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">

@@ -1,21 +1,21 @@
 <?php use App\Models\flashMessage;?>    
-<main id="js-page-content" role="main" class="page-content mt-3">
+<main id="js-page-content" role="main" class="page-content mt-5">
 
             <!-- флеш сообщения -->
             <?php if(isset($_SESSION['success'])):;?>
-                <div class="alert alert-success" ">
+                <div class="alert alert-success mt-5" ">
                 <?php flashMessage::display_flash('success') ;?>
                 </div>
                 <?php endif;?>
 
                 <?php if(isset($_SESSION['danger'])):;?>
-                <div class="alert alert-danger" ">
+                <div class="alert alert-danger mt-5" ">
                 <?php flashMessage::display_flash('danger') ;?>
                 </div>
                 <?php endif;?> 
                                             
                 <?php if(isset($_SESSION['info'])):;?>
-                <div class="alert alert-info" ">
+                <div class="alert alert-info mt-5" ">
                 <?php flashMessage::display_flash('info') ;?>
                 </div>
                 <?php endif;?>
@@ -61,7 +61,7 @@
                             <!-- аватар поста --> 
                         <form action="" method="POST" enctype="multipart/form-data" class="col-lg-12 col-xl-12 m-auto">       
                             <h2 align="center">Аватар поста</h2>
-                            <img src="/lesson-project-php-mvc/public/uploads/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail col-lg-10 col-xl-10" alt="" >
+                            <img src="/lesson-project-php-mvc/public/<?=$post['avatar_post'];?>" class="rounded-circle shadow-2 img-thumbnail col-lg-10 col-xl-10" alt="" >
                             <div class="panel-container col-lg-12 col-xl-12 m-auto" >
                                 <div class="panel-hdr">
                                     <h2>Текущий аватар</h2>
@@ -86,7 +86,7 @@
                                     <?php foreach ($images as $image):?>
                                         <div class="col-md-3 galery-item">
                                             <div>
-                                                <img src="/lesson-project-php-mvc/public/uploads/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail">
+                                                <img src="/lesson-project-php-mvc/public/<?=$image['image'];?>" alt="" class="img-fluid img-thumbnail">
                                             </div>
                                         <input type="file" id="example-fileinput" class="form-control-file" name="delete_image" hidden>    
                                         <a href="/delete_image/<?=$image['id'];?>" onclick="return confirm('are your sure?')" class="btn btn-danger my-button">Delete image</a>
@@ -144,8 +144,8 @@
     </form>
     </div>
 </main>
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()
@@ -155,37 +155,3 @@
 
     </script>
 
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
-    <script>
-
-        $(document).ready(function()
-        {
-
-            $('input[type=radio][name=contactview]').change(function()
-                {
-                    if (this.value == 'grid')
-                    {
-                        $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-g');
-                        $('#js-contacts .col-xl-12').removeClassPrefix('col-xl-').addClass('col-xl-4');
-                        $('#js-contacts .js-expand-btn').addClass('d-none');
-                        $('#js-contacts .card-body + .card-body').addClass('show');
-
-                    }
-                    else if (this.value == 'table')
-                    {
-                        $('#js-contacts .card').removeClassPrefix('mb-').addClass('mb-1');
-                        $('#js-contacts .col-xl-4').removeClassPrefix('col-xl-').addClass('col-xl-12');
-                        $('#js-contacts .js-expand-btn').removeClass('d-none');
-                        $('#js-contacts .card-body + .card-body').removeClass('show');
-                    }
-
-                });
-
-                //initialize filter
-                initApp.listFilter($('#js-contacts'), $('#js-filter-contacts'));
-        });
-
-    </script>
-
-        

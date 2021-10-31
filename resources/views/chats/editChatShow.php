@@ -3,19 +3,19 @@
 
 <!-- флеш сообщения -->
 <?php if(isset($_SESSION['success'])):;?>
-    <div class="alert alert-success" >
+    <div class="alert alert-success mt-5" >
         <?php flashMessage::display_flash('success') ;?>
     </div>
 <?php endif;?>
 
 <?php if(isset($_SESSION['danger'])):;?>
-    <div class="alert alert-danger" ">
+    <div class="alert alert-danger mt-5" ">
         <?php flashMessage::display_flash('danger') ;?>
     </div>
 <?php endif;?> 
                                             
 <?php if(isset($_SESSION['info'])):;?>
-    <div class="alert alert-info" ">
+    <div class="alert alert-info mt-5" ">
         <?php flashMessage::display_flash('info') ;?>
     </div>
 <?php endif;?>
@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="panel-content">
                                         <div class="form-group">
-                                            <img src="/lesson-project-php-mvc/public/uploads/<?=$chat['chat_avatar'];?>" alt="" class="img-responsive" width="200">
+                                            <img src="/lesson-project-php-mvc/public/<?=$chat['chat_avatar'];?>" alt="" class="img-responsive" width="200">
                                         </div>      
                                         <div class="form-group">
                                             <label class="form-label" for="example-fileinput">Выберите аватар</label>
@@ -89,7 +89,7 @@
                                     <div class="card border shadow-0 mb-g shadow-sm-hover bg-blue bg-info-gradient" >
                                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                                             <div class="d-flex flex-row align-items-center">
-                                                    <div class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></div>
+                                                    <div class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/<?=$user['avatar'];?>'); background-size: cover;"></div>
                                                 
                                                 <div class="info-card-text flex-1 ml-auto">
                                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">

@@ -1,21 +1,21 @@
 <?php use App\Models\flashMessage;?>   
-<main id="js-page-content" role="main" class="page-content mt-3">
+<main id="js-page-content" role="main" class="page-content mt-5">
 
              <!-- флеш сообщения -->
              <?php if(isset($_SESSION['success'])):;?>
-                <div class="alert alert-success" ">
+                <div class="alert alert-success mt-5" ">
                 <?php flashMessage::display_flash('success') ;?>
                 </div>
                 <?php endif;?>
 
                 <?php if(isset($_SESSION['danger'])):;?>
-                <div class="alert alert-danger" ">
+                <div class="alert alert-danger mt-5" ">
                 <?php flashMessage::display_flash('danger') ;?>
                 </div>
                 <?php endif;?> 
                                             
                 <?php if(isset($_SESSION['info'])):;?>
-                <div class="alert alert-info" ">
+                <div class="alert alert-info mt-5" ">
                 <?php flashMessage::display_flash('info') ;?>
                 </div>
                 <?php endif;?>
@@ -107,8 +107,8 @@
     </form>
     </div>
 </main>
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()
@@ -118,7 +118,4 @@
 
     </script>
 
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
-    
         

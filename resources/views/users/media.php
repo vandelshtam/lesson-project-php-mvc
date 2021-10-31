@@ -44,7 +44,7 @@
                             </div>
                             <div class="panel-content">
                                 <div class="form-group">
-                                    <img src="/<?=$vars['avatar'];?>" alt="" class="img-responsive" width="200">
+                                    <img src="/lesson-project-php-mvc/public/<?=$vars['avatar'];?>" alt="" class="img-responsive" width="200">
                                 </div>
 
                                 <div class="form-group">

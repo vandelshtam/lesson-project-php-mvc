@@ -74,7 +74,7 @@
             
             <!-- информации о чате в панели навигации -->
                 <div class="d-flex flex-row align-items-center ">   
-                    <span class="rounded-circle profile-image d-block md-3 " style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$_SESSION['chat_avatar'];?>'); background-size: cover;"></span>   
+                    <span class="rounded-circle profile-image d-block md-3 " style="background-image:url('/lesson-project-php-mvc/public/<?=$_SESSION['chat_avatar'];?>'); background-size: cover;"></span>   
                 </div>
                     <div class="d-flex flex-row align-items-center ml-2">      
                         <?php if ($_SESSION['banned'] ==1 ):?>
