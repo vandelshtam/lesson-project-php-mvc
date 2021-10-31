@@ -229,27 +229,27 @@ QueryBuilder.php - класс построения запросов в БД.
 
 #### Далее, по приведенному примеру роутера,  в файле App/Core/Router.php выполняется создание объекта в котором определяются адреса файлов контроллеров, видов, и т д, методов обработки и т п :
 
-object(App\Controllers\UsersController)#3 (4) 
+    object(App\Controllers\UsersController)#3 (4) 
 
-{
+    {
 
-    //параметр обращения к контроллеру и методу обработки
-  
-    ['route'] => 
+        //параметр обращения к контроллеру и методу обработки
+    
+        ['route'] => 
 
-    array(3) {
+        array(3) {
 
-        ["controller"]=>
-        string(5) "users", //класс
+            ["controller"]=>
+            string(5) "users", //класс
 
-        ["action"]=>
-        string(12) "user_profile", //метод
+            ["action"]=>
+            string(12) "user_profile", //метод
 
-        ["id"]=>
-        int(1),
+            ["id"]=>
+            int(1),
 
-    }
-  
+        }
+    
 
   
 
