@@ -335,7 +335,7 @@ class QueryBuilder {
             
             $str .= '  INNER JOIN ' .$table. ' ON '. $table.'.user_id  = users.id  ';
         }
-        $sql = $str .'WHERE {$where}=:{$where}  LIMIT ' .$params['start']. ','.$params['max'];
+        $sql = $str .'WHERE '.$where.' = :'.$where.' LIMIT ' .$params['start']. ','.$params['max'];
         $statement=$this->pdo->prepare($sql);
         $statement->bindValue(':'.$where.'', $value);
         $statement->execute();

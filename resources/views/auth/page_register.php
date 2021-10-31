@@ -13,6 +13,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
     <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="stylesheet" media="screen, print" href="css/fa-brands.css">
+    <link rel="stylesheet" type="text/css" href="/lesson-project-php-mvc/public/css/style.css">
 </head>
 <body>
     <div class="page-wrapper auth">
@@ -111,7 +112,7 @@
         </div>
     </div>
     
-    <script src="js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
     <script>
         $("#js-login-btn").click(function(event)
         {

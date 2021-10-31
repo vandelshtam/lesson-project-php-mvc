@@ -74,7 +74,7 @@ class PostsController extends Controller{
     public function myPostsAction(){
         $get_post = $this->model->getUser('posts','user_id',$_SESSION['user_id']);
         if($_SESSION['auth'] != true || $get_post != true){
-            flashMessage::addFlash('danger', 'У вас нет прав доступа!');
+            flashMessage::addFlash('danger', 'У вас нет прав доступа или вы еще не создали ни одного поста!');
             $this->view->redirect('/posts');
         }
         $navigate = [
@@ -94,7 +94,7 @@ class PostsController extends Controller{
 
 
     public function postAction(){
-
+        
         $get_post = $this->model->getUser('posts','id',$this->route['id']);
         if(empty($get_post)){
             flashMessage::addFlash('danger', ' Пост не найден');
@@ -139,6 +139,7 @@ class PostsController extends Controller{
                 'pagination' => $pagination_comments->get(),
                 'images' => $this->model->imagesPost('images',$this->route['id'], ':id','post_id','created_at',''),
                 ]; 
+
             $this->model->set_session_post($post[0]); 
             unset($_SESSION['page_id']);
             unset($_SESSION['route']);    
@@ -149,8 +150,7 @@ class PostsController extends Controller{
 
 
     public function pagination_commentsAction(){
-        unset($_SESSION['page_id']); 
-        unset($_SESSION['route']);    
+         
         $_SESSION['page_id'] = $this->route['page'];
         $_SESSION['route'] = $this->route;
         $this->view->redirect('/post/'.$_SESSION['post_id']);  
@@ -203,9 +203,14 @@ class PostsController extends Controller{
                     flashMessage::addFlash('denger', 'Не удалось загрузить файл');    
                 }
                 else{
-                    $dataImage = ['image' => $new_image, 'user_id' => $post['user_id'], 'post_id' => $post['id'], 'imageable_id' => $post['id'], 'imageable_type' => 'App\Model\Post'];
+                    $dataImage = ['image' => $new_image, 'user_id' => $post['user_id'], 'post_id' => $post['id'], 'imageable_id' => 0];
                     $media = new MediaBuilder;
                     $media -> createImage('images',$dataImage);
+                    $newImageId =  $this->model->newPostId();          
+                    $data_imageable = [ 
+                        'imageable_id' => $newImageId     
+                    ];
+                    $this->model->updateImage('images',$data_imageable,'id',$newImageId);   
                     flashMessage::addFlash('success', 'Вы успешно загрузили новую картинку');    
                 }
             }
@@ -250,7 +255,12 @@ class PostsController extends Controller{
             'comment' => $_POST['comment'],
             'post_id' => $this->route['id']      
         ];
-        $this->model->createComment('comments',$data);    
+        $this->model->createComment('comments',$data); 
+        $newCommentId =  $this->model->newPostId();           
+                    $data = [ 
+                        'commentable_id' => $newCommentId     
+                    ];
+        $this->model->updateComment('comments',$data,'id',$newCommentId);               
         $this->view->redirect('/post/'.$this->route['id']);  
     }
 
@@ -360,12 +370,12 @@ class PostsController extends Controller{
 
 
     public function imagePostShowAction(){
-        $post = $this->model->getPost('posts','id',$this->route['id']);
-        if($post == false){
-            flashMessage::addFlash('danger', 'Такого поста нет!');
+        $image = $this->model->getPost('images','id',$this->route['id']);
+        if($image == false){
+            flashMessage::addFlash('danger', 'Фотография не найдена!');
             $this->view->redirect('/post/'.$this->route['id']);
         }
-        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $post['user_id']){
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $image['user_id']){
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/post/'.$this->route['id']);
         }
@@ -388,12 +398,12 @@ class PostsController extends Controller{
 
 
     public function delete_imageAction(){ 
-        $post = $this->model->getPost('posts','id',$this->route['id']);
-        if($post == false){
-            flashMessage::addFlash('danger', 'Такого поста нет!');
+        $image = $this->model->getPost('images','id',$this->route['id']);
+        if($image == false){
+            flashMessage::addFlash('danger', 'Ошибка удаления, вы не можете удалить картинку!');
             $this->view->redirect('/post/'.$this->route['id']);
         }
-        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $post['user_id']){
+        if($_SESSION['admin'] != 1 && $_SESSION['user_id'] != $image['user_id']){
             flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
             $this->view->redirect('/post/'.$this->route['id']);
         } 
@@ -504,14 +514,20 @@ class PostsController extends Controller{
                                             
                         $media = new MediaBuilder;
                         $dataAvatar = ['avatar_post' => $new_avatar];
-                        $media->updateAvatar('posts',$dataAvatar,'id',$newPostId);                            
+                        $media->updateAvatar('posts',$dataAvatar,'id',$newPostId);
+                        $newImageId =  $this->model->newPostId();          
+                        $data_imageable = [ 
+                        'imageable_id' => $newImageId     
+                        ];
+                    $this->model->updateImage('images',$data_imageable,'id',$newImageId);                              
                     } 
 
                     if(!empty($_FILES['image']['name'])){
                                         
                         $dataImage = ['image' => $new_image, 'user_id' => $this->route['id'], 'post_id' => $newPostId, 'imageable_id' => $newPostId, 'imageable_type' => 'App\Model\Post'];
                         $media = new MediaBuilder;
-                        $media -> createImage('images',$dataImage);    
+                        $media -> createImage('images',$dataImage); 
+
                     }
 
                     flashMessage::addFlash('success', 'Вы успешно добавили новый пост'); 

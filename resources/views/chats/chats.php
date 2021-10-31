@@ -2,19 +2,19 @@
 <main id="js-page-content" role="main" class="page-content mt-6">
         <!-- флеш сообщения - начало блока -->
         <?php if(isset($_SESSION['success'])):;?>
-            <div class="alert alert-success" ">
+            <div class="alert alert-success mt-5" ">
             <?php flashMessage::display_flash('success') ;?>
             </div>
             <?php endif;?>
 
             <?php if(isset($_SESSION['danger'])):;?>
-            <div class="alert alert-danger" ">
+            <div class="alert alert-danger mt-5" ">
             <?php flashMessage::display_flash('danger') ;?>
             </div>
             <?php endif;?> 
                                             
             <?php if(isset($_SESSION['info'])):;?>
-            <div class="alert alert-info" ">
+            <div class="alert alert-info mt-5" ">
             <?php flashMessage::display_flash('info') ;?>
             </div>
         <?php endif;?>
@@ -33,7 +33,7 @@
                     <?php endif;?>
                     
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
-                        <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
+                        <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти чат">
                         <div class="btn-group btn-group-lg btn-group-toggle hidden-lg-down ml-3" data-toggle="buttons">
                             <label class="btn btn-default active">
                                 <input type="radio" name="contactview" id="grid" checked="" value="grid"><i class="fas fa-table"></i>
@@ -54,7 +54,7 @@
                 <?php foreach ($chats as $chat):?>
                 
             <div class="col-xl-4" >
-                <div id="<?=$chat['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover" style="background-color: rgb(220 235 250);" data-filter-tags="<?=$chat['search'];?>">
+                <div id="<?=$chat['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover backColCardChats"  data-filter-tags="<?=$chat['search'];?>">
                     <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                         <div class="d-flex flex-row align-items-center">
                                 <!-- статус чата -->
@@ -76,7 +76,8 @@
                                         <span class="star ml-3"></span>    
                                     <?php elseif($_SESSION['admin'] != 1 && $chat['favorites_chat'] == 1):?> 
                                         <span class="star ml-3"></span>
-                                    <?php endif;?>
+                                    <?php endif;?><br>
+                                    <span class="text-truncate text-truncate-xl">Автор чата - <?=$chat['name'];?> </span>
                                 </a>
                                     <!--выпадающее подменю-->
                                     <?php if ($_SESSION['admin'] == 1  || ($_SESSION['auth'] == true && $chat['banned'] !=1)):?>
@@ -121,13 +122,8 @@
                                         </div>
                                         <?php endif;?>   
                                     </div>
-                                    <span class="text-truncate text-truncate-xl">Автор чата - <?=$chat['name'];?> </span>
                                     
-                                <?php if ($chat['banned'] == 1):?>
-                                    <span class="text-truncate text-truncate-xl ml-3 bt btn-danger">Чат заблокирован</span>   
-                                <?php else:?>
-                                    <span class="text-truncate text-truncate-xl ml-3 bt btn-success">Активный чат</span>
-                                <?php endif;?>
+                                    
                                 <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
                                     <span class="collapsed-hidden">+</span>
                                     <span class="collapsed-reveal">-</span>

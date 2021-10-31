@@ -29,7 +29,7 @@
                 <?php endif;?>
                     
                     <div class="border-faded bg-faded p-3 mb-g d-flex mt-3">
-                        <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пользователя">
+                        <input type="text" id="js-filter-contacts" name="filter-contacts" class="form-control shadow-inset-2 form-control-lg" placeholder="Найти пост">
                         <div class="btn-group btn-group-lg btn-group-toggle hidden-lg-down ml-3" data-toggle="buttons">
                             <label class="btn btn-default active">
                                 <input type="radio" name="contactview" id="grid" checked="" value="grid"><i class="fas fa-table"></i>
@@ -48,7 +48,7 @@
 <div class="row" id="js-contacts">
     <?php foreach ($posts as $post):?>
         <div class="col-xl-4">
-        <div id="<?php echo $post['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover" style="background-color: rgb(250 245 245);" data-filter-tags="<?php echo $post['search_post'];?>">
+        <div id="<?php echo $post['c'];?>" class="card border shadow-0 mb-g shadow-sm-hover backgroundcolorCardPosts"  data-filter-tags="<?php echo $post['search_post'];?>">
     <!-- не заблокированные посты -->
     <div class="subheader">
         <h1 class="subheader-title">

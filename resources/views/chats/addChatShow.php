@@ -3,19 +3,19 @@
 
     <!-- флеш сообщения -->
     <?php if(isset($_SESSION['success'])):;?>
-                <div class="alert alert-success" >
+                <div class="alert alert-success mt-5" >
                 <?php flashMessage::display_flash('success') ;?>
                 </div>
                 <?php endif;?>
 
                 <?php if(isset($_SESSION['danger'])):;?>
-                <div class="alert alert-danger" ">
+                <div class="alert alert-danger mt-5" ">
                 <?php flashMessage::display_flash('danger') ;?>
                 </div>
                 <?php endif;?> 
                                             
                 <?php if(isset($_SESSION['info'])):;?>
-                <div class="alert alert-info" ">
+                <div class="alert alert-info mt-5" ">
                 <?php flashMessage::display_flash('info') ;?>
                 </div>
                 <?php endif;?>
@@ -92,21 +92,21 @@
                                                             <i class="fa fa-edit md-1"></i>
                                                         Открыть  профиль</a>
                                                     <?php endif;?>     
-                                                      
-                                                </div>
-                                                <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
-                                                    <span class="collapsed-hidden">+</span>
-                                                    <span class="collapsed-reveal">-</span>
-                                                </button>
-                                                <span>
-                                                       <div class="form-group text-left">
+                                                    <span>
+                                                       <div class="form-group text-left ml-4">
                                                         <div class="custom-control custom-checkbox">
                                                             <input type="text" class="custom-control-input" name="user_<?=$user['id'];?>"   value="<?=$user['id'];?>" hidden>
                                                             <input type="checkbox" class="custom-control-input" name="rememberme_<?=$user['id'];?>" id="rememberme_<?=$user['id'];?>">
                                                             <label class="custom-control-label" for="rememberme_<?=$user['id'];?>">Добавить пользователя</label>
                                                         </div>
                                                     </div>     
-                                                    </span>
+                                                </span>  
+                                                </div>
+                                                <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
+                                                    <span class="collapsed-hidden">+</span>
+                                                    <span class="collapsed-reveal">-</span>
+                                                </button>
+                                                
                                             </div>
                                         </div>    
                                     </div>
@@ -129,8 +129,8 @@
     </form>
     </div>
 </main>
-<script src="js/vendors.bundle.js"></script>
-    <script src="js/app.bundle.js"></script>
+<script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()

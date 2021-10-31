@@ -418,15 +418,15 @@ class ChatsController extends Controller{
             'user_id' => $_SESSION['user_id'],
             'message' => $_POST['message'],
             'chat_id' => $this->route['id'], 
-            'info_id' => $chat[0]['info_id'],
-            'messageable_id' => $this->route['id']     
+            'info_id' => $chat[0]['info_id']   
         ];
         $this->model->createMessage('messages',$data_messages);
 
         //получение из таблицы id последней записанной записи чата
         $new_message_id = $this->model->newChatId();
         $data = [    
-            'message_id' => $new_message_id     
+            'message_id' => $new_message_id,
+            'messageable_id' => $new_message_id,     
         ];
         $this -> model -> updateMessage('chats',$data,'id',$this->route['id']);     
         $this->view->redirect('/openChat/'.$this->route['id']);  

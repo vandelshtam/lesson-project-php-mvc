@@ -130,6 +130,15 @@ class Posts extends Model{
 
 
 
+    //обновление в одной таблице постов 'images'
+    public function updateImage($table,$data,$param,$param2){
+        $this->db->updateAny($table, $data, $param,$param2);
+    }
+
+
+
+
+
     //новый комментарий
     public function  createComment($table,$data){       
         return $this->db->create($table,$data);

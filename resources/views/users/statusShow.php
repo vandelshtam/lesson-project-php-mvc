@@ -37,13 +37,13 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                        </div>    
                     </div>
                 </div>
             </div>
         </form>
     </main>
+    </body>
 
     <script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
     <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
@@ -77,5 +77,3 @@
         });
 
     </script>
-</body>
-</html>

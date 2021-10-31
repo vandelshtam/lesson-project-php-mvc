@@ -171,6 +171,7 @@
             </div>
         </form>
     </main>
+    </body>
     <!-- BEGIN Page Footer -->
     <footer class="page-footer" role="contentinfo">
             <div class="d-flex align-items-center flex-1 text-muted">
@@ -184,8 +185,8 @@
             </div>
         </footer>
 
-    <script src="/lesson-project-php-mvc/js/vendors.bundle.js"></script>
-    <script src="/lesson-project-php-mvc/js/app.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
     <script>
 
         $(document).ready(function()
@@ -195,5 +196,3 @@
         });
 
     </script>
-</body>
-</html>

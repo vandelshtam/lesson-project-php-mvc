@@ -149,14 +149,11 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                
-<?php endforeach;?>
-
-
-            </div>
-            <?php echo $pagination; ?>
-        </main>
+                </div>            
+    <?php endforeach;?>
+    </div>
+    <?php echo $pagination; ?>
+    </main>
      
         <!-- BEGIN Page Footer -->
         <footer class="page-footer" role="contentinfo">
@@ -205,4 +202,4 @@
         });
 
     </script>
-</html>
+

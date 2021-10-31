@@ -60,19 +60,11 @@
                             </div>
                         </div>
                     </div>
-               </div>
+                </div>
             </div>
         </main>
-    </body>
+        </body>
 
     <script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
     <script src="/lesson-project-php-mvc/public/js/app.bundle.js"></script>
-    <script>
 
-        $(document).ready(function()
-        {
-
-        });
-
-    </script>
-</html>

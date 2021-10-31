@@ -50,7 +50,7 @@
                                 
                                 <div class="row">    
                                     <div class="coll-ml-auto ">        
-                                        <img  src="/lesson-project-php-mvc/public/<?=$image[0]['image'];?>" alt="" class="img-fluid img-thumbnail gallery-image" >
+                                        <img  src="/lesson-project-php-mvc/public/uploads/<?=$image[0]['image'];?>" alt="" class="img-fluid img-thumbnail gallery-image" >
                                     </div>    
                                 </div>    
                             </div>          

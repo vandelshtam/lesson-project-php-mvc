@@ -5,15 +5,16 @@
     <!-- Remove Tap Highlight on Windows Phone IE -->
     <meta name="msapplication-tap-highlight" content="no">
     <!-- base css -->
-    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="css/vendors.bundle.css">
-    <link id="appbundle" rel="stylesheet" media="screen, print" href="css/app.bundle.css">
+    <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/vendors.bundle.css">
+    <link id="appbundle" rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/app.bundle.css">
     <link id="mytheme" rel="stylesheet" media="screen, print" href="#">
-    <link id="myskin" rel="stylesheet" media="screen, print" href="css/skins/skin-master.css">
+    <link id="myskin" rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/skins/skin-master.css">
     <!-- Place favicon.ico in the root directory -->
-    <link rel="apple-touch-icon" sizes="180x180" href="img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon/favicon-32x32.png">
-    <link rel="mask-icon" href="img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-    <link rel="stylesheet" media="screen, print" href="css/page-login-alt.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/lesson-project-php-mvc/public/img/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/lesson-project-php-mvc/public/img/favicon/favicon-32x32.png">
+    <link rel="mask-icon" href="/lesson-project-php-mvc/public/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="stylesheet" media="screen, print" href="/lesson-project-php-mvc/public/css/page-login-alt.css">
+    <link rel="stylesheet" type="text/css" href="/lesson-project-php-mvc/public/css/style.css">
 </head>
 <body>
     <div class="blankpage-form-field">
@@ -69,6 +70,6 @@
         <source src="media/video/cc.webm" type="video/webm">
         <source src="media/video/cc.mp4" type="video/mp4">
     </video>
-    <script src="js/vendors.bundle.js"></script>
+    <script src="/lesson-project-php-mvc/public/js/vendors.bundle.js"></script>
 </body>
 </html>

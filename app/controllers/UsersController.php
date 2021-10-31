@@ -417,7 +417,7 @@ class UsersController extends Controller {
         else{
             flashMessage::addFlash('info', 'Необходимо заполнить все поля формы'); 
         }
-        $vars = null;
+        $vars = [];
         $this->view->render('Change email', $vars, $errors);
     }   
 }

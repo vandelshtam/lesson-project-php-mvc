@@ -82,16 +82,16 @@
                             <!--  участники чата  -->
                             <h4><span class="text-truncate text-truncate-xl">Участники чата</span></h4>
                             
-                            <div class="row" id="js-contacts">    
+                            <div class="row"">    
                             <?php foreach ($userlists as $user):?>
                                 <?php if($_SESSION['admin'] == 1 || $chat['author_user_id'] == $_SESSION['user_id']):?>
                                 <div class="col-xl-4 ">
                                     <div class="card border shadow-0 mb-g shadow-sm-hover bg-blue bg-info-gradient" >
                                         <div class="card-body border-faded border-top-0 border-left-0 border-right-0 rounded-top">
                                             <div class="d-flex flex-row align-items-center">
-                                                    <span class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></span>
-                                                </span>
-                                                <div class="info-card-text flex-1 md-1">
+                                                    <div class="rounded-circle profile-image d-block" style="background-image:url('/lesson-project-php-mvc/public/uploads/<?=$user['avatar'];?>'); background-size: cover;"></div>
+                                                
+                                                <div class="info-card-text flex-1 ml-auto">
                                                     <a href="javascript:void(0);" class="fs-xl text-truncate text-truncate-lg text-info" data-toggle="dropdown" aria-expanded="false">
                                                         <?=$user['name'];?>  
                                                         <i class="fal fas fa-cog fa-fw d-inline-block ml-1 fs-md"></i>
@@ -165,21 +165,21 @@
                                                             <i class="fa fa-edit md-auto"></i>
                                                         Открыть  профиль</a>
                                                     <?php endif;?>      
-                                                      
-                                                </div>
-                                                <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
-                                                    <span class="collapsed-hidden">+</span>
-                                                    <span class="collapsed-reveal">-</span>
-                                                </button>
-                                                <span>
-                                                    <div class="form-group text-left">
+                                                    <span>
+                                                    <div class="form-group text-left ml-4">
                                                             <div class="custom-control custom-checkbox">
                                                                 <input type="text" class="custom-control-input" name="add_user"   value="<?=$user['user_id'];?>" hidden>
                                                                 <input type="checkbox" class="custom-control-input" name="rememberme_<?=$user['user_id'];?>" id="rememberme_<?=$user['user_id'];?>">
                                                                 <label class="custom-control-label" for="rememberme_<?=$user['user_id'];?>">Добавить пользователя</label>
                                                             </div>
                                                     </div>     
-                                                </span>
+                                                </span>  
+                                                </div>
+                                                <button class="js-expand-btn btn btn-sm btn-default d-none" data-toggle="collapse" data-target="#c_1 > .card-body + .card-body" aria-expanded="false">
+                                                    <span class="collapsed-hidden">+</span>
+                                                    <span class="collapsed-reveal">-</span>
+                                                </button>
+                                                
                                             </div>
                                         </div> 
                                            

@@ -31,10 +31,10 @@
             </div>
 
             <!-- отправка сообщения -->
-            <form action="/message/<?=$chat[0]['id'];?>" method="POST" class="col-lg-12 col-xl-12 ml-auto fixed-bottom mt-15">
+            <form action="/message/<?=$chat[0]['id'];?>" method="POST" class="col-lg-12 col-xl-12 ml-auto fixed-bottom  mb-0">
                                 
                 <div class="border-faded bg-faded p-3 mb-g d-flex mt-3 ">
-                    <input type="text"  name="message"  placeholder="Ввести текст сообщения" style="width: 1100px;">
+                    <input type="text"  name="message"  placeholder="Ввести текст сообщения" class="text-message-chats">
                     <div class="btn-group btn-group-lg btn-group-toggle hidden-lg-down ml-3" data-toggle="buttons">
                     </div>
                     <button class="col-lg-2 col-xl-2 ml-auto btn btn-info" type="submit" name="submit">Отправить</button>
