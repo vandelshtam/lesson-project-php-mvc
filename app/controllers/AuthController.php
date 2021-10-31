@@ -20,13 +20,9 @@ class AuthController extends Controller {
 
 
 
-
-
     public function before(){
         $this->before();
     }
-
-
 
 
 
@@ -142,7 +138,7 @@ class AuthController extends Controller {
         if($_SESSION['admin'] != 1 ){
             if(isset($_POST['confirm_password'])){
                 if($this->model->password_verification('users','id',$this->route['id'],$_POST['confirm_password']) == true){
-                    //flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+                    
                     $this->view->redirect('/delete/'.$this->route['id']); 
                 }
                 else{
@@ -178,7 +174,7 @@ class AuthController extends Controller {
                 }
             }
             else{
-                //flashMessage::addFlash('danger', 'У вас нет прав доступа к действию!');
+                 
                 $this->view->redirect('/deletePost/'.$this->route['id']); 
             }
         }

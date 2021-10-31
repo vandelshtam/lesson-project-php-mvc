@@ -44,18 +44,6 @@ return [
         'controller' => 'users',
         'action' => 'change_email',   
     ],
-    '/search' => [
-        'controller' => 'users',
-        'action' => 'search',   
-    ],
-    '/users_2' => [
-        'controller' => 'users',
-        'action' => 'users_2',   
-    ],
-    '/users_3' => [
-        'controller' => 'users',
-        'action' => 'users_3',   
-    ],
 
 
 

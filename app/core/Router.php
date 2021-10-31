@@ -22,19 +22,15 @@ class Router
 
     public function add($route, $params){
         $route = preg_replace('/{([a-z]+):([^\}]+)}/', '(?P<\1>\2)', $route);
-        
         $route = '#^'.$route.'$#';
-        
         $this ->routes[$route] = $params;
-       //dd($params);
+       
     }
 
     public function matche(){
         $url = $_SERVER['REQUEST_URI'];
-        dd($url);
         foreach($this->routes as $route => $params){    
             if(preg_match($route, $url, $matches)){
-                dd($matches[0]);
                 $this -> params = $params;
                 return true;
             }    
@@ -44,12 +40,9 @@ class Router
 
     public function match() {
             $url = $_SERVER['REQUEST_URI'];
-            //dd($url);
             foreach ($this->routes as $route => $params) {
-                
-                //var_dump($route);
+             
                 if (preg_match($route, $url, $matches)) {
-                    //var_dump($matches);
                     foreach ($matches as $key => $match) {
                         if (is_string($key)) {
                             if (is_numeric($match)) {
@@ -63,16 +56,18 @@ class Router
                     return true;
                 }
             }
-            //dd($match);
             return false;
         }
     public function run(){
        if($this->match()){
            $pach = 'App\Controllers\\'.ucfirst($this->params['controller']).'Controller';
+           
            if(class_exists($pach)){
                $action = $this->params['action'].'Action';
+               
                if(method_exists($pach, $action)){
                    $controller = new $pach($this->params);
+                   dd($controller);
                    $controller->$action();
                }
                else{
@@ -96,8 +91,10 @@ class Router
     public function runes(){
         if ($this->match()) {
             $path = 'App\Controllers\\'.ucfirst($this->params['controller']).'Controller';
+            
             if (class_exists($path)) {
                 $action = $this->params['action'].'Action';
+                dd($action);
                 if (method_exists($path, $action)) {
                     $controller = new $path($this->params);
                     $controller->$action();
@@ -112,9 +109,5 @@ class Router
         }
     }
 
-   // public function run(){
-        //echo $this->match();die;
-           
-    //}
 
 }
