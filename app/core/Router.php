@@ -67,7 +67,7 @@ class Router
                
                if(method_exists($pach, $action)){
                    $controller = new $pach($this->params);
-                   dd($controller);
+                   
                    $controller->$action();
                }
                else{
