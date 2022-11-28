@@ -1,4 +1,4 @@
-# lesson-project-php-oop-mvc
+# lesson-project-php-oop-mvc (framework)
 ## 1. О проекте
 ### Название проекта "Book of friends"
 Примечания:
